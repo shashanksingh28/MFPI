@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Group Savings</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_groups_grid">Saving Groups</string>
+    <string name="title_activity_add_group">AddGroup</string>
+    <string name="title_activity_group_landing">Manage Group</string>
+    <string name="title_section1">Group Details</string>
+    <string name="title_section2">Member Details</string>
+    <string name="title_section3">Meeting Details</string>
+
+</resources>
