@@ -34,6 +34,6 @@
             android:label="@string/title_activity_group_landing"
             android:screenOrientation="landscape" />
 
-
     </application>
+
 </manifest>
