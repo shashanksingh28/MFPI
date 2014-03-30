@@ -2,22 +2,25 @@ package org.groupsavings.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.activities.AddMeetingActivity;
 import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
 
-public class MeetingsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class MeetingsFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private static final String ARG_PARAM1 = "Group UID";
     Activity activity;
@@ -69,6 +72,10 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
             meetingsAdapter = new ArrayAdapter<GroupMeeting>(activity, android.R.layout.simple_list_item_1, meetings);
             lv.setAdapter(meetingsAdapter);
             lv.setOnItemClickListener(this);
+
+            Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
+            addNewMeeting.setOnClickListener(this);
+
         } catch (Exception ex) {
             Toast.makeText(activity, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -76,6 +83,16 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        // Call MeetingActivity with meeting date parameter
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_add_meeting:
+                Intent startMeetingActivity = new Intent(getActivity(), AddMeetingActivity.class);
+                startActivity(startMeetingActivity);
+                break;
+        }
     }
 }

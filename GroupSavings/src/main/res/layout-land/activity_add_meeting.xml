@@ -13,7 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TableRow>
 
+            <TextView android:text="Member Name" />
+
+            <TextView android:text="Compulsory Savings" />
+
+            <TextView android:text="Optional Savings" />
+
+            <TextView android:text="Total Savings" />
+        </TableRow>
     </TableLayout>
 
 </RelativeLayout>
