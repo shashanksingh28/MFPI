@@ -15,12 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1"  >
+            android:layout_weight="1.5"  >
 
             <ListView
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:id="@+id/listview_member_names"
+                android:layout_above="@id/button_add_member"
                 android:layout_gravity="center" />
 
             <Button
