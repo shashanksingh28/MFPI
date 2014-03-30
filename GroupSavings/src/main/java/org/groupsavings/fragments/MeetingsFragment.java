@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.GroupMeeting;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.groupsavings.database;
+package org.groupsavings.handlers;
 
 import android.content.ContentValues;
 import android.content.Context;

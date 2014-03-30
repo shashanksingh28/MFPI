@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.groupsavings.R;
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;

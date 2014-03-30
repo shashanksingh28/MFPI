@@ -23,7 +23,7 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.json.JSONArray;
 
