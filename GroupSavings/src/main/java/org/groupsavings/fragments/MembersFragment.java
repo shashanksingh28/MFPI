@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Member;
 
 
