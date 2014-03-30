@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/layout_member_details_container"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.communityfinance.fragments.MembersFragment"
-    android:id="@+id/layout_member_details_container">
+    android:orientation="vertical"
+    tools:context="com.android.communityfinance.fragments.MembersFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -14,22 +14,22 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1.5"  >
-
-            <ListView
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:id="@+id/listview_member_names"
-                android:layout_above="@id/button_add_member"
-                android:layout_gravity="center" />
+            android:layout_weight="1.5"
+            android:orientation="vertical">
 
             <Button
+                android:id="@+id/button_add_member"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Add New"
-                android:id="@+id/button_add_member"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignParentBottom="true"
+                android:text="Add New" />
+
+            <ListView
+                android:id="@+id/listview_member_names"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_above="@id/button_add_member"
+                android:layout_gravity="center" />
 
         </RelativeLayout>
 
@@ -40,14 +40,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <include layout="@layout/view_member_details" android:id="@+id/layout_member_details"/>
+            <include
+                android:id="@+id/layout_member_details"
+                layout="@layout/view_member_details" />
 
-            <Button android:text="Save" android:id="@+id/button_save_member"
-                android:layout_width="fill_parent" android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"/>
+            <Button
+                android:id="@+id/button_save_member"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Save" />
         </RelativeLayout>
 
     </LinearLayout>
