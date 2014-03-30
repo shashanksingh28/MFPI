@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class GroupMeeting
 {
-    int id;
-    Group group;
-    Date date;
+    public int id;
+    public int groupId;
+    public Date date;
 }

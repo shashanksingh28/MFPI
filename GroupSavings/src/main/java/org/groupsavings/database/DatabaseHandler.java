@@ -10,7 +10,10 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.Member;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by shashank on 4/3/14.
@@ -141,9 +144,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_GROUPMEETING_GroupId = "GroupId";
     private static final String COLUMN_GROUPMEETING_DATE = "DateTime";
 
-    private static final String CREATE_GROUPMEETING_TABLE = "Crate table "+TABLE_GROUPMEETINGS
-            +" (" +COLUMN_GROUPMEETING_ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_GROUPMEETING_GroupId + "INTEGER,"
+    private static final String CREATE_GROUPMEETING_TABLE = "Create table " + TABLE_GROUPMEETINGS
+            + " (" + COLUMN_GROUPMEETING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_GROUPMEETING_GroupId + " INTEGER,"
             + COLUMN_GROUPMEETING_DATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
 
@@ -156,8 +159,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createSchema(db);
     }
 
-    private void dropSchema(SQLiteDatabase db)
+    public void dropSchema(SQLiteDatabase db)
     {
+
+        if (db == null) db = this.getWritableDatabase();
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANTRANSACTION + ";");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGTRANSACTION + ";");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANSACCOUNT + ";");
@@ -168,8 +174,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    private void createSchema(SQLiteDatabase db)
+    public void createSchema(SQLiteDatabase db)
     {
+        if (db == null) db = this.getWritableDatabase();
+
         dropSchema(db);
 
         db.execSQL(CREATE_TABLE_GROUP);
@@ -382,8 +390,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Meeting methods
-    public ArrayList<GroupMeeting> getGroupMeetings(int groupId, SQLiteDatabase db) {
-        int savings = 0;
+    public ArrayList<GroupMeeting> getGroupMeetings(int groupId, SQLiteDatabase db) throws ParseException {
+
         ArrayList<GroupMeeting> resultset = new ArrayList<GroupMeeting>();
         String selectQuery = "SELECT * FROM " + TABLE_GROUPMEETINGS
                 + " WHERE " + COLUMN_GROUPMEETING_GroupId + "=" + groupId;
@@ -391,9 +399,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
-            //Parse meeting
-
+            GroupMeeting gm = new GroupMeeting();
+            gm.id = cursor.getInt(0);
+            gm.groupId = cursor.getInt(1);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/YYYY", Locale.getDefault());
+            gm.date = sdf.parse(cursor.getString(2));
+            resultset.add(gm);
         }
+
         return resultset;
     }
 }

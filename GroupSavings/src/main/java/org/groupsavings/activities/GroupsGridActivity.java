@@ -21,29 +21,30 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-
 import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
-import org.json.JSONArray;
 import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.domain.*;
+import org.groupsavings.domain.Group;
+import org.json.JSONArray;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
 
 public class GroupsGridActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
+    public static final int REQUEST_ADD_GROUP = 0;
     DatabaseHandler db_handler;
     ArrayList<Group> groups;
     ArrayAdapter adapter_grid;
     private ProgressDialog pDialog;
 
-    public static final int REQUEST_ADD_GROUP = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups_grid);
         db_handler = new DatabaseHandler(getApplicationContext());
+        //db_handler.createSchema(null);
 
         groups = new ArrayList<Group>();
         Button addGroupButton =(Button) findViewById(R.id.button_add_group);

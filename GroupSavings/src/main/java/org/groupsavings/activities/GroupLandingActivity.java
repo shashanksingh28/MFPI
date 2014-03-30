@@ -21,6 +21,7 @@ import org.groupsavings.R;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
+import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
 
 import java.util.Locale;
@@ -43,6 +44,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     // Three fragments that will go with three tabs
     MembersFragment fragment_members;
     GroupDetailsFragment fragment_group_details;
+    MeetingsFragment fragment_meetings;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -60,6 +62,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         this.setTitle(group.GroupName);
         fragment_members = MembersFragment.newInstance(groupUID);
         fragment_group_details = GroupDetailsFragment.newInstance(groupUID);
+        fragment_meetings = MeetingsFragment.newInstance(groupUID);
 
 
         // Set up the action bar.
@@ -195,6 +198,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_group_details;
                 case 1:
                     return fragment_members;
+                case 2:
+                    return fragment_meetings;
             }
             return PlaceholderFragment.newInstance(position + 1);
 
