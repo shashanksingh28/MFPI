@@ -12,6 +12,7 @@
         android:layout_width="match_parent" android:layout_height="fill_parent"
         android:id="@+id/layout_groups_grid"
         android:numColumns="auto_fit"
+        android:layout_above="@id/button_container"
         android:stretchMode="columnWidth">
 
     </GridView>
@@ -20,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:id="@+id/button_container"
         android:layout_alignParentBottom="true">
 
         <Button
