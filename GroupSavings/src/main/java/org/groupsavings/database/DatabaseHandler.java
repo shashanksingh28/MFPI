@@ -17,32 +17,12 @@ import java.util.ArrayList;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
-    // Database Version
     private static final int DATABASE_VERSION = 1;
-    // Database Name
-    private static final String DATABASE_NAME = "communityfinance";
-    // Members Table Name
-    private static final String MEMBERS_TABLE_NAME = "Members";
-    // Member Column names
-    private static final String COLUMN_MEMBER_UID = "UID";
-    private static final String COLUMN_MEMBERGROUP_UID = "GroupUID";
-    private static final String COLUMN_MEMBER_FIRSTNAME = "FirstName";
-    private static final String COLUMN_MEMBER_LASTNAME = "LastName";
-    private static final String COLUMN_MEMBER_CONTACT = "ContactInfo";
-    private static final String COLUMN_MEMBER_IMAGE = "Image";
-
-    // Create Member Table
-    private static final String CREATE_MEMBER_TABLE = "Create table "
-            + MEMBERS_TABLE_NAME + " ("+ COLUMN_MEMBER_UID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_MEMBERGROUP_UID + " INTEGER,"
-            + COLUMN_MEMBER_FIRSTNAME +" TEXT,"+ COLUMN_MEMBER_LASTNAME + " TEXT,"
-            + COLUMN_MEMBER_CONTACT +" TEXT,"
-            + COLUMN_MEMBER_IMAGE + " BLOB);";
+    private static final String DATABASE_NAME = "GroupSavings";
 
     // Group Table Name
     private static final String GROUP_TABLE_NAME = "Groups";
 
-    // Members Column names
     public static final String COLUMN_GROUP_UID = "UID";
     public static final String COLUMN_GROUP_NAME = "GroupName";
     public static final String COLUMN_GROUP_ADDRESS = "GroupAddress";
@@ -63,6 +43,98 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_CREATED_BY + " INTEGER"
             + ");";
 
+    // Members Table Name
+    private static final String MEMBERS_TABLE_NAME = "Members";
+
+    private static final String COLUMN_MEMBER_UID = "UID";
+    private static final String COLUMN_MEMBERGROUP_UID = "GroupUID";
+    private static final String COLUMN_MEMBER_FIRSTNAME = "FirstName";
+    private static final String COLUMN_MEMBER_LASTNAME = "LastName";
+    private static final String COLUMN_MEMBER_CONTACT = "ContactInfo";
+    private static final String COLUMN_MEMBER_IMAGE = "Image";
+
+    private static final String CREATE_MEMBER_TABLE = "Create table "
+            + MEMBERS_TABLE_NAME + " ("+ COLUMN_MEMBER_UID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_MEMBERGROUP_UID + " INTEGER,"
+            + COLUMN_MEMBER_FIRSTNAME +" TEXT,"+ COLUMN_MEMBER_LASTNAME + " TEXT,"
+            + COLUMN_MEMBER_CONTACT +" TEXT,"
+            + COLUMN_MEMBER_IMAGE + " BLOB);";
+
+    //Savings table
+    private static final String TABLE_SAVINGSACCOUNT = "MemberSavingsAccount";
+
+    private static final String COLUMN_SAVINGSACCOUNT_ID = "Id";
+    private static final String COLUMN_SAVINGSACCOUNT_GROUPID= "GroupId";
+    private static final String COLUMN_SAVINGSACCOUNT_MEMBERID = "MemberId";
+    private static final String COLUMN_SAVINGSACCOUNT_TOTALSAVINGS = "TotalSavings";
+    private static final String COLUMN_SAVINGSACCOUNT_INTERESTACCUMULATED = "InterestAccumulated";
+    private static final String COLUMN_SAVINGSACCOUNT_CREATEDDATE = "CreatedDate";
+
+    private static final String CREATE_SAVINGS_TABLE="Create table "+TABLE_SAVINGSACCOUNT
+            + " (" + COLUMN_SAVINGSACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_SAVINGSACCOUNT_GROUPID + " INTEGER,"
+            + COLUMN_SAVINGSACCOUNT_MEMBERID + " INTEGER,"
+            + COLUMN_SAVINGSACCOUNT_TOTALSAVINGS + " INTEGER,"
+            + COLUMN_SAVINGSACCOUNT_INTERESTACCUMULATED + " INTEGER,"
+            + COLUMN_SAVINGSACCOUNT_CREATEDDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
+
+    //Savings Transaction
+    private static final String TABLE_SAVINGTRANSACTION = "MemberSavingTransaction";
+
+    private static final String COLUMN_SAVINGTRANSACTION_ID = "Id";
+    private static final String COLUMN_SAVINGTRANSACTION_GROUPID= "GroupId";
+    private static final String COLUMN_SAVINGTRANSACTION_MEMBERSAVINGSACCOUNTID = "MemberSavingsId";
+    private static final String COLUMN_SAVINGTRANSACTION_AMOUNT = "Amount";
+    private static final String COLUMN_SAVINGTRANSACTION_DATETIME = "DateTime";
+
+    private static final String CREATE_SAVINGTRANSACTION_TABLE="Create table "+TABLE_SAVINGTRANSACTION
+            + " (" + COLUMN_SAVINGTRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_SAVINGTRANSACTION_GROUPID + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_MEMBERSAVINGSACCOUNTID + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_AMOUNT + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_DATETIME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
+
+    //Loans table
+    private static final String TABLE_LOANSACCOUNT = "GroupSavingsAccount";
+
+    private static final String COLUMN_LOANSACCOUNT_ID = "Id";
+    private static final String COLUMN_LOANSACCOUNT_GROUPID= "GroupId";
+    private static final String COLUMN_LOANSACCOUNT_MEMBERID = "MemberId";
+    private static final String COLUMN_LOANSACCOUNT_PRINCIPAL = "Principal";
+    private static final String COLUMN_LOANSACCOUNT_STARTDATE = "StartDate";
+    private static final String COLUMN_LOANSACCOUNT_INSTALLMENT = "InstallmentAmount";
+    private static final String COLUMN_LOANSACCOUNT_NOofINSTALLMENTS = "NoOfInstallments";
+    private static final String COLUMN_LOANSACCOUNT_CREATEDDATE = "CreatedDate";
+
+    private static final String CREATE_LOANS_TABLE="Create table "+TABLE_LOANSACCOUNT
+            + " (" + COLUMN_LOANSACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_LOANSACCOUNT_GROUPID + " INTEGER,"
+            + COLUMN_LOANSACCOUNT_MEMBERID + " INTEGER,"
+            + COLUMN_LOANSACCOUNT_PRINCIPAL + " INTEGER,"
+            + COLUMN_LOANSACCOUNT_STARTDATE + " TIMESTAMP,"
+            + COLUMN_LOANSACCOUNT_INSTALLMENT + " INTEGER,"
+            + COLUMN_LOANSACCOUNT_NOofINSTALLMENTS + " INTEGER,"
+            + COLUMN_LOANSACCOUNT_CREATEDDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
+
+    //Loans Transaction
+    private static final String TABLE_LOANTRANSACTION = "MemberLoanTransaction";
+
+    private static final String COLUMN_LOANTRANSACTION_ID = "Id";
+    private static final String COLUMN_LOANTRANSACTION_GROUPID= "GroupId";
+    private static final String COLUMN_LOANTRANSACTION_MEMBERLOANACCOUNTID = "MemberLoanId";
+    private static final String COLUMN_LOANTRANSACTION_REPAYED = "Repayment";
+    private static final String COLUMN_LOANTRANSACTION_DATETIME = "DateTime";
+
+    private static final String CREATE_LOANTRANSACTION_TABLE="Create table "+TABLE_LOANTRANSACTION
+            + " (" + COLUMN_LOANTRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_LOANTRANSACTION_GROUPID + " INTEGER,"
+            + COLUMN_LOANTRANSACTION_MEMBERLOANACCOUNTID + " INTEGER,"
+            + COLUMN_LOANTRANSACTION_REPAYED + " INTEGER,"
+            + COLUMN_LOANTRANSACTION_DATETIME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -70,23 +142,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + MEMBERS_TABLE_NAME + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + GROUP_TABLE_NAME + ";");
-        // Create tables again
-        db.execSQL(CREATE_MEMBER_TABLE);
-        db.execSQL(CREATE_GROUP_TABLE);
-
+        createSchema(db);
     }
 
-    public void recreateSchema()
+    private void dropSchema(SQLiteDatabase db)
     {
-        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANTRANSACTION + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGTRANSACTION + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANSACCOUNT + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGSACCOUNT + ";");
         db.execSQL("DROP TABLE IF EXISTS " + MEMBERS_TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + GROUP_TABLE_NAME + ";");
-        // Create tables again
-        db.execSQL(CREATE_MEMBER_TABLE);
+    }
+
+    private void createSchema(SQLiteDatabase db)
+    {
+        dropSchema(db);
+
         db.execSQL(CREATE_GROUP_TABLE);
-        db.close();
+        db.execSQL(CREATE_MEMBER_TABLE);
+        db.execSQL(CREATE_SAVINGS_TABLE);
+        db.execSQL(CREATE_SAVINGTRANSACTION_TABLE);
+        db.execSQL(CREATE_LOANS_TABLE);
+        db.execSQL(CREATE_LOANTRANSACTION_TABLE);
     }
 
     @Override
@@ -133,7 +211,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(COLUMN_MEMBER_CONTACT, member.ContactInfo);
             values.put(COLUMN_MEMBERGROUP_UID, member.GroupUID);
 
-            db.insertOrThrow(MEMBERS_TABLE_NAME, null, values);
+            long memberId= db.insertOrThrow(MEMBERS_TABLE_NAME, null, values);
+            member.UID = (int) memberId;
+            // First time while adding a member, create accounts
+            createMemberAccounts(member,db);
         }
         else
         {
@@ -147,6 +228,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    private void createMemberAccounts(Member member, SQLiteDatabase db)
+    {
+        ContentValues saving_acc_values = new ContentValues();
+
+        saving_acc_values.put(COLUMN_SAVINGSACCOUNT_GROUPID,member.GroupUID);
+        saving_acc_values.put(COLUMN_SAVINGSACCOUNT_MEMBERID, member.UID);
+        saving_acc_values.put(COLUMN_SAVINGSACCOUNT_TOTALSAVINGS, 0);
+
+        db.insertOrThrow(TABLE_SAVINGSACCOUNT,null,saving_acc_values);
+
+        ContentValues loan_acc_values = new ContentValues();
+
+        loan_acc_values.put(COLUMN_LOANSACCOUNT_GROUPID,member.GroupUID);
+        loan_acc_values.put(COLUMN_LOANSACCOUNT_MEMBERID, member.UID);
+        loan_acc_values.put(COLUMN_LOANSACCOUNT_PRINCIPAL, 0);
+
+        db.insertOrThrow(TABLE_LOANSACCOUNT,null,loan_acc_values);
+
+    }
+
     public void deleteAllMembers()
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -154,13 +255,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteAllGroups()
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(GROUP_TABLE_NAME,null,null);
-        db.close();
-    }
-
+    //
     public void addUpdateGroup(Group group)
     {
         if(group == null) return;
@@ -248,5 +343,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return group;
+    }
+
+    public void deleteAllGroups()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(GROUP_TABLE_NAME,null,null);
+        db.close();
     }
 }
