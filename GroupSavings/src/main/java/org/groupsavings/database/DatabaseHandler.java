@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.groupsavings.domain.*;
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.Member;
 
 import java.util.ArrayList;
 
@@ -14,13 +16,6 @@ import java.util.ArrayList;
  * Created by shashank on 4/3/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-
-    // All Static variables
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "GroupSavings";
-
-    // Group Table Name
-    private static final String GROUP_TABLE_NAME = "Groups";
 
     public static final String COLUMN_GROUP_UID = "UID";
     public static final String COLUMN_GROUP_NAME = "GroupName";
@@ -30,8 +25,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_RECURRING_SAVING = "RecurringSaving";
     public static final String COLUMN_CREATED_DATETIME = "CreatedAt";
     public static final String COLUMN_CREATED_BY = "CreatedBy";
-
-    private static final String TABLE_GROUP ="Create table "+GROUP_TABLE_NAME
+    // All Static variables
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "GroupSavings";
+    // Group Table Name
+    private static final String TABLE_GROUP = "Groups";
+    private static final String CREATE_TABLE_GROUP = "Create table " + TABLE_GROUP
             + " (" + COLUMN_GROUP_UID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_GROUP_NAME + " TEXT,"
             + COLUMN_GROUP_ADDRESS + " TEXT,"
@@ -165,7 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGSACCOUNT + ";");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUPMEETINGS + ";");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEMBERS + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + GROUP_TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP + ";");
 
     }
 
@@ -173,7 +172,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         dropSchema(db);
 
-        db.execSQL(TABLE_GROUP);
+        db.execSQL(CREATE_TABLE_GROUP);
         db.execSQL(CREATE_MEMBER_TABLE);
         db.execSQL(CREATE_SAVINGS_TABLE);
         db.execSQL(CREATE_SAVINGTRANSACTION_TABLE);
@@ -198,11 +197,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Member member = new Member();
-                member.UID=(Integer.parseInt(cursor.getString(0)));
-                member.GroupUID = Integer.parseInt(cursor.getString(1));
+                member.UID = cursor.getInt(0);
+                member.GroupUID = cursor.getInt(1);
                 member.FirstName=cursor.getString(2);
                 member.LastName=cursor.getString(3);
                 member.ContactInfo=cursor.getString(4);
+                member.TotalSavings = getMemberSavings(member.UID, db);
                 // Adding contact to list
                 membersList.add(member);
             } while (cursor.moveToNext());
@@ -263,7 +263,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-
     public void deleteAllMembers()
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -287,7 +286,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(COLUMN_RECURRING_SAVING,group.RecurringSavings);
             values.put(COLUMN_CREATED_BY,group.CreatedBy);
 
-            db.insertOrThrow(GROUP_TABLE_NAME,null,values);
+            db.insertOrThrow(TABLE_GROUP, null, values);
         }
         else
         {
@@ -298,7 +297,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(COLUMN_CREATED_BY,group.CreatedBy);
             values.put(COLUMN_RECURRING_SAVING,group.RecurringSavings);
 
-            db.update(GROUP_TABLE_NAME,values,COLUMN_GROUP_UID +" = "+group.UID,null);
+            db.update(TABLE_GROUP, values, COLUMN_GROUP_UID + " = " + group.UID, null);
         }
 
         db.close();
@@ -308,7 +307,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         ArrayList<Group> groupList = new ArrayList<Group>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + GROUP_TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + TABLE_GROUP;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -338,7 +337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         ArrayList<Group> groupList = new ArrayList<Group>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + GROUP_TABLE_NAME + " Where "+COLUMN_GROUP_UID+"="+groupUID;
+        String selectQuery = "SELECT  * FROM " + TABLE_GROUP + " Where " + COLUMN_GROUP_UID + "=" + groupUID;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -363,7 +362,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteAllGroups()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(GROUP_TABLE_NAME,null,null);
+        db.delete(TABLE_GROUP, null, null);
         db.close();
+    }
+
+    // Account methods
+    public int getMemberSavings(int memberId, SQLiteDatabase db) {
+        int savings = 0;
+        String selectQuery = "SELECT " + COLUMN_SAVINGSACCOUNT_TOTALSAVINGS
+                + " FROM " + TABLE_SAVINGSACCOUNT
+                + " WHERE " + COLUMN_SAVINGSACCOUNT_MEMBERID + "=" + memberId;
+        if (db == null) db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            savings = cursor.getInt(0);
+        }
+        return savings;
+    }
+
+    //Meeting methods
+    public ArrayList<GroupMeeting> getGroupMeetings(int groupId, SQLiteDatabase db) {
+        int savings = 0;
+        ArrayList<GroupMeeting> resultset = new ArrayList<GroupMeeting>();
+        String selectQuery = "SELECT * FROM " + TABLE_GROUPMEETINGS
+                + " WHERE " + COLUMN_GROUPMEETING_GroupId + "=" + groupId;
+        if (db == null) db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            //Parse meeting
+
+        }
+        return resultset;
     }
 }
