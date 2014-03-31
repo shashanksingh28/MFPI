@@ -25,15 +25,23 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button_add_group"
+            android:layout_gravity="center"
+            android:background="@android:color/holo_blue_light"
+            android:textColor="@android:color/black"
             android:text="Add New" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/button_syc"
+            android:layout_gravity="center"
+            android:background="@android:color/holo_blue_light"
+            android:textColor="@android:color/black"
             android:text="Push to Server"
             android:layout_alignParentBottom="true" />
 
