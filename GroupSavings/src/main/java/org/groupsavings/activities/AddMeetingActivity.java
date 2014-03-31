@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
+import android.widget.ListView;
 
+import org.groupsavings.MeetingTransactionsAdapter;
 import org.groupsavings.R;
 import org.groupsavings.domain.Group;
+import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
+import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
 
@@ -17,20 +20,37 @@ public class AddMeetingActivity extends Activity {
     int groupId;
     Group group;
     ArrayList<Member> groupMembers;
+    ArrayList<MeetingTransaction> transactions;
+    MeetingTransactionsAdapter transactionsAdapter;
+    DatabaseHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meeting);
+
         groupId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+        dbHandler = new DatabaseHandler(getApplicationContext());
+        group = dbHandler.getGroup(groupId);
+        groupMembers = dbHandler.getAllMembers(groupId);
+        transactions = populateMeetingTransactions(group, groupMembers);
 
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.table_new_meeting);
-
+        ListView meetingTransactions = (ListView) findViewById(R.id.listview_meeting_transactions);
+        transactionsAdapter = new MeetingTransactionsAdapter(this, transactions);
+        meetingTransactions.setAdapter(transactionsAdapter);
 
     }
 
-    private void populateMeetingTransactions(TableLayout tableLayout) {
+    private ArrayList<MeetingTransaction> populateMeetingTransactions(Group group, ArrayList<Member> members) {
+        ArrayList<MeetingTransaction> transactions = new ArrayList<MeetingTransaction>();
 
+        for (int i = 0; i < members.size(); i++) {
+            MeetingTransaction transaction = new MeetingTransaction(members.get(i));
+            transaction.groupCompulsorySavings = group.RecurringSavings;
+            transactions.add(transaction);
+        }
+
+        return transactions;
     }
 
 

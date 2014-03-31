@@ -8,21 +8,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.groupsavings.activities.AddMeetingActivity">
 
-    <TableLayout
-        android:id="@+id/table_new_meeting"
+    <LinearLayout
+        android:id="@+id/layout_meeting_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TableRow>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Member Name" />
 
-            <TextView android:text="Member Name" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Compulsory Savings" />
 
-            <TextView android:text="Compulsory Savings" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Optional Savings" />
 
-            <TextView android:text="Optional Savings" />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Total Savings" />
 
-            <TextView android:text="Total Savings" />
-        </TableRow>
-    </TableLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview_meeting_transactions"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/layout_meeting_header">
+
+    </ListView>
 
 </RelativeLayout>

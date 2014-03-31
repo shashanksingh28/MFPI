@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.activities.AddMeetingActivity;
+import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.handlers.DatabaseHandler;
 
@@ -91,6 +92,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         switch (view.getId()) {
             case R.id.button_add_meeting:
                 Intent startMeetingActivity = new Intent(getActivity(), AddMeetingActivity.class);
+                startMeetingActivity.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
                 startActivity(startMeetingActivity);
                 break;
         }
