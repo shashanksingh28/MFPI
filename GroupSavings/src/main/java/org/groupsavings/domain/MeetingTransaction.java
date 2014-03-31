@@ -12,9 +12,11 @@ public class MeetingTransaction {
 
     public int optionalSavings;
 
-    public int totalSavings;
-
     public MeetingTransaction(Member member) {
         this.member = member;
+    }
+
+    public int getTotalSavings() {
+        return groupCompulsorySavings + optionalSavings;
     }
 }

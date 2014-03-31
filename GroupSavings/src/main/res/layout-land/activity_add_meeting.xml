@@ -44,7 +44,8 @@
         android:id="@+id/listview_meeting_transactions"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/layout_meeting_header">
+        android:layout_below="@id/layout_meeting_header"
+        android:choiceMode="singleChoice">
 
     </ListView>
 

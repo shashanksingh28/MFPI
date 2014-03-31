@@ -22,7 +22,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:inputType="number" />
+        android:inputType="textNoSuggestions" />
 
     <TextView
         android:id="@+id/textview_transaction_total_saving"

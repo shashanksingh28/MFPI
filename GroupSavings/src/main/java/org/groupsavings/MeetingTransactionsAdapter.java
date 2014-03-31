@@ -3,6 +3,7 @@ package org.groupsavings;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,30 +34,29 @@ public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction>
 
         final MeetingTransaction transaction = transactions.get(i);
 
+        boolean isNewRow = false;
         if (convert_view == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convert_view = inflater.inflate(R.layout.meeting_transaction_row, null);
+            convert_view = inflater.inflate(R.layout.meeting_transaction_row, null, true);
+            isNewRow = true;
         }
 
         TextView memberName = (TextView) convert_view.findViewById(R.id.textview_transaction_name);
-        if (memberName != null) {
-            memberName.setText(transaction.member.toString());
-        }
+        memberName.setText(transaction.member.toString());
 
         TextView grpCompSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_compulsory_savings);
-        if (grpCompSavings != null) {
-            grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
-        }
+        grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
 
-        final EditText optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
-        if (optionalSavings != null) {
-            optionalSavings.setText(String.valueOf(transaction.optionalSavings));
-            optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
-        }
+        EditText optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
+        optionalSavings.setText(String.valueOf(transaction.optionalSavings));
+
+        optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
+
 
         TextView totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
-        totalSavings.setText(String.valueOf(transaction.groupCompulsorySavings + transaction.optionalSavings));
+        totalSavings.setText(String.valueOf(transaction.getTotalSavings()));
+
 
         return convert_view;
     }
@@ -82,8 +82,8 @@ class OptionalSavingsTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable editable) {
         try {
             int value = Integer.parseInt(editable.toString());
+            Log.d("TRANS", "TextChanged for " + transToUpdate.member.toString() + " called with value :" + value);
             transToUpdate.optionalSavings = value;
-            transToUpdate.totalSavings = transToUpdate.groupCompulsorySavings + transToUpdate.optionalSavings;
         } catch (Exception ex) {
             // This will be happen in case string is empty or not valid int
         }
