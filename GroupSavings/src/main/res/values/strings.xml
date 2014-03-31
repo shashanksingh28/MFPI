@@ -10,5 +10,8 @@
     <string name="title_section1">Group Details</string>
     <string name="title_section2">Member Details</string>
     <string name="title_section3">Meeting Details</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_add_meeting">AddMeetingActivity</string>
 
 </resources>

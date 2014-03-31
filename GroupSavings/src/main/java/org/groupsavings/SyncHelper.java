@@ -1,6 +1,6 @@
 package org.groupsavings;
 
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.*;
 
 import org.apache.http.NameValuePair;
@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Shashank on 16/3/14.

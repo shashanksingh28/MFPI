@@ -1,8 +1,6 @@
 package org.groupsavings.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,7 +13,7 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Group;
 
 

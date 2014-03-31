@@ -4,6 +4,7 @@ package org.groupsavings.domain;
  * Created by shashank on 1/3/14.
  */
 public class Member {
+
     public int UID;
     public int GroupUID;
     public String FirstName;

@@ -1,1 +1,1 @@
-include ':GroupSavings'
+include ':GroupSavings', ':app'
