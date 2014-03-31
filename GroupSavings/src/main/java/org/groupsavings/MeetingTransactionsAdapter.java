@@ -1,10 +1,12 @@
 package org.groupsavings;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,29 +17,15 @@ import java.util.ArrayList;
 /**
  * Created by shashank on 31/3/14.
  */
-public class MeetingTransactionsAdapter extends BaseAdapter implements View.OnFocusChangeListener {
+public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction> {
 
     Context context;
     ArrayList<MeetingTransaction> transactions;
 
-    public MeetingTransactionsAdapter(Context context, ArrayList<MeetingTransaction> transactions) {
+    public MeetingTransactionsAdapter(Context context, int textViewResourceId, ArrayList<MeetingTransaction> objects) {
+        super(context, textViewResourceId, objects);
         this.context = context;
-        this.transactions = transactions;
-    }
-
-    @Override
-    public int getCount() {
-        return transactions.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return transactions.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return transactions.get(i).member.UID;
+        transactions = objects;
     }
 
     @Override
@@ -61,27 +49,44 @@ public class MeetingTransactionsAdapter extends BaseAdapter implements View.OnFo
             grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
         }
 
-        final EditText optionalSavings = (EditText) convert_view.findViewById(R.id.textview_transaction_optional_savings);
+        final EditText optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
         if (optionalSavings != null) {
             optionalSavings.setText(String.valueOf(transaction.optionalSavings));
+            optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
         }
 
         TextView totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
         totalSavings.setText(String.valueOf(transaction.groupCompulsorySavings + transaction.optionalSavings));
 
-        //we need to update adapter once we finish with editing
-        convert_view.setOnFocusChangeListener(this);
-
         return convert_view;
     }
+}
 
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            final int position = v.getId();
-            final EditText optSavings = (EditText) v;
-            MeetingTransaction transaction = transactions.get(position);
-            transaction.optionalSavings = Integer.valueOf(optSavings.getText().toString());
-            transaction.totalSavings = transaction.groupCompulsorySavings + transaction.optionalSavings;
+class OptionalSavingsTextWatcher implements TextWatcher {
+    MeetingTransaction transToUpdate;
+
+    public OptionalSavingsTextWatcher(MeetingTransaction trans) {
+        this.transToUpdate = trans;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        try {
+            int value = Integer.parseInt(editable.toString());
+            transToUpdate.optionalSavings = value;
+            transToUpdate.totalSavings = transToUpdate.groupCompulsorySavings + transToUpdate.optionalSavings;
+        } catch (Exception ex) {
+            // This will be happen in case string is empty or not valid int
         }
     }
+
 }

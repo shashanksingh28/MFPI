@@ -18,7 +18,7 @@
         android:layout_marginLeft="10dp" />
 
     <EditText
-        android:id="@+id/textview_transaction_optional_savings"
+        android:id="@+id/edittext_transaction_optional_savings"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

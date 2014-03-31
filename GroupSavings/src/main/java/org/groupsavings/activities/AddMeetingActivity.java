@@ -36,7 +36,7 @@ public class AddMeetingActivity extends Activity {
         transactions = populateMeetingTransactions(group, groupMembers);
 
         ListView meetingTransactions = (ListView) findViewById(R.id.listview_meeting_transactions);
-        transactionsAdapter = new MeetingTransactionsAdapter(this, transactions);
+        transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions);
         meetingTransactions.setAdapter(transactionsAdapter);
 
     }
