@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_save_group"
         android:layout_alignParentBottom="true"
-        android:drawableLeft="@drawable/sync"
+        android:drawableLeft="@drawable/Sync-icon"
         android:text="Save"/>
 
 </RelativeLayout>
