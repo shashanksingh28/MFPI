@@ -11,8 +11,10 @@
 
         <Button android:id="@+id/button_save_group_details"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_alignParentBottom="true"
+            android:drawableLeft="@drawable/save"
+            android:layout_gravity="center"
             android:text="Save Group"/>
 
     </RelativeLayout>

@@ -19,9 +19,11 @@
 
             <Button
                 android:id="@+id/button_add_member"
-                android:layout_width="fill_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:drawableLeft="@drawable/addnew"
+                android:layout_gravity="center"
                 android:text="Add New" />
 
             <ListView
@@ -49,9 +51,11 @@
 
             <Button
                 android:id="@+id/button_save_member"
-                android:layout_width="fill_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:drawableLeft="@drawable/save"
+                android:layout_gravity="center"
                 android:text="Save" />
         </RelativeLayout>
 
