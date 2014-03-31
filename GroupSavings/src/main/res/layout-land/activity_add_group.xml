@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="200dp"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -15,7 +15,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_save_group"
         android:layout_alignParentBottom="true"
-        android:drawableLeft="@drawable/Sync-icon"
-        android:text="Save"/>
+        android:drawableLeft="@drawable/save"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="Save" />
 
 </RelativeLayout>
