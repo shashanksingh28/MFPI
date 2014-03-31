@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.groupsavings.MeetingTransactionsAdapter;
 import org.groupsavings.R;
@@ -15,7 +18,7 @@ import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
 
-public class AddMeetingActivity extends Activity {
+public class AddMeetingActivity extends Activity implements View.OnClickListener {
 
     int groupId;
     Group group;
@@ -39,13 +42,16 @@ public class AddMeetingActivity extends Activity {
         transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions);
         meetingTransactions.setAdapter(transactionsAdapter);
 
+        Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
+        bt_save_meeting.setOnClickListener(this);
+
     }
 
     private ArrayList<MeetingTransaction> populateMeetingTransactions(Group group, ArrayList<Member> members) {
         ArrayList<MeetingTransaction> transactions = new ArrayList<MeetingTransaction>();
 
         for (int i = 0; i < members.size(); i++) {
-            MeetingTransaction transaction = new MeetingTransaction(members.get(i));
+            MeetingTransaction transaction = new MeetingTransaction(groupId, members.get(i));
             transaction.groupCompulsorySavings = group.RecurringSavings;
             transactions.add(transaction);
         }
@@ -74,4 +80,14 @@ public class AddMeetingActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_save_meeting_details:
+                dbHandler.saveMeetingDetails(groupId, transactions);
+                Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+        }
+    }
 }

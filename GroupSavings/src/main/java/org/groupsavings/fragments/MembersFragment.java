@@ -18,14 +18,14 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Member;
-
+import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
 
 public class MembersFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final String ARG_PARAM1 = "Group UID";
     Activity activity;
     DatabaseHandler dbHandler;
     ArrayList<Member> members;
@@ -33,7 +33,9 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
     View detailsContainer;
     int groupUID;
 
-    public static final String ARG_PARAM1 = "Group UID";
+    public MembersFragment() {
+        // Required empty public constructor
+    }
 
     // Always use this factory method to instantiate
     public static MembersFragment newInstance(int groupUID) {
@@ -42,10 +44,6 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         args.putInt(ARG_PARAM1, groupUID);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MembersFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -91,6 +89,12 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         membersAdapter.clear();
         membersAdapter.addAll(members);
         membersAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Refresh();
     }
 
     @Override

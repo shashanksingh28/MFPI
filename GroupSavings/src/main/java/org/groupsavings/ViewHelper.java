@@ -1,11 +1,11 @@
 package org.groupsavings;
 
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.groupsavings.domain.*;
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.Member;
 
 /**
  * Created by shashank on 4/3/14.
@@ -44,6 +44,9 @@ public class ViewHelper {
             contactEditor.setText(memberToPopulate.ContactInfo);
             contactEditor.clearFocus();
         }
+
+        TextView tv_member_savings = (TextView) view.findViewById(R.id.textview_member_savings);
+        tv_member_savings.setText(String.valueOf(memberToPopulate.TotalSavings));
 
     }
 

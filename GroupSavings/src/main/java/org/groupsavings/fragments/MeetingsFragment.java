@@ -28,7 +28,6 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
     DatabaseHandler dbHandler;
     ArrayList<GroupMeeting> meetings;
     ArrayAdapter<GroupMeeting> meetingsAdapter;
-    View meetingsListView;
     int groupUID;
 
     public MeetingsFragment() {
@@ -67,7 +66,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         try {
             activity = getActivity();
             dbHandler = new DatabaseHandler(activity.getApplicationContext());
-            meetings = dbHandler.getGroupMeetings(groupUID, null);
+            meetings = dbHandler.getAllGroupMeetings(groupUID, null);
 
             ListView lv = (ListView) activity.findViewById(R.id.listview_meeting_dates);
             meetingsAdapter = new ArrayAdapter<GroupMeeting>(activity, android.R.layout.simple_list_item_1, meetings);
@@ -82,9 +81,26 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         }
     }
 
+    public void Refresh() {
+        try {
+            meetings = dbHandler.getAllGroupMeetings(groupUID, null);
+            meetingsAdapter.clear();
+            meetingsAdapter.addAll(meetings);
+            meetingsAdapter.notifyDataSetChanged();
+        } catch (Exception ex) {
+            Toast.makeText(activity, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Refresh();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        // TODO Code here to call read-only meeting details page
     }
 
     @Override

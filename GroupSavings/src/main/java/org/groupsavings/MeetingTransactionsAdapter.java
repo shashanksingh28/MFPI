@@ -34,29 +34,28 @@ public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction>
 
         final MeetingTransaction transaction = transactions.get(i);
 
-        boolean isNewRow = false;
-        if (convert_view == null) {
+        try {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convert_view = inflater.inflate(R.layout.meeting_transaction_row, null, true);
-            isNewRow = true;
+            convert_view = inflater.inflate(R.layout.meeting_transaction_row, viewGroup, false);
+
+            TextView tv_memberName = (TextView) convert_view.findViewById(R.id.textview_transaction_name);
+            tv_memberName.setText(transaction.member.toString());
+
+            TextView tv_grpCompSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_compulsory_savings);
+            tv_grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
+
+            EditText tv_optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
+            tv_optionalSavings.setTag(transaction.optionalSavings);
+            tv_optionalSavings.setText(String.valueOf(transaction.optionalSavings));
+            tv_optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
+
+            TextView tv_totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
+            tv_totalSavings.setText(String.valueOf(transaction.getTotalSavings()));
+            tv_totalSavings.setTag(transaction.hashCode());
+        } catch (Exception ex) {
+            Log.d("ERROR", ex.getMessage());
         }
-
-        TextView memberName = (TextView) convert_view.findViewById(R.id.textview_transaction_name);
-        memberName.setText(transaction.member.toString());
-
-        TextView grpCompSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_compulsory_savings);
-        grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
-
-        EditText optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
-        optionalSavings.setText(String.valueOf(transaction.optionalSavings));
-
-        optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
-
-
-        TextView totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
-        totalSavings.setText(String.valueOf(transaction.getTotalSavings()));
-
 
         return convert_view;
     }
