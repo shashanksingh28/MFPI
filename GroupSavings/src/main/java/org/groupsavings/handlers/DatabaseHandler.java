@@ -120,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_SAVING_ACCOUNT_TotalSaving = "TotalSaving";
     private static final String COLUMN_SAVING_ACCOUNT_InterestAccumulated = "InterestAccumulated";
     private static final String COLUMN_SAVING_ACCOUNT_CreatedDate = "CreatedDate";
-    private static final String CREATE_SAVINGS_TABLE="Create table "+TABLE_SAVINGSACCOUNT
+    private static final String CREATE_SAVINGS_TABLE = "Create table " + TABLE_SAVINGSACCOUNT
             + " (" + COLUMN_SAVING_ACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_SAVING_ACCOUNT_GroupId + " INTEGER,"
             + COLUMN_SAVING_ACCOUNT_MemberId + " INTEGER,"
@@ -145,7 +145,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + ");";
     private static final String TABLE_LOANSACCOUNT = "GroupMemberLoanAccount";
     // CREATE TABLE HERE
-    private static final String CREATE_LOANS_TABLE="Create table "+TABLE_LOANSACCOUNT
+    private static final String CREATE_LOANS_TABLE = "Create table " + TABLE_LOANSACCOUNT
             + " (" + COLUMN_LOANACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_LOANACCOUNT_GroupId + " INTEGER,"
             + COLUMN_LOANACCOUNT_MemberId + " INTEGER,"
@@ -168,7 +168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_LOAN_TRANSACTION_DateTime = "DateTime";
     private static final String COLUMN_LOAN_TRANSACTION_SignedBy = "SignedBy";
 
-    private static final String CREATE_LOANTRANSACTION_TABLE="Create table "+TABLE_LOANTRANSACTION
+    private static final String CREATE_LOANTRANSACTION_TABLE = "Create table " + TABLE_LOANTRANSACTION
             + " (" + COLUMN_LOAN_TRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_LOAN_TRANSACTION_GroupMeetingId + " INTEGER,"
             + COLUMN_LOAN_TRANSACTION_GroupMemberLoanId + " INTEGER,"
@@ -199,8 +199,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createSchema(db);
     }
 
-    private void dropSchema(SQLiteDatabase db)
-    {
+    private void dropSchema(SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANTRANSACTION + ";");
@@ -212,8 +211,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP + ";");
     }
 
-    public void createSchema(SQLiteDatabase db)
-    {
+    public void createSchema(SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
 
         dropSchema(db);
@@ -228,7 +226,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {}
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    }
 
     //------------------------ Group related functions ----------------------------//
     //-----------------------------------------------------------------------------//
@@ -319,8 +318,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //------------------------ Member related functions ----------------------------//
     //------------------------------------------------------------------------------//
-    public ArrayList<Member> getAllMembers(int groupUID)
-    {
+    public ArrayList<Member> getAllMembers(int groupUID) {
         ArrayList<Member> membersList = new ArrayList<Member>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_MEMBER
@@ -335,8 +333,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Member member = new Member();
                 member.UID = cursor.getInt(0);
                 member.GroupUID = cursor.getInt(1);
-                member.FirstName=cursor.getString(2);
-                member.LastName=cursor.getString(3);
+                member.FirstName = cursor.getString(2);
+                member.LastName = cursor.getString(3);
                 member.ContactInfo = cursor.getString(12);
                 member.TotalSavings = getMemberSavings(member.UID, db);
                 // Adding contact to list
@@ -348,15 +346,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return membersList;
     }
 
-    public void addUpdateMember(Member member)
-    {
-        if(member == null) return;
+    public void addUpdateMember(Member member) {
+        if (member == null) return;
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        if(member.UID == 0)
-        {
+        if (member.UID == 0) {
             values.put(COLUMN_MEMBER_FirstName, member.FirstName);
             values.put(COLUMN_MEMBER_LastName, member.LastName);
             values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
@@ -364,13 +360,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             long memberId = db.insertOrThrow(TABLE_MEMBER, null, values);
             member.UID = (int) memberId;
-            createMemberAccounts(member,db);
-        }
-        else
-        {
+            createMemberAccounts(member, db);
+        } else {
             values.put(COLUMN_MEMBER_FirstName, member.FirstName);
             values.put(COLUMN_MEMBER_LastName, member.LastName);
             values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
+            values.put(COLUMN_MEMBER_Age, member.age);
 
             db.update(TABLE_MEMBER, values, COLUMN_MEMBER_UID + " = " + member.UID, null);
         }
@@ -378,15 +373,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    private void createMemberAccounts(Member member, SQLiteDatabase db)
-    {
+    private void createMemberAccounts(Member member, SQLiteDatabase db) {
         ContentValues saving_acc_values = new ContentValues();
 
         saving_acc_values.put(COLUMN_SAVING_ACCOUNT_GroupId, member.GroupUID);
         saving_acc_values.put(COLUMN_SAVING_ACCOUNT_MemberId, member.UID);
         saving_acc_values.put(COLUMN_SAVING_ACCOUNT_TotalSaving, 0);
 
-        db.insertOrThrow(TABLE_SAVINGSACCOUNT,null,saving_acc_values);
+        db.insertOrThrow(TABLE_SAVINGSACCOUNT, null, saving_acc_values);
 
         ContentValues loan_acc_values = new ContentValues();
 
@@ -394,12 +388,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         loan_acc_values.put(COLUMN_LOANACCOUNT_MemberId, member.UID);
         loan_acc_values.put(COLUMN_LOANACCOUNT_PrincipalAmount, 0);
 
-        db.insertOrThrow(TABLE_LOANSACCOUNT,null,loan_acc_values);
+        db.insertOrThrow(TABLE_LOANSACCOUNT, null, loan_acc_values);
 
     }
 
-    private int getMemberSavings(int memberId, SQLiteDatabase db)
-    {
+    private int getMemberSavings(int memberId, SQLiteDatabase db) {
         if (db == null) {
             db = this.getWritableDatabase();
         }
@@ -411,16 +404,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         int savings = 0;
 
-        if (cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             savings = cursor.getInt(0);
         }
 
         return savings;
     }
 
-    private SavingsAccount getMemberSavingAccount(int memberId, SQLiteDatabase db)
-    {
+    private SavingsAccount getMemberSavingAccount(int memberId, SQLiteDatabase db) {
         if (db == null) {
             db = this.getWritableDatabase();
         }
@@ -442,8 +433,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return account;
     }
 
-    public void deleteAllMembers()
-    {
+    public void deleteAllMembers() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MEMBER, null, null);
         db.close();

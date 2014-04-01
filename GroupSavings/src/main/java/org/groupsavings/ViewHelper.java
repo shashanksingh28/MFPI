@@ -40,10 +40,11 @@ public class ViewHelper {
         }
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
-        if(contactEditor !=null){
-            contactEditor.setText(memberToPopulate.ContactInfo);
-            contactEditor.clearFocus();
-        }
+        contactEditor.setText(memberToPopulate.ContactInfo);
+        contactEditor.clearFocus();
+
+        EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
+        et_memberAge.setText(String.valueOf(memberToPopulate.age));
 
         TextView tv_member_savings = (TextView) view.findViewById(R.id.textview_member_savings);
         tv_member_savings.setText(String.valueOf(memberToPopulate.TotalSavings));
@@ -76,6 +77,11 @@ public class ViewHelper {
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
         if(contactEditor !=null && contactEditor.getText() != null) updatedMember.ContactInfo = contactEditor.getText().toString();
+
+        EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
+        if (et_memberAge != null && et_memberAge.getText() != null)
+            updatedMember.age = Integer.valueOf(contactEditor.getText().toString());
+
 
         return updatedMember;
     }

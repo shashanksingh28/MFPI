@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -103,16 +102,17 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         {
             case R.id.button_add_member:
                 Member newMember = new Member();
-                ViewHelper.populateMemberDetailsToView(activity.findViewById(R.id.layout_member_details_container), newMember);
-                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                ViewHelper.populateMemberDetailsToView(detailsContainer, newMember);
+                HideKeypad();
                 Toast.makeText(activity, "Add Member details and click on Save", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_save_member:
-                Member updatedMember = ViewHelper.fetchMemberDetailsFromView(getActivity().findViewById(R.id.layout_member_details_container));
+                Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
                 updatedMember.GroupUID = groupUID;
                 dbHandler.addUpdateMember(updatedMember);
                 HideKeypad();
                 Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();
+                ViewHelper.populateMemberDetailsToView(detailsContainer, new Member());
                 Refresh();
                 break;
             default:
