@@ -44,10 +44,18 @@ public class ViewHelper {
         contactEditor.clearFocus();
 
         EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
-        et_memberAge.setText(String.valueOf(memberToPopulate.age));
+        if (memberToPopulate.age==0) {
+            et_memberAge.setText("");
+        }
+        else
+            et_memberAge.setText(String.valueOf(memberToPopulate.age));
 
         TextView tv_member_savings = (TextView) view.findViewById(R.id.textview_member_savings);
-        tv_member_savings.setText(String.valueOf(memberToPopulate.TotalSavings));
+        if (memberToPopulate.TotalSavings==0) {
+            tv_member_savings.setText("");
+        }
+        else
+            tv_member_savings.setText(String.valueOf(memberToPopulate.TotalSavings));
 
     }
 
