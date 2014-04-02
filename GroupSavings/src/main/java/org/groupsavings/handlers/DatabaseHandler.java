@@ -10,6 +10,7 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
 
 import java.text.ParseException;
@@ -69,6 +70,61 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_LOANACCOUNT_InstallmentAmount = "InstallmentAmount";
     public static final String COLUMN_LOANACCOUNT_NoOfInstallments = "NoOfInstallments";
     public static final String COLUMN_LOANACCOUNT_CreatedDate = "CreatedDate";
+    public static final String TABLE_SAVINGSACCOUNT = "GroupMemberSavingAccount";
+    public static final String COLUMN_SAVING_ACCOUNT_Id = "Id";
+    public static final String COLUMN_SAVING_ACCOUNT_GroupId = "GroupId";
+    public static final String COLUMN_SAVING_ACCOUNT_MemberId = "MemberId";
+    public static final String COLUMN_SAVING_ACCOUNT_TotalSaving = "TotalSaving";
+    public static final String COLUMN_SAVING_ACCOUNT_InterestAccumulated = "InterestAccumulated";
+    public static final String COLUMN_SAVING_ACCOUNT_CreatedDate = "CreatedDate";
+    private static final String CREATE_SAVINGS_TABLE = "Create table " + TABLE_SAVINGSACCOUNT
+            + " (" + COLUMN_SAVING_ACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_SAVING_ACCOUNT_GroupId + " INTEGER,"
+            + COLUMN_SAVING_ACCOUNT_MemberId + " INTEGER,"
+            + COLUMN_SAVING_ACCOUNT_TotalSaving + " INTEGER,"
+            + COLUMN_SAVING_ACCOUNT_InterestAccumulated + " INTEGER,"
+            + COLUMN_SAVING_ACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
+    public static final String TABLE_SAVINGTRANSACTION = "GroupMemberSavingTransaction";
+    public static final String COLUMN_SAVINGTRANSACTION_Id = "Id";
+    public static final String COLUMN_SAVINGTRANSACTION_GroupMeetingId = "GroupMeetingId";
+    public static final String COLUMN_SAVINGTRANSACTION_GroupMemberSavingId = "GroupMemberSavingId";
+    public static final String COLUMN_SAVINGTRANSACTION_Amount = "Amount";
+    public static final String COLUMN_SAVINGTRANSACTION_DateTime = "DateTime";
+    public static final String COLUMN_SAVINGTRANSACTION_SignedBy = "SignedBy";
+    private static final String CREATE_SAVINGTRANSACTION_TABLE = "Create table " + TABLE_SAVINGTRANSACTION
+            + " (" + COLUMN_SAVINGTRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_SAVINGTRANSACTION_GroupMeetingId + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_GroupMemberSavingId + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_Amount + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+            + COLUMN_SAVINGTRANSACTION_SignedBy + " TEXT"
+            + ");";
+    public static final String TABLE_LOANTRANSACTION = "GroupMemberLoanTransaction";
+    public static final String COLUMN_LOAN_TRANSACTION_Id = "Id";
+    public static final String COLUMN_LOAN_TRANSACTION_GroupMeetingId = "GroupMeetingId";
+    public static final String COLUMN_LOAN_TRANSACTION_GroupMemberLoanId = "GroupMemberLoanId";
+    public static final String COLUMN_LOAN_TRANSACTION_Repayment = "Repayment";
+    public static final String COLUMN_LOAN_TRANSACTION_DateTime = "DateTime";
+    public static final String COLUMN_LOAN_TRANSACTION_SignedBy = "SignedBy";
+    private static final String CREATE_LOANTRANSACTION_TABLE = "Create table " + TABLE_LOANTRANSACTION
+            + " (" + COLUMN_LOAN_TRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_LOAN_TRANSACTION_GroupMeetingId + " INTEGER,"
+            + COLUMN_LOAN_TRANSACTION_GroupMemberLoanId + " INTEGER,"
+            + COLUMN_LOAN_TRANSACTION_Repayment + " INTEGER,"
+            + COLUMN_LOAN_TRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+            + COLUMN_LOAN_TRANSACTION_SignedBy + " TEXT"
+            + ");";
+    // Group Meeting table
+    public static final String TABLE_GROUPMEETINGS = "GroupMeetings";
+    public static final String COLUMN_GROUPMEETING_ID = "Id";
+    public static final String COLUMN_GROUPMEETING_GroupId = "GroupId";
+    public static final String COLUMN_GROUPMEETING_DATE = "DateTime";
+    private static final String CREATE_GROUPMEETING_TABLE = "Create table " + TABLE_GROUPMEETINGS
+            + " (" + COLUMN_GROUPMEETING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_GROUPMEETING_GroupId + " INTEGER,"
+            + COLUMN_GROUPMEETING_DATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            + ");";
     // All Static variables
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "GroupSavings";
@@ -113,37 +169,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_MEMBER_State + " TEXT,"
             + COLUMN_MEMBER_Country + " TEXT"
             + ");";
-
-    private static final String TABLE_SAVINGSACCOUNT = "GroupMemberSavingAccount";
-    private static final String COLUMN_SAVING_ACCOUNT_Id = "Id";
-    private static final String COLUMN_SAVING_ACCOUNT_GroupId = "GroupId";
-    private static final String COLUMN_SAVING_ACCOUNT_MemberId = "MemberId";
-    private static final String COLUMN_SAVING_ACCOUNT_TotalSaving = "TotalSaving";
-    private static final String COLUMN_SAVING_ACCOUNT_InterestAccumulated = "InterestAccumulated";
-    private static final String COLUMN_SAVING_ACCOUNT_CreatedDate = "CreatedDate";
-    private static final String CREATE_SAVINGS_TABLE = "Create table " + TABLE_SAVINGSACCOUNT
-            + " (" + COLUMN_SAVING_ACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_SAVING_ACCOUNT_GroupId + " INTEGER,"
-            + COLUMN_SAVING_ACCOUNT_MemberId + " INTEGER,"
-            + COLUMN_SAVING_ACCOUNT_TotalSaving + " INTEGER,"
-            + COLUMN_SAVING_ACCOUNT_InterestAccumulated + " INTEGER,"
-            + COLUMN_SAVING_ACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-            + ");";
-    private static final String TABLE_SAVINGTRANSACTION = "GroupMemberSavingTransaction";
-    private static final String COLUMN_SAVINGTRANSACTION_Id = "Id";
-    private static final String COLUMN_SAVINGTRANSACTION_GroupMeetingId = "GroupMeetingId";
-    private static final String COLUMN_SAVINGTRANSACTION_GroupMemberSavingId = "GroupMemberSavingId";
-    private static final String COLUMN_SAVINGTRANSACTION_Amount = "Amount";
-    private static final String COLUMN_SAVINGTRANSACTION_DateTime = "DateTime";
-    private static final String COLUMN_SAVINGTRANSACTION_SignedBy = "SignedBy";
-    private static final String CREATE_SAVINGTRANSACTION_TABLE = "Create table " + TABLE_SAVINGTRANSACTION
-            + " (" + COLUMN_SAVINGTRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_SAVINGTRANSACTION_GroupMeetingId + " INTEGER,"
-            + COLUMN_SAVINGTRANSACTION_GroupMemberSavingId + " INTEGER,"
-            + COLUMN_SAVINGTRANSACTION_Amount + " INTEGER,"
-            + COLUMN_SAVINGTRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-            + COLUMN_SAVINGTRANSACTION_SignedBy + " TEXT"
-            + ");";
     private static final String TABLE_LOANSACCOUNT = "GroupMemberLoanAccount";
     // CREATE TABLE HERE
     private static final String CREATE_LOANS_TABLE = "Create table " + TABLE_LOANSACCOUNT
@@ -159,36 +184,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOANACCOUNT_InstallmentAmount + " INTEGER,"
             + COLUMN_LOANACCOUNT_NoOfInstallments + " INTEGER,"
             + COLUMN_LOANACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-            + ");";
-
-    private static final String TABLE_LOANTRANSACTION = "GroupMemberLoanTransaction";
-    private static final String COLUMN_LOAN_TRANSACTION_Id = "Id";
-    private static final String COLUMN_LOAN_TRANSACTION_GroupMeetingId = "GroupMeetingId";
-    private static final String COLUMN_LOAN_TRANSACTION_GroupMemberLoanId = "GroupMemberLoanId";
-    private static final String COLUMN_LOAN_TRANSACTION_Repayment = "Repayment";
-    private static final String COLUMN_LOAN_TRANSACTION_DateTime = "DateTime";
-    private static final String COLUMN_LOAN_TRANSACTION_SignedBy = "SignedBy";
-
-    private static final String CREATE_LOANTRANSACTION_TABLE = "Create table " + TABLE_LOANTRANSACTION
-            + " (" + COLUMN_LOAN_TRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_LOAN_TRANSACTION_GroupMeetingId + " INTEGER,"
-            + COLUMN_LOAN_TRANSACTION_GroupMemberLoanId + " INTEGER,"
-            + COLUMN_LOAN_TRANSACTION_Repayment + " INTEGER,"
-            + COLUMN_LOAN_TRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-            + COLUMN_LOAN_TRANSACTION_SignedBy + " TEXT"
-            + ");";
-
-    // Group Meeting table
-    private static final String TABLE_GROUPMEETINGS = "GroupMeetings";
-
-    private static final String COLUMN_GROUPMEETING_ID = "Id";
-    private static final String COLUMN_GROUPMEETING_GroupId = "GroupId";
-    private static final String COLUMN_GROUPMEETING_DATE = "DateTime";
-
-    private static final String CREATE_GROUPMEETING_TABLE = "Create table " + TABLE_GROUPMEETINGS
-            + " (" + COLUMN_GROUPMEETING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_GROUPMEETING_GroupId + " INTEGER,"
-            + COLUMN_GROUPMEETING_DATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
 
     public DatabaseHandler(Context context) {
@@ -348,6 +343,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return membersList;
     }
 
+    public ArrayList<Member> getAllMembers() {
+        ArrayList<Member> membersList = new ArrayList<Member>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_MEMBER + ";";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Member member = new Member();
+                member.UID = cursor.getInt(0);
+                member.GroupUID = cursor.getInt(1);
+                member.FirstName = cursor.getString(2);
+                member.LastName = cursor.getString(3);
+                member.ContactInfo = cursor.getString(12);
+                member.age = cursor.getInt(5);
+                member.TotalSavings = getMemberSavings(member.UID, db);
+                // Adding contact to list
+                membersList.add(member);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return membersList;
+    }
+
     public void addUpdateMember(Member member) {
         if (member == null) return;
 
@@ -442,7 +465,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //------------------------ Meeting related functions ----------------------------//
+    //-------------------------- Meeting related functions ----------------------------//
     //-------------------------------------------------------------------------------//
 
     public void saveMeetingDetails(int groupId, ArrayList<MeetingTransaction> transactions) {
@@ -510,5 +533,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return resultset;
+    }
+
+    //-------------------------- Transaction related functions ---------------//
+
+    public ArrayList<SavingsAccount> getAllSavingAccounts() {
+        ArrayList<SavingsAccount> allAccounts = new ArrayList<SavingsAccount>();
+        String selectQuery = "SELECT * FROM " + TABLE_SAVINGSACCOUNT + ";";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                SavingsAccount sa = new SavingsAccount();
+                sa.Id = cursor.getInt(0);
+                sa.groupId = cursor.getInt(1);
+                sa.memberId = cursor.getInt(2);
+                sa.TotalSavings = cursor.getInt(3);
+                allAccounts.add(sa);
+            } while (cursor.moveToNext());
+        }
+
+        return allAccounts;
+    }
+
+    public ArrayList<SavingTransaction> getAllSavingTrans() {
+        ArrayList<SavingTransaction> allSavingTrans = new ArrayList<SavingTransaction>();
+        String selectQuery = "SELECT * FROM " + TABLE_SAVINGTRANSACTION + ";";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                SavingTransaction st = new SavingTransaction();
+                st.Id = cursor.getInt(0);
+                st.grpMeetingId = cursor.getInt(1);
+                st.memberSavingAccId = cursor.getInt(2);
+                st.Amount = cursor.getInt(3);
+                allSavingTrans.add(st);
+            } while (cursor.moveToNext());
+        }
+
+        return allSavingTrans;
     }
 }

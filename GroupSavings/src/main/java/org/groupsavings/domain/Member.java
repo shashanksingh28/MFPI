@@ -1,5 +1,7 @@
 package org.groupsavings.domain;
 
+import java.util.Date;
+
 /**
  * Created by shashank on 1/3/14.
  */
@@ -14,6 +16,7 @@ public class Member {
     public String ContactInfo;
     public double TotalSavings;
     public double TotalLoan;
+    public Date CreatedAt;
 
 
     @Override
