@@ -16,12 +16,15 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView android:text="Group Name"
+            <TextView android:text="Group Name :"
                 android:layout_height="wrap_content" android:layout_width="200dp"
                 android:layout_gravity="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:drawableLeft="@drawable/group"
+                android:textSize="18dp" />
             <EditText android:id="@+id/edit_group_name"
-                android:layout_height="wrap_content" android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_width="400dp"
                 android:padding="10dp"
                 android:inputType="textNoSuggestions"/>
         </LinearLayout>
@@ -29,10 +32,12 @@
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView android:text="Address"
+            <TextView android:text="Address :"
                 android:layout_height="wrap_content" android:layout_width="200dp"
                 android:layout_gravity="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:drawableLeft="@drawable/address"
+                android:textSize="18dp" />
             <EditText android:id="@+id/edit_group_address"
                 android:layout_height="wrap_content" android:layout_width="400dp"
                 android:padding="10dp"
@@ -42,10 +47,12 @@
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView android:text="Recurring Savings"
+            <TextView android:text="Recurring Savings :"
                 android:layout_height="wrap_content" android:layout_width="200dp"
                 android:layout_gravity="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:drawableLeft="@drawable/savings"
+                android:textSize="18dp" />
             <EditText android:id="@+id/edit_group_recurring_savings"
                 android:layout_height="wrap_content" android:layout_width="400dp"
                 android:padding="10dp"
