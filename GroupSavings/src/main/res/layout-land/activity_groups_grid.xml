@@ -13,14 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_add_group"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/addnew"
             android:layout_gravity="center"
+            android:layout_marginLeft="200dp"
+            android:drawableLeft="@drawable/addnew"
             android:text="Add New" />
 
         <Button
@@ -28,8 +30,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:drawableLeft="@drawable/sync"
             android:layout_gravity="center"
+            android:layout_marginRight="200dp"
+            android:drawableLeft="@drawable/sync"
             android:text="Push to Server" />
 
     </LinearLayout>
