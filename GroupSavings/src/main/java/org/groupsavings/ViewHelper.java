@@ -80,7 +80,7 @@ public class ViewHelper {
 
         EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
         if (et_memberAge != null && et_memberAge.getText() != null)
-            updatedMember.age = Integer.valueOf(contactEditor.getText().toString());
+            updatedMember.age = Integer.valueOf(et_memberAge.getText().toString());
 
 
         return updatedMember;

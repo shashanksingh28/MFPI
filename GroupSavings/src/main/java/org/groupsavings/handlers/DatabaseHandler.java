@@ -113,6 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_MEMBER_State + " TEXT,"
             + COLUMN_MEMBER_Country + " TEXT"
             + ");";
+
     private static final String TABLE_SAVINGSACCOUNT = "GroupMemberSavingAccount";
     private static final String COLUMN_SAVING_ACCOUNT_Id = "Id";
     private static final String COLUMN_SAVING_ACCOUNT_GroupId = "GroupId";
@@ -336,6 +337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 member.FirstName = cursor.getString(2);
                 member.LastName = cursor.getString(3);
                 member.ContactInfo = cursor.getString(12);
+                member.age = cursor.getInt(5);
                 member.TotalSavings = getMemberSavings(member.UID, db);
                 // Adding contact to list
                 membersList.add(member);
@@ -357,6 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(COLUMN_MEMBER_LastName, member.LastName);
             values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
             values.put(COLUMN_MEMBER_GroupUID, member.GroupUID);
+            values.put(COLUMN_MEMBER_Age, member.age);
 
             long memberId = db.insertOrThrow(TABLE_MEMBER, null, values);
             member.UID = (int) memberId;

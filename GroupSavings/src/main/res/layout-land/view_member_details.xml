@@ -65,8 +65,7 @@
             android:id="@+id/edit_member_contact"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:inputMethod=""
-            android:inputType="textNoSuggestions"
+            android:inputType="number"
             android:padding="10dp" />
     </LinearLayout>
 
@@ -86,8 +85,7 @@
             android:id="@+id/edit_member_age"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:inputMethod=""
-            android:inputType="textNoSuggestions"
+            android:inputType="number"
             android:padding="10dp" />
     </LinearLayout>
 
