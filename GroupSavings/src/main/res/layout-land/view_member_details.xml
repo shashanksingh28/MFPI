@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="First Name" />
+            android:text="First Name:"
+            android:autoText="false"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/edit_member_firstname"
@@ -39,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Last Name" />
+            android:text="Last Name"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/edit_member_lastname"
@@ -59,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Contact" />
+            android:text="Contact"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/edit_member_contact"
@@ -79,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Age" />
+            android:text="Age"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/edit_member_age"
@@ -99,14 +104,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Savings" />
+            android:text="Savings"
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/textview_member_savings"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:inputType="textNoSuggestions"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:background="#dfe2e2" />
     </LinearLayout>
 
 </LinearLayout>
