@@ -13,7 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
@@ -21,23 +24,20 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="200dp"
-            android:drawableLeft="@drawable/addnew"
+            android:padding="10px"
             android:text="Add New" />
 
         <Button
             android:id="@+id/button_syc"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:layout_marginRight="200dp"
-            android:drawableLeft="@drawable/sync"
+            android:padding="10px"
             android:text="Push to Server" />
 
     </LinearLayout>
 
-    <GridView
+    <ListView
         android:id="@+id/layout_groups_grid"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -45,6 +45,6 @@
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth">
 
-    </GridView>
+    </ListView>
 
 </RelativeLayout>

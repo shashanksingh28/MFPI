@@ -115,7 +115,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOAN_TRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + COLUMN_LOAN_TRANSACTION_SignedBy + " TEXT"
             + ");";
-    // Group Meeting table
     public static final String TABLE_GROUPMEETINGS = "GroupMeetings";
     public static final String COLUMN_GROUPMEETING_ID = "Id";
     public static final String COLUMN_GROUPMEETING_GroupId = "GroupId";
@@ -170,7 +169,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_MEMBER_Country + " TEXT"
             + ");";
     private static final String TABLE_LOANSACCOUNT = "GroupMemberLoanAccount";
-    // CREATE TABLE HERE
     private static final String CREATE_LOANS_TABLE = "Create table " + TABLE_LOANSACCOUNT
             + " (" + COLUMN_LOANACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_LOANACCOUNT_GroupId + " INTEGER,"
@@ -233,22 +231,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        if (group.UID == 0) {
-            values.put(COLUMN_GROUP_Name, group.GroupName);
-            values.put(COLUMN_GROUP_AddressLine1, group.Address);
-            values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
-            values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
-            values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
-            values.put(COLUMN_GROUP_CreatedBy, group.CreatedBy);
+        values.put(COLUMN_GROUP_Name, group.GroupName);
+        values.put(COLUMN_GROUP_AddressLine1, group.AddressLine1);
+        values.put(COLUMN_GROUP_AddressLine2, group.AddressLine2);
+        values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
+        values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
+        values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
 
+        if (group.UID == 0) {
+            // TODO: get field officer Id from security
+            values.put(COLUMN_GROUP_CreatedBy, group.CreatedBy);
             db.insertOrThrow(TABLE_GROUP, null, values);
         } else {
-            values.put(COLUMN_GROUP_Name, group.GroupName);
-            values.put(COLUMN_GROUP_AddressLine1, group.Address);
-            values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
-            values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
-            values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
-
             db.update(TABLE_GROUP, values, COLUMN_GROUP_HashId + " = " + group.UID, null);
         }
 
@@ -272,7 +266,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.CreatedAt = cursor.getString(6);
                 group.CreatedBy = cursor.getInt(7);
                 group.RecurringSavings = cursor.getInt(9);
-                group.Address = cursor.getString(12);
+                group.AddressLine1 = cursor.getString(12);
+                group.AddressLine2 = cursor.getString(13);
                 groupList.add(group);
             } while (cursor.moveToNext());
         }
@@ -295,7 +290,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             group = new Group();
             group.UID = cursor.getInt(0);
             group.GroupName = cursor.getString(1);
-            group.Address = cursor.getString(12);
+            group.AddressLine1 = cursor.getString(12);
+            group.AddressLine2 = cursor.getString(13);
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);

@@ -1,7 +1,5 @@
 package org.groupsavings.domain;
 
-import android.text.format.DateFormat;
-
 /**
  * Created by shashank on 8/3/14.
  */
@@ -9,7 +7,8 @@ public class Group {
 
     public int UID;
     public String GroupName;
-    public String Address;
+    public String AddressLine1;
+    public String AddressLine2;
     public int FOId;
     public int PresidentId;
     public int RecurringSavings;
@@ -19,7 +18,7 @@ public class Group {
     @Override
     public String toString()
     {
-        return GroupName;
+        return GroupName + " - " + AddressLine2;
     }
 
 }

@@ -34,8 +34,8 @@ public class SyncHelper {
             collectJSON.put(DatabaseHandler.COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
             //collectJSON.put(DatabaseHandler.COLUMN_GROUP_MonthlyMeetingDate ,);
             //collectJSON.put(DatabaseHandler.COLUMN_GROUP_ClusterId ,);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine1, group.Address);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine2,);
+            collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine1, group.AddressLine1);
+            collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine2, group.AddressLine2);
             //collectJSON.put(DatabaseHandler.COLUMN_GROUP_City ,);
             //collectJSON.put(DatabaseHandler.COLUMN_GROUP_State ,);
             //collectJSON.put(DatabaseHandler.COLUMN_GROUP_Country ,);

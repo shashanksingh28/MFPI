@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -53,7 +53,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         Button syncGroup = (Button) findViewById(R.id.button_syc);
         syncGroup.setOnClickListener(this);
 
-        GridView gv = (GridView) findViewById(R.id.layout_groups_grid);
+        ListView gv = (ListView) findViewById(R.id.layout_groups_grid);
         adapter_grid = new ArrayAdapter(this,android.R.layout.simple_list_item_1,groups);
         gv.setAdapter(adapter_grid);
         gv.setOnItemClickListener(this);
@@ -68,7 +68,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         adapter_grid.clear();
         adapter_grid.addAll(groups);
         adapter_grid.notifyDataSetChanged();
-
     }
 
     @Override

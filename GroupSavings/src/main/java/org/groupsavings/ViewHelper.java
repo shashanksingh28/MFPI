@@ -24,24 +24,17 @@ public class ViewHelper {
         TextView memberIdText = (TextView) view.findViewById(R.id.layout_member_uid);
         if(memberIdText != null){
             memberIdText.setText(String.valueOf(memberToPopulate.UID));
-            memberIdText.clearFocus();
         }
 
         EditText firstNameEditor=(EditText) view.findViewById(R.id.edit_member_firstname);
-        if(firstNameEditor != null){
-            firstNameEditor.setText(memberToPopulate.FirstName);
-            firstNameEditor.clearFocus();
-        }
+        firstNameEditor.setText(memberToPopulate.FirstName);
 
         EditText lastNameEditor=(EditText) view.findViewById(R.id.edit_member_lastname);
-        if(lastNameEditor !=null){
-            lastNameEditor.setText(memberToPopulate.LastName);
-            lastNameEditor.clearFocus();
-        }
+        lastNameEditor.setText(memberToPopulate.LastName);
+
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
         contactEditor.setText(memberToPopulate.ContactInfo);
-        contactEditor.clearFocus();
 
         EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
         if (memberToPopulate.age==0) {
@@ -115,8 +108,13 @@ public class ViewHelper {
         EditText groupNameEditor =(EditText) view.findViewById(R.id.edit_group_name);
         if(groupNameEditor != null && groupNameEditor.getText()!= null) updatedGroup.GroupName = groupNameEditor.getText().toString();
 
-        EditText groupAddressEditor =(EditText) view.findViewById(R.id.edit_group_address);
-        if(groupAddressEditor !=null && groupAddressEditor.getText()!= null) updatedGroup.Address = groupAddressEditor.getText().toString();
+        EditText groupAddress1Editor = (EditText) view.findViewById(R.id.edit_group_addressline1);
+        if (groupAddress1Editor != null && groupAddress1Editor.getText() != null)
+            updatedGroup.AddressLine1 = groupAddress1Editor.getText().toString();
+
+        EditText groupAddress2Editor = (EditText) view.findViewById(R.id.edit_group_addressline2);
+        if (groupAddress2Editor != null && groupAddress2Editor.getText() != null)
+            updatedGroup.AddressLine2 = groupAddress2Editor.getText().toString();
 
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         if(grpRecurringSavingsEditor !=null && grpRecurringSavingsEditor.getText() != null)
@@ -144,21 +142,16 @@ public class ViewHelper {
         }
 
         EditText groupNameEditor =(EditText) view.findViewById(R.id.edit_group_name);
-        if(groupNameEditor != null ){
-            groupNameEditor.setText(groupToPopulate.GroupName);
-            groupNameEditor.clearFocus();
-        }
+        groupNameEditor.setText(groupToPopulate.GroupName);
 
-        EditText groupAddressEditor =(EditText) view.findViewById(R.id.edit_group_address);
-        if(groupAddressEditor !=null){
-            groupAddressEditor.setText(groupToPopulate.Address);
-            groupAddressEditor.clearFocus();
-        }
+        EditText groupAddress1Editor = (EditText) view.findViewById(R.id.edit_group_addressline1);
+        groupAddress1Editor.setText(groupToPopulate.AddressLine1);
+
+        EditText groupAddress2Editor = (EditText) view.findViewById(R.id.edit_group_addressline2);
+        groupAddress2Editor.setText(groupToPopulate.AddressLine2);
 
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
-        if(grpRecurringSavingsEditor !=null){
-            grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
-            grpRecurringSavingsEditor.clearFocus();
-        }
+        grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
+
     }
 }
