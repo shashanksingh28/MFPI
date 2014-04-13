@@ -70,7 +70,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_MEMBER_FirstName = "FirstName";
     public static final String COLUMN_MEMBER_LastName = "LastName";
     public static final String COLUMN_MEMBER_Sex = "Sex";
-    public static final String COLUMN_MEMBER_Age = "Age";
+    public static final String COLUMN_MEMBER_DOB = "DOB";
     public static final String COLUMN_MEMBER_EmailId = "EmailId";
     public static final String COLUMN_MEMBER_Active = "Active";
     public static final String COLUMN_MEMBER_TotalSavings = "TotalSavings";
@@ -89,7 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_MEMBER_FirstName + " TEXT,"
             + COLUMN_MEMBER_LastName + " TEXT,"
             + COLUMN_MEMBER_Sex + " TEXT,"
-            + COLUMN_MEMBER_Age + " INTEGER,"
+            + COLUMN_MEMBER_DOB + " TEXT,"
             + COLUMN_MEMBER_EmailId + " TEXT,"
             + COLUMN_MEMBER_Active + " TEXT,"
             + COLUMN_MEMBER_TotalSavings + " INTEGER,"
@@ -332,8 +332,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 member.FirstName = cursor.getString(2);
                 member.LastName = cursor.getString(3);
                 member.ContactInfo = cursor.getString(12);
-                member.age = cursor.getInt(5);
+                member.DOB = cursor.getString(5);
                 member.TotalSavings = getMemberSavings(member.UID, db);
+                member.AddressLine1 = cursor.getString(13);
+                member.AddressLine2 = cursor.getString(14);
                 // Adding contact to list
                 membersList.add(member);
             } while (cursor.moveToNext());
@@ -360,7 +362,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 member.FirstName = cursor.getString(2);
                 member.LastName = cursor.getString(3);
                 member.ContactInfo = cursor.getString(12);
-                member.age = cursor.getInt(5);
+                member.DOB = cursor.getString(5);
+                member.AddressLine1 = cursor.getString(13);
+                member.AddressLine2 = cursor.getString(14);
                 member.TotalSavings = getMemberSavings(member.UID, db);
                 // Adding contact to list
                 membersList.add(member);
@@ -382,17 +386,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(COLUMN_MEMBER_LastName, member.LastName);
             values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
             values.put(COLUMN_MEMBER_GroupUID, member.GroupUID);
-            values.put(COLUMN_MEMBER_Age, member.age);
+            values.put(COLUMN_MEMBER_DOB, member.DOB);
+            values.put(COLUMN_MEMBER_AddressLine1, member.AddressLine1);
+            values.put(COLUMN_MEMBER_AddressLine2, member.AddressLine2);
 
             long memberId = db.insertOrThrow(TABLE_MEMBER, null, values);
             member.UID = (int) memberId;
             createMemberAccounts(member, db);
         } else {
-            values.put(COLUMN_MEMBER_FirstName, member.FirstName);
-            values.put(COLUMN_MEMBER_LastName, member.LastName);
             values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
-            values.put(COLUMN_MEMBER_Age, member.age);
-
+            values.put(COLUMN_MEMBER_AddressLine1, member.AddressLine1);
+            values.put(COLUMN_MEMBER_AddressLine2, member.AddressLine2);
             db.update(TABLE_MEMBER, values, COLUMN_MEMBER_UID + " = " + member.UID, null);
         }
 

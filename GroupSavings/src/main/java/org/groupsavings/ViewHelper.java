@@ -7,6 +7,11 @@ import android.widget.TextView;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.Member;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by shashank on 4/3/14.
  * Contains UI helper functions to populate and fetch data from UI
@@ -26,22 +31,45 @@ public class ViewHelper {
             memberIdText.setText(String.valueOf(memberToPopulate.UID));
         }
 
-        EditText firstNameEditor=(EditText) view.findViewById(R.id.edit_member_firstname);
+        TextView firstNameEditor=(TextView) view.findViewById(R.id.tv_member_firstname);
         firstNameEditor.setText(memberToPopulate.FirstName);
 
-        EditText lastNameEditor=(EditText) view.findViewById(R.id.edit_member_lastname);
+        TextView lastNameEditor=(TextView) view.findViewById(R.id.tv_member_lastname);
         lastNameEditor.setText(memberToPopulate.LastName);
-
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
         contactEditor.setText(memberToPopulate.ContactInfo);
 
-        EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
-        if (memberToPopulate.age==0) {
-            et_memberAge.setText("");
+        TextView tv_memberAge = (TextView) view.findViewById(R.id.tv_member_age);
+        if (memberToPopulate.DOB != null) {
+            SimpleDateFormat sdf= new SimpleDateFormat("dd/mm/yyyy");
+            try {
+                Date dob = sdf.parse(memberToPopulate.DOB);
+                Calendar c_dob = Calendar.getInstance();
+                c_dob.setTime(dob);
+                Calendar c_now = Calendar.getInstance();
+                int years = c_now.get(Calendar.YEAR) - c_dob.get(Calendar.YEAR);
+                if(c_now.get(Calendar.MONTH) >= c_dob.get(Calendar.MONTH))
+                {
+                    if(c_now.get(Calendar.DAY_OF_MONTH) >= c_dob.get(Calendar.DAY_OF_MONTH))
+                    {
+                        // Diff in exact years is correct
+                    }
+                    else {
+                        years--;
+                    }
+                }
+                tv_memberAge.setText(String.valueOf(years));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        else
-            et_memberAge.setText(String.valueOf(memberToPopulate.age));
+
+        EditText add1Editor=(EditText) view.findViewById(R.id.et_member_addressline1);
+        add1Editor.setText(memberToPopulate.AddressLine1);
+
+        EditText add2Editor=(EditText) view.findViewById(R.id.et_member_addressline2);
+        add2Editor.setText(memberToPopulate.AddressLine2);
 
         TextView tv_member_savings = (TextView) view.findViewById(R.id.textview_member_savings);
         if (memberToPopulate.TotalSavings==0) {
@@ -79,10 +107,11 @@ public class ViewHelper {
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
         if(contactEditor !=null && contactEditor.getText() != null) updatedMember.ContactInfo = contactEditor.getText().toString();
 
-        EditText et_memberAge = (EditText) view.findViewById(R.id.edit_member_age);
-        if (et_memberAge != null && et_memberAge.getText() != null)
-            updatedMember.age = Integer.valueOf(et_memberAge.getText().toString());
+        EditText add1Editor=(EditText) view.findViewById(R.id.et_member_addressline1);
+        if(add1Editor.getText() != null) updatedMember.AddressLine1 = add1Editor.getText().toString();
 
+        EditText add2Editor=(EditText) view.findViewById(R.id.et_member_addressline2);
+        if(add2Editor.getText() != null) updatedMember.AddressLine2 = add2Editor.getText().toString();
 
         return updatedMember;
     }

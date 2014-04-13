@@ -139,7 +139,7 @@ public class SyncHelper {
             collectJSON.put(DatabaseHandler.COLUMN_MEMBER_FirstName, member.FirstName);
             collectJSON.put(DatabaseHandler.COLUMN_MEMBER_LastName, member.LastName);
             //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Sex,);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Age, member.age);
+            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_DOB, member.DOB);
             //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_EmailId,);
             //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Active ,);
             collectJSON.put(DatabaseHandler.COLUMN_MEMBER_TotalSavings, member.TotalSavings);

@@ -1,0 +1,189 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/layout_add_member"
+    android:padding="10dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_add_member_details">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/container_add_member">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="First Name :"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_member_firstname"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Last Name :"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/edit_member_lastname"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Phone Number :"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/edit_member_contact"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Email :"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_member_email"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Date Of Birth :"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_member_dob"
+                    android:layout_width="200dp"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:visibility="invisible"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/imgbtn_pick_dob"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Building :"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_member_addressline1"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Street :"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_member_addressline2"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_save_new_member"
+        android:layout_below="@id/scroll_add_member_details"
+        android:text="Save Member"
+        android:drawableLeft="@drawable/ic_action_save"
+        android:gravity="center|center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

@@ -3,6 +3,7 @@ package org.groupsavings.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
+import org.groupsavings.activities.AddMemberActivity;
+import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
 
@@ -101,10 +104,10 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         switch (view.getId())
         {
             case R.id.button_add_member:
-                Member newMember = new Member();
-                ViewHelper.populateMemberDetailsToView(detailsContainer, newMember);
-                HideKeypad();
-                Toast.makeText(activity, "Add Member details and click on Save", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),AddMemberActivity.class);
+                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
+                startActivity(intent);
+                Refresh();
                 break;
             case R.id.button_save_member:
                 Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);

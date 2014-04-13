@@ -10,42 +10,46 @@
         android:icon="@drawable/mfpi"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name="org.groupsavings.activities.LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login" >
             android:screenOrientation="landscape" >
-            <!-- Only avoid for debugging. uncomment when releasing
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-
-        <activity
-        android:name=".activities.GroupsGridActivity"
-        android:label="@string/title_activity_groups_grid"
-            android:screenOrientation="landscape">
+            <!--
+            Only avoid for debugging. uncomment when releasing
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
-
         <activity
-            android:name=".activities.AddGroupActivity"
+            android:name="org.groupsavings.activities.GroupsGridActivity"
+            android:label="@string/title_activity_groups_grid"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.groupsavings.activities.AddGroupActivity"
             android:label="@string/title_activity_add_group" />
-
         <activity
-            android:name=".activities.GroupLandingActivity"
+            android:name="org.groupsavings.activities.GroupLandingActivity"
             android:label="@string/title_activity_group_landing"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
-            android:name=".activities.AddMeetingActivity"
+            android:name="org.groupsavings.activities.AddMeetingActivity"
             android:label="@string/title_activity_add_meeting"
             android:screenOrientation="landscape" />
-
+        <activity
+            android:name=".activities.AddMemberActivity"
+            android:label="@string/title_activity_add_member"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
     </application>
 
 </manifest>

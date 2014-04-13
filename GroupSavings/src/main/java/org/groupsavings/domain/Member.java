@@ -11,8 +11,11 @@ public class Member {
     public int GroupUID;
     public String FirstName;
     public String LastName;
+    public String Email;
     public char Sex;
-    public int age;
+    public String DOB;
+    public String AddressLine1;
+    public String AddressLine2;
     public String ContactInfo;
     public double TotalSavings;
     public double TotalLoan;

@@ -18,25 +18,29 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Member Name" />
+            android:text="Member Name"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Compulsory Savings" />
+            android:text="Compulsory Savings"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Optional Savings" />
+            android:text="Optional Savings"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Total Savings" />
+            android:text="Total Savings"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
