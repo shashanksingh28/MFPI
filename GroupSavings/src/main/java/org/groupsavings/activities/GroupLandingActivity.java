@@ -5,27 +5,20 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import org.groupsavings.R;
-import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
+import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.Locale;
-
 
 public class GroupLandingActivity extends Activity implements ActionBar.TabListener {
 
@@ -103,7 +96,6 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -139,43 +131,6 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    public void HideKeypad() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
-    /*
-     * A placeholder fragment containing a simple view.
-     */
-
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -197,9 +152,9 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_members;
                 case 2:
                     return fragment_meetings;
+                default:
+                    return fragment_meetings;
             }
-            return PlaceholderFragment.newInstance(position + 1);
-
         }
 
         @Override

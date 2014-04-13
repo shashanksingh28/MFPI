@@ -23,6 +23,10 @@ import java.util.Date;
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+    // All Static variables
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "GroupSavings";
+    private static final String TABLE_GROUP = "Groups";
     public static final String COLUMN_GROUP_HashId = "HashId";
     public static final String COLUMN_GROUP_Name = "Name";
     public static final String COLUMN_GROUP_PresidentId = "PresidentId";
@@ -40,6 +44,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_GROUP_City = "City";
     public static final String COLUMN_GROUP_State = "State";
     public static final String COLUMN_GROUP_Country = "Country";
+    private static final String CREATE_GROUP_TABLE = "Create table " + TABLE_GROUP
+            + " (" + COLUMN_GROUP_HashId + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_GROUP_Name + " TEXT,"
+            + COLUMN_GROUP_PresidentId + " TEXT,"
+            + COLUMN_GROUP_SecretaryId + " TEXT,"
+            + COLUMN_GROUP_TreasurerId + " TEXT,"
+            + COLUMN_GROUP_FieldOfficerId + " TEXT,"
+            + COLUMN_GROUP_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+            + COLUMN_GROUP_CreatedBy + " TEXT,"
+            + COLUMN_GROUP_Active + " BOOLEAN,"
+            + COLUMN_GROUP_RecurringIndividualAmount + " INTEGER,"
+            + COLUMN_GROUP_MonthlyMeetingDate + " TIMESTAMP,"
+            + COLUMN_GROUP_ClusterId + " INTEGER,"
+            + COLUMN_GROUP_AddressLine1 + " TEXT,"
+            + COLUMN_GROUP_AddressLine2 + " TEXT,"
+            + COLUMN_GROUP_City + " TEXT,"
+            + COLUMN_GROUP_State + " TEXT,"
+            + COLUMN_GROUP_Country + " TEXT"
+            + ");";
+
+    private static final String TABLE_MEMBER = "Members";
     public static final String COLUMN_MEMBER_UID = "UID";
     public static final String COLUMN_MEMBER_GroupUID = "GroupUID";
     public static final String COLUMN_MEMBER_FirstName = "FirstName";
@@ -58,18 +83,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_MEMBER_City = "City";
     public static final String COLUMN_MEMBER_State = "State";
     public static final String COLUMN_MEMBER_Country = "Country";
-    public static final String COLUMN_LOANACCOUNT_Id = "Id";
-    public static final String COLUMN_LOANACCOUNT_GroupId = "GroupId";
-    public static final String COLUMN_LOANACCOUNT_MemberId = "MemberId";
-    public static final String COLUMN_LOANACCOUNT_PrincipalAmount = "PrincipalAmount";
-    public static final String COLUMN_LOANACCOUNT_InterestRate = "InterestRate";
-    public static final String COLUMN_LOANACCOUNT_StartDate = "StartDate";
-    public static final String COLUMN_LOANACCOUNT_EndDate = "EndDate";
-    public static final String COLUMN_LOANACCOUNT_Outstanding = "Outstanding";
-    public static final String COLUMN_LOANACCOUNT_Reason = "Reason";
-    public static final String COLUMN_LOANACCOUNT_InstallmentAmount = "InstallmentAmount";
-    public static final String COLUMN_LOANACCOUNT_NoOfInstallments = "NoOfInstallments";
-    public static final String COLUMN_LOANACCOUNT_CreatedDate = "CreatedDate";
+    private static final String CREATE_MEMBER_TABLE = "Create table " + TABLE_MEMBER
+            + " (" + COLUMN_MEMBER_UID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + COLUMN_MEMBER_GroupUID + " INTEGER,"
+            + COLUMN_MEMBER_FirstName + " TEXT,"
+            + COLUMN_MEMBER_LastName + " TEXT,"
+            + COLUMN_MEMBER_Sex + " TEXT,"
+            + COLUMN_MEMBER_Age + " INTEGER,"
+            + COLUMN_MEMBER_EmailId + " TEXT,"
+            + COLUMN_MEMBER_Active + " TEXT,"
+            + COLUMN_MEMBER_TotalSavings + " INTEGER,"
+            + COLUMN_MEMBER_TotalDebt + " INTEGER,"
+            + COLUMN_MEMBER_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+            + COLUMN_MEMBER_CreatedBy + " TEXT,"
+            + COLUMN_MEMBER_ContactNumber + " TEXT,"
+            + COLUMN_MEMBER_AddressLine1 + " TEXT,"
+            + COLUMN_MEMBER_AddressLine2 + " TEXT,"
+            + COLUMN_MEMBER_City + " TEXT,"
+            + COLUMN_MEMBER_State + " TEXT,"
+            + COLUMN_MEMBER_Country + " TEXT"
+            + ");";
+
     public static final String TABLE_SAVINGSACCOUNT = "GroupMemberSavingAccount";
     public static final String COLUMN_SAVING_ACCOUNT_Id = "Id";
     public static final String COLUMN_SAVING_ACCOUNT_GroupId = "GroupId";
@@ -124,51 +158,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_GROUPMEETING_GroupId + " INTEGER,"
             + COLUMN_GROUPMEETING_DATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
-    // All Static variables
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "GroupSavings";
-    private static final String TABLE_GROUP = "Groups";
-    private static final String CREATE_GROUP_TABLE = "Create table " + TABLE_GROUP
-            + " (" + COLUMN_GROUP_HashId + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_GROUP_Name + " TEXT,"
-            + COLUMN_GROUP_PresidentId + " TEXT,"
-            + COLUMN_GROUP_SecretaryId + " TEXT,"
-            + COLUMN_GROUP_TreasurerId + " TEXT,"
-            + COLUMN_GROUP_FieldOfficerId + " TEXT,"
-            + COLUMN_GROUP_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-            + COLUMN_GROUP_CreatedBy + " TEXT,"
-            + COLUMN_GROUP_Active + " BOOLEAN,"
-            + COLUMN_GROUP_RecurringIndividualAmount + " INTEGER,"
-            + COLUMN_GROUP_MonthlyMeetingDate + " TIMESTAMP,"
-            + COLUMN_GROUP_ClusterId + " INTEGER,"
-            + COLUMN_GROUP_AddressLine1 + " TEXT,"
-            + COLUMN_GROUP_AddressLine2 + " TEXT,"
-            + COLUMN_GROUP_City + " TEXT,"
-            + COLUMN_GROUP_State + " TEXT,"
-            + COLUMN_GROUP_Country + " TEXT"
-            + ");";
-    private static final String TABLE_MEMBER = "Members";
-    private static final String CREATE_MEMBER_TABLE = "Create table " + TABLE_MEMBER
-            + " (" + COLUMN_MEMBER_UID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-            + COLUMN_MEMBER_GroupUID + " INTEGER,"
-            + COLUMN_MEMBER_FirstName + " TEXT,"
-            + COLUMN_MEMBER_LastName + " TEXT,"
-            + COLUMN_MEMBER_Sex + " TEXT,"
-            + COLUMN_MEMBER_Age + " INTEGER,"
-            + COLUMN_MEMBER_EmailId + " TEXT,"
-            + COLUMN_MEMBER_Active + " TEXT,"
-            + COLUMN_MEMBER_TotalSavings + " INTEGER,"
-            + COLUMN_MEMBER_TotalDebt + " INTEGER,"
-            + COLUMN_MEMBER_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-            + COLUMN_MEMBER_CreatedBy + " TEXT,"
-            + COLUMN_MEMBER_ContactNumber + " TEXT,"
-            + COLUMN_MEMBER_AddressLine1 + " TEXT,"
-            + COLUMN_MEMBER_AddressLine2 + " TEXT,"
-            + COLUMN_MEMBER_City + " TEXT,"
-            + COLUMN_MEMBER_State + " TEXT,"
-            + COLUMN_MEMBER_Country + " TEXT"
-            + ");";
+
+
     private static final String TABLE_LOANSACCOUNT = "GroupMemberLoanAccount";
+    public static final String COLUMN_LOANACCOUNT_Id = "Id";
+    public static final String COLUMN_LOANACCOUNT_GroupId = "GroupId";
+    public static final String COLUMN_LOANACCOUNT_MemberId = "MemberId";
+    public static final String COLUMN_LOANACCOUNT_PrincipalAmount = "PrincipalAmount";
+    public static final String COLUMN_LOANACCOUNT_InterestRate = "InterestRate";
+    public static final String COLUMN_LOANACCOUNT_StartDate = "StartDate";
+    public static final String COLUMN_LOANACCOUNT_EndDate = "EndDate";
+    public static final String COLUMN_LOANACCOUNT_Outstanding = "Outstanding";
+    public static final String COLUMN_LOANACCOUNT_Reason = "Reason";
+    public static final String COLUMN_LOANACCOUNT_InstallmentAmount = "InstallmentAmount";
+    public static final String COLUMN_LOANACCOUNT_NoOfInstallments = "NoOfInstallments";
+    public static final String COLUMN_LOANACCOUNT_CreatedDate = "CreatedDate";
     private static final String CREATE_LOANS_TABLE = "Create table " + TABLE_LOANSACCOUNT
             + " (" + COLUMN_LOANACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_LOANACCOUNT_GroupId + " INTEGER,"

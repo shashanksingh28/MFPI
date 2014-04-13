@@ -14,22 +14,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.DatabaseHandler;
-import org.json.JSONArray;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-
 
 public class GroupsGridActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
@@ -114,63 +104,30 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
     public class PushDataAsync extends AsyncTask<String, String, String> {
 
-        byte[] responseString;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = ProgressDialog.show(GroupsGridActivity.this, "Wait", "Synchronizing..");
+        }
+
         @Override
         protected String doInBackground(String... strings) {
-            String returnMessage = null;
-
-            HttpClient httpclient =new DefaultHttpClient();
-            HttpResponse response;
-            StringEntity s;
-            HttpPost httppost = new HttpPost("http://planindiatest.webatu.com/AndroidSync/SaveGroup.php");
-
-            try {
-
-                JSONArray allGroupsJSON = SyncHelper.GetAllGroupsJSON(groups);
-                s = new StringEntity(allGroupsJSON.toString());
-                s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-                httppost.setEntity(s);
-                response = httpclient.execute(httppost);
-
-                JSONArray allmembersJSON = SyncHelper.GetAllMembersJSON(db_handler.getAllMembers());
-                s = new StringEntity(allmembersJSON.toString());
-                s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-                httppost = new HttpPost("http://planindiatest.webatu.com/AndroidSync/SaveMembers.php");
-                httppost.setEntity(s);
-                response = httpclient.execute(httppost);
-
-                JSONArray allsavingsJSON = SyncHelper.GetAllSavingAccJSON(db_handler.getAllSavingAccounts());
-                s = new StringEntity(allsavingsJSON.toString());
-                s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-                httppost = new HttpPost("http://planindiatest.webatu.com/AndroidSync/SavingAccount.php");
-                httppost.setEntity(s);
-                response = httpclient.execute(httppost);
-
-                JSONArray allsavingTransJSON = SyncHelper.GetAllSavingTransJSON(db_handler.getAllSavingTrans());
-                s = new StringEntity(allsavingTransJSON.toString());
-                s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-                httppost = new HttpPost("http://planindiatest.webatu.com/AndroidSync/SavingTransaction.php");
-                httppost.setEntity(s);
-                response = httpclient.execute(httppost);
-
-                if(response!=null){
-                    InputStream in = response.getEntity().getContent();
-                    responseString = new byte[100000];
-                    in.read(responseString);
-                }
-            } catch (Exception e) {
-                //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                returnMessage = e.getMessage();
+            SyncHelper syncHelper = new SyncHelper(getApplicationContext());
+            try{
+                return syncHelper.synchronize();
             }
-            return new String(responseString);
+            catch(Exception ex)
+            {
+                return ex.getMessage();
+            }
         }
 
         @Override
         protected void onPostExecute(String result) {
+            pDialog.dismiss();
             //Toast.makeText(getApplicationContext(), requestString,Toast.LENGTH_LONG).show();
-            String message = result == null ? "Successfull" : result;
-            String test = message;
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            String message = result == null || result == "" ? "Synchronized" : result;
+            Toast.makeText(GroupsGridActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10px"
+            android:drawableLeft="@drawable/ic_action_add_group"
             android:text="Add New" />
 
         <Button
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10px"
+            android:drawableLeft="@drawable/ic_action_refresh"
             android:text="Push to Server" />
 
     </LinearLayout>

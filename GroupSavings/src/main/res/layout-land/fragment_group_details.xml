@@ -17,7 +17,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:drawableLeft="@drawable/save"
+            android:drawableLeft="@drawable/ic_action_save"
             android:text="Save Group"/>
 
     </RelativeLayout>
