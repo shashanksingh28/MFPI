@@ -153,6 +153,10 @@ public class ViewHelper {
                 updatedGroup.RecurringSavings = Integer.parseInt(savings);
         }
 
+        EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
+        if (groupBankAccountEditor != null && groupBankAccountEditor.getText() != null)
+            updatedGroup.BankAccount = groupBankAccountEditor.getText().toString();
+
         return updatedGroup;
     }
 
@@ -181,6 +185,9 @@ public class ViewHelper {
 
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
+
+        EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
+        groupBankAccountEditor.setText(groupToPopulate.BankAccount);
 
     }
 }

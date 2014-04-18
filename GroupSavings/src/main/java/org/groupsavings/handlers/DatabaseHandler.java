@@ -44,6 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_GROUP_City = "City";
     public static final String COLUMN_GROUP_State = "State";
     public static final String COLUMN_GROUP_Country = "Country";
+    public static final String COLUMN_GROUP_BankAccount = "BankAccount";
     private static final String CREATE_GROUP_TABLE = "Create table " + TABLE_GROUP
             + " (" + COLUMN_GROUP_HashId + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_GROUP_Name + " TEXT,"
@@ -62,6 +63,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_GROUP_City + " TEXT,"
             + COLUMN_GROUP_State + " TEXT,"
             + COLUMN_GROUP_Country + " TEXT"
+            + COLUMN_GROUP_BankAccount + " TEXT"
             + ");";
 
     private static final String TABLE_MEMBER = "Members";
