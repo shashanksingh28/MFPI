@@ -138,8 +138,7 @@
                 android:layout_width="200dp"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:visibility="invisible"/>
+                android:padding="8dp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
