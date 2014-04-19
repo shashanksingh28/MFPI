@@ -247,6 +247,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
         values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
         values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
+        values.put(COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
 
         if (group.UID == 0) {
             // TODO: get field officer Id from security
@@ -305,6 +306,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
+            group.MonthlyMeetingDate = cursor.getString(10);
             group.BankAccount = cursor.getString(17);
             group.CreatedAt = cursor.getString(6);
             //group.CreatedBy = Integer.parseInt(cursor.getString(7));
