@@ -157,6 +157,11 @@ public class ViewHelper {
         if (groupBankAccountEditor != null && groupBankAccountEditor.getText() != null)
             updatedGroup.BankAccount = groupBankAccountEditor.getText().toString();
 
+        TextView grpMonthlyMeetDate = (TextView) view.findViewById(R.id.tv_group_mmd);
+        if (grpMonthlyMeetDate != null && grpMonthlyMeetDate.getText() != null)
+            updatedGroup.MonthlyMeetingDate = grpMonthlyMeetDate.getText().toString();
+
+
         return updatedGroup;
     }
 
@@ -188,6 +193,12 @@ public class ViewHelper {
 
         EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
         groupBankAccountEditor.setText(groupToPopulate.BankAccount);
+
+        TextView grpMonthlyMeetDate = (TextView) view.findViewById(R.id.tv_group_mmd);
+        if(grpMonthlyMeetDate != null ){
+            grpMonthlyMeetDate.setText(String.valueOf(groupToPopulate.MonthlyMeetingDate));
+            grpMonthlyMeetDate.clearFocus();
+        }
 
     }
 }

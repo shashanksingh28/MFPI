@@ -15,6 +15,7 @@ public class Group {
     public String CreatedAt;
     public int CreatedBy;
     public String BankAccount;
+    public String MonthlyMeetingDate;
 
     @Override
     public String toString()
