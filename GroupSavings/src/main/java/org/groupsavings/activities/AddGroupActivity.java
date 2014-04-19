@@ -104,11 +104,11 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             mmd_year  = year;
             mmd_month = monthOfYear;
             mmd_day = dayOfMonth;
-            updateDOBDisplay();
+            updateMMDDisplay();
         }
     }
 
-    private void updateDOBDisplay() {
+    private void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
         tv_mmd.setText(mmd_day+"/"+mmd_month+"/"+mmd_year);
     }
