@@ -14,6 +14,7 @@ public class Group {
     public int RecurringSavings;
     public String CreatedAt;
     public int CreatedBy;
+    public String BankAccount;
 
     @Override
     public String toString()

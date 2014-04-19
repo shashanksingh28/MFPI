@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_GROUP_AddressLine2 + " TEXT,"
             + COLUMN_GROUP_City + " TEXT,"
             + COLUMN_GROUP_State + " TEXT,"
-            + COLUMN_GROUP_Country + " TEXT"
+            + COLUMN_GROUP_Country + " TEXT,"
             + COLUMN_GROUP_BankAccount + " TEXT"
             + ");";
 
@@ -243,6 +243,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
         values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
         values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
+        values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
 
         if (group.UID == 0) {
             // TODO: get field officer Id from security
@@ -301,6 +302,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
+            group.BankAccount = cursor.getString(17);
             group.CreatedAt = cursor.getString(6);
             //group.CreatedBy = Integer.parseInt(cursor.getString(7));
         }
