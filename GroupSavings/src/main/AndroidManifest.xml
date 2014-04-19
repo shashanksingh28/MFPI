@@ -40,15 +40,20 @@
             android:label="@string/title_activity_group_landing"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name="org.groupsavings.activities.AddMeetingActivity"
             android:label="@string/title_activity_add_meeting"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activities.AddMemberActivity"
+            android:name="org.groupsavings.activities.AddMemberActivity"
             android:label="@string/title_activity_add_member"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name="org.groupsavings.activities.NewLoanActivity"
+            android:label="@string/title_activity_new_loan"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 

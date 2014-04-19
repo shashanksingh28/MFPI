@@ -175,6 +175,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_LOANACCOUNT_InstallmentAmount = "InstallmentAmount";
     public static final String COLUMN_LOANACCOUNT_NoOfInstallments = "NoOfInstallments";
     public static final String COLUMN_LOANACCOUNT_CreatedDate = "CreatedDate";
+    public static final String COLUMN_LOANACCOUNT_IsActive = "IsActive";
     private static final String CREATE_LOANS_TABLE = "Create table " + TABLE_LOANSACCOUNT
             + " (" + COLUMN_LOANACCOUNT_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_LOANACCOUNT_GroupId + " INTEGER,"
@@ -187,6 +188,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOANACCOUNT_Reason + " TEXT,"
             + COLUMN_LOANACCOUNT_InstallmentAmount + " INTEGER,"
             + COLUMN_LOANACCOUNT_NoOfInstallments + " INTEGER,"
+            + COLUMN_LOANACCOUNT_IsActive +" BOOLEAN,"
             + COLUMN_LOANACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
 

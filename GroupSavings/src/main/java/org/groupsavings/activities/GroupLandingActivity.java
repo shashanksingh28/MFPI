@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import org.groupsavings.R;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
+import org.groupsavings.fragments.LoansFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
 import org.groupsavings.handlers.DatabaseHandler;
@@ -38,6 +39,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     MembersFragment fragment_members;
     GroupDetailsFragment fragment_group_details;
     MeetingsFragment fragment_meetings;
+    LoansFragment fragment_loans;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -56,6 +58,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         fragment_members = MembersFragment.newInstance(groupUID);
         fragment_group_details = GroupDetailsFragment.newInstance(groupUID);
         fragment_meetings = MeetingsFragment.newInstance(groupUID);
+        fragment_loans = LoansFragment.newInstance(groupUID);
 
 
         // Set up the action bar.
@@ -152,6 +155,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_members;
                 case 2:
                     return fragment_meetings;
+                case 3:
+                    return fragment_loans;
                 default:
                     return fragment_meetings;
             }
@@ -160,7 +165,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -173,6 +178,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase();
             }
             return null;
         }
