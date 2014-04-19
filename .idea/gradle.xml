@@ -7,9 +7,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\workspace\MFPInew" />
-            <option value="C:\workspace\MFPInew\GroupSavings" />
-            <option value="C:\workspace\MFPInew\app" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/GroupSavings" />
+            <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
       </GradleProjectSettings>

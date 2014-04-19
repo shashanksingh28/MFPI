@@ -354,6 +354,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return membersList;
     }
 
+    public ArrayList<Member> getAllMembersWithNoActiveLoan(int groupUID) {
+        ArrayList<Member> membersList = new ArrayList<Member>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_MEMBER
+                + " Where " + COLUMN_MEMBER_GroupUID + "=" + groupUID + " AND "
+                + COLUMN_MEMBER_UID + " NOT IN (SELECT " + COLUMN_LOANACCOUNT_MemberId
+                                                + " FROM "+TABLE_LOANSACCOUNT + " WHERE "+COLUMN_LOANACCOUNT_IsActive+"=1);";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Member member = new Member();
+                member.UID = cursor.getInt(0);
+                member.GroupUID = cursor.getInt(1);
+                member.FirstName = cursor.getString(2);
+                member.LastName = cursor.getString(3);
+                member.ContactInfo = cursor.getString(12);
+                member.DOB = cursor.getString(5);
+                member.TotalSavings = getMemberSavings(member.UID, db);
+                member.AddressLine1 = cursor.getString(13);
+                member.AddressLine2 = cursor.getString(14);
+                // Adding contact to list
+                membersList.add(member);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return membersList;
+    }
+
     public ArrayList<Member> getAllMembers() {
         ArrayList<Member> membersList = new ArrayList<Member>();
         // Select All Query
@@ -552,6 +585,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         loanAccValues.put(COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
         loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.periodInMonths);
         loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
+        loanAccValues.put(COLUMN_LOANACCOUNT_IsActive, la.IsActive);
 
         if(la.Id == 0)
         {
@@ -559,7 +593,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         else
         {
+            db.update(TABLE_LOANSACCOUNT,loanAccValues,COLUMN_LOANACCOUNT_Id+"="+la.Id,null);
+        }
+    }
 
+    public void getAllLoanAccounts()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT;
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+        if (cursor.moveToFirst()) {
+            do {
+                SavingsAccount sa = new SavingsAccount();
+            } while (cursor.moveToNext());
         }
     }
 

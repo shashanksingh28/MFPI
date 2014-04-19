@@ -34,7 +34,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
         db_handler = new DatabaseHandler(getApplicationContext());
-        groupMembers = db_handler.getAllMembers(groupUID);
+        groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);
         setContentView(R.layout.activity_new_loan);
 
         members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
@@ -84,6 +84,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
+                                la.IsActive = true;
                                 db_handler.addUpdateLoanAccount(la);
                                 finish();
                                 break;
