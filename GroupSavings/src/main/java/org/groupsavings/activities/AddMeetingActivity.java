@@ -12,6 +12,7 @@ import android.widget.Toast;
 import org.groupsavings.MeetingTransactionsAdapter;
 import org.groupsavings.R;
 import org.groupsavings.domain.Group;
+import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
@@ -51,8 +52,18 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         ArrayList<MeetingTransaction> transactions = new ArrayList<MeetingTransaction>();
 
         for (int i = 0; i < members.size(); i++) {
-            MeetingTransaction transaction = new MeetingTransaction(groupId, members.get(i));
-            transaction.groupCompulsorySavings = group.RecurringSavings;
+            Member member = members.get(i);
+            MeetingTransaction transaction = new MeetingTransaction(groupId, member);
+            transaction.SavingTransaction.groupCompulsorySavings = group.RecurringSavings;
+
+            LoanAccount la = dbHandler.getMemberLoanAccount(member.UID);
+            if (la != null)
+            {
+                transaction.LoanTransaction.GroupMemberLoanAccountId = la.Id;
+                transaction.LoanTransaction.EMI = la.EMI;
+                transaction.LoanTransaction.Repayment = la.EMI;
+                transaction.LoanTransaction.setOutstandingDue(la.OutStanding);
+            }
             transactions.add(transaction);
         }
 

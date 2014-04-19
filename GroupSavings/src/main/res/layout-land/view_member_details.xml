@@ -153,7 +153,27 @@
             android:id="@+id/textview_member_savings"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
+            android:padding="8dp"
+            android:background="#dfe2e2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="OutStanding :"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_member_total_outstanding"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
             android:padding="8dp"
             android:background="#dfe2e2" />
     </LinearLayout>

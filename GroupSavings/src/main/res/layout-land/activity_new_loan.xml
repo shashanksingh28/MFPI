@@ -25,7 +25,7 @@
             <Spinner
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/sp_loan_members" />
         </LinearLayout>
 
@@ -41,7 +41,7 @@
             <EditText
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/et_loan_amount"
                 android:inputType="number" />
         </LinearLayout>
@@ -56,26 +56,22 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:layout_width="200dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/et_loan_interetest_rate"
                 android:inputType="number"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
             <TextView
                 android:text="Number of months :"
+                android:layout_marginLeft="5dp"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:layout_width="200dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/et_loan_months"
                 android:inputType="number" />
         </LinearLayout>
@@ -85,14 +81,48 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:text="Calculated EMI :"
+                android:text="Reason :"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/et_loan_reason"
+                android:inputType="textNoSuggestions" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Total Outstanding :"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/tv_loan_totalOutstanding"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="EMI per month:"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/tv_loan_emi"
                 android:inputType="number" />
         </LinearLayout>
@@ -105,7 +135,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center">
         <Button
-            android:text="Calculate  EMI:"
+            android:text="Calculate  details:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bt_calulate_emi"/>

@@ -78,6 +78,13 @@ public class ViewHelper {
         else
             tv_member_savings.setText(String.valueOf(memberToPopulate.TotalSavings));
 
+        TextView tv_member_outstanding = (TextView) view.findViewById(R.id.tv_member_total_outstanding);
+        if (memberToPopulate.OutstandingLoan == 0) {
+            tv_member_outstanding.setText("");
+        }
+        else
+            tv_member_outstanding.setText(String.valueOf(memberToPopulate.OutstandingLoan));
+
     }
 
     public static Member fetchMemberDetailsFromView(View viewLayout)

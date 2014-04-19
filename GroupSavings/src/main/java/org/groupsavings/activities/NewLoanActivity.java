@@ -18,7 +18,10 @@ import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NewLoanActivity extends Activity implements View.OnClickListener {
 
@@ -75,9 +78,14 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         {
             case R.id.bt_calulate_emi:
                 la = getLoanDetailsFromView();
+
                 TextView tv_calcEmi = (TextView) findViewById(R.id.tv_loan_emi);
                 tv_calcEmi.setText(String.valueOf(la.getEMI()));
+
+                TextView tv_calcOutstanding = (TextView) findViewById(R.id.tv_loan_totalOutstanding);
+                tv_calcOutstanding.setText(String.valueOf(la.OutStanding));
                 break;
+
             case R.id.bt_create_loan:
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
@@ -97,7 +105,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 la = getLoanDetailsFromView();
-                builder.setMessage("Are you sure? EMI for "+la.periodInMonths + " months will be "+la.getEMI()).setPositiveButton("Yes", dialogClickListener)
+                builder.setMessage("Are you sure? EMI for "+la.PeriodInMonths + " months will be "+la.getEMI()).setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
                 break;
         }
@@ -107,7 +115,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     {
         LoanAccount la = new LoanAccount();
         la.Id = 0;
-        la.member = (Member) members_spinner.getSelectedItem();
+        la.memberId = ((Member) members_spinner.getSelectedItem()).UID;
         la.groupId = groupUID;
 
         EditText et_amt = (EditText)findViewById(R.id.et_loan_amount);
@@ -117,7 +125,20 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         la.InterestPerAnnum = Float.valueOf(et_int.getText().toString());
 
         EditText et_time = (EditText)findViewById(R.id.et_loan_months);
-        la.periodInMonths = Integer.valueOf(et_time.getText().toString());
+        la.PeriodInMonths = Integer.valueOf(et_time.getText().toString());
+
+        SimpleDateFormat sdf = new SimpleDateFormat(GroupLandingActivity.DATE_FORMAT);
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, la.PeriodInMonths);
+
+        la.StartDate = sdf.format(new Date());
+        la.EndDate = sdf.format(endDate.get(Calendar.DATE));
+
+        la.EMI = la.getEMI();
+        la.OutStanding = la.EMI * la.PeriodInMonths;
+
+        EditText et_reason = (EditText) findViewById(R.id.et_loan_reason);
+        la.Reason = et_reason.getText().toString();
 
         return la;
     }

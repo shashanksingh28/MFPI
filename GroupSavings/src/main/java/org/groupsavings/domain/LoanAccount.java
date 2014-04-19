@@ -7,20 +7,24 @@ public class LoanAccount {
 
     public int Id;
     public int groupId;
-    public Member member;
+    public int memberId;
 
     public int Principal;
     public float InterestPerAnnum;
-    public int periodInMonths;
-    int EMI;
+    public int PeriodInMonths;
+    public int EMI;
 
     public String StartDate;
     public String EndDate;
+
+    public int OutStanding;
+    public String Reason;
     public boolean IsActive;
+
 
     public int getEMI()
     {
-        EMI = (int) (Principal * (1 + (periodInMonths*InterestPerAnnum)/1200))/periodInMonths;
+        EMI = (int) (Principal * (1 + (PeriodInMonths *InterestPerAnnum)/1200))/ PeriodInMonths;
         return EMI;
     }
 

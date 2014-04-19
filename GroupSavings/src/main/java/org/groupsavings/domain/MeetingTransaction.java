@@ -5,20 +5,18 @@ package org.groupsavings.domain;
  */
 public class MeetingTransaction {
 
-    public Member member;
+    public Member GroupMember;
+
+    public SavingTransaction SavingTransaction;
+
+    public LoanTransaction LoanTransaction;
 
     public int groupId;
 
-    public int groupCompulsorySavings;
-
-    public int optionalSavings;
-
     public MeetingTransaction(int groupId, Member member) {
         this.groupId = groupId;
-        this.member = member;
-    }
-
-    public int getTotalSavings() {
-        return groupCompulsorySavings + optionalSavings;
+        this.GroupMember = member;
+        this.SavingTransaction = new SavingTransaction();
+        this.LoanTransaction = new LoanTransaction();
     }
 }

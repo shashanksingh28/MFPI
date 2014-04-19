@@ -40,19 +40,32 @@ public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction>
             convert_view = inflater.inflate(R.layout.meeting_transaction_row, viewGroup, false);
 
             TextView tv_memberName = (TextView) convert_view.findViewById(R.id.textview_transaction_name);
-            tv_memberName.setText(transaction.member.toString());
+            tv_memberName.setText(transaction.GroupMember.toString());
 
             TextView tv_grpCompSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_compulsory_savings);
-            tv_grpCompSavings.setText(String.valueOf(transaction.groupCompulsorySavings));
+            tv_grpCompSavings.setText(String.valueOf(transaction.SavingTransaction.groupCompulsorySavings));
 
             EditText tv_optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
-            tv_optionalSavings.setTag(transaction.optionalSavings);
-            tv_optionalSavings.setText(String.valueOf(transaction.optionalSavings));
+            //tv_optionalSavings.setTag(transaction.savingTransaction.optionalSavings);
+            tv_optionalSavings.setText(String.valueOf(transaction.SavingTransaction.optionalSavings));
             tv_optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
 
             TextView tv_totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
-            tv_totalSavings.setText(String.valueOf(transaction.getTotalSavings()));
-            tv_totalSavings.setTag(transaction.hashCode());
+            tv_totalSavings.setText(String.valueOf(transaction.SavingTransaction.getTotalSavings()));
+            //tv_totalSavings.setTag(transaction.hashCode());
+
+            if(transaction.LoanTransaction.EMI > 0)
+            {
+                TextView tv_emi = (TextView) convert_view.findViewById(R.id.tv_transaction_loan_emi);
+                tv_emi.setText(String.valueOf(transaction.LoanTransaction.EMI));
+
+                EditText tv_repayment = (EditText) convert_view.findViewById(R.id.et_transaction_loan_repayment);
+                tv_repayment.setText(String.valueOf(transaction.LoanTransaction.Repayment));
+                tv_repayment.addTextChangedListener(new EMIRepaymentTextWatcher(transaction));
+
+                TextView tv_outstanding = (TextView) convert_view.findViewById(R.id.tv_transaction_loan_outstanding);
+                tv_outstanding.setText(String.valueOf(transaction.LoanTransaction.getUpdatedOutstanding()));
+            }
         } catch (Exception ex) {
             Log.d("ERROR", ex.getMessage());
         }
@@ -81,11 +94,38 @@ class OptionalSavingsTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable editable) {
         try {
             int value = Integer.parseInt(editable.toString());
-            Log.d("TRANS", "TextChanged for " + transToUpdate.member.toString() + " called with value :" + value);
-            transToUpdate.optionalSavings = value;
+            Log.d("TRANS", "TextChanged for " + transToUpdate.GroupMember.toString() + " called with value :" + value);
+            transToUpdate.SavingTransaction.optionalSavings = value;
         } catch (Exception ex) {
             // This will be happen in case string is empty or not valid int
         }
     }
+}
 
+class EMIRepaymentTextWatcher implements TextWatcher {
+    MeetingTransaction transToUpdate;
+
+    public EMIRepaymentTextWatcher(MeetingTransaction trans) {
+        this.transToUpdate = trans;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        try {
+            int value = Integer.parseInt(editable.toString());
+            Log.d("TRANS", "TextChanged for " + transToUpdate.GroupMember.toString() + " called with value :" + value);
+            transToUpdate.LoanTransaction.Repayment = value;
+        } catch (Exception ex) {
+            // This will be happen in case string is empty or not valid int
+        }
+    }
 }

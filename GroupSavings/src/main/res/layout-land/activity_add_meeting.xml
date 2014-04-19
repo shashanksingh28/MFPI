@@ -42,6 +42,27 @@
             android:text="Total Savings"
             android:textStyle="bold"/>
 
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Loan EMI"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Repayment"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Outstanding"
+            android:textStyle="bold"/>
+
     </LinearLayout>
 
     <ListView

@@ -15,17 +15,37 @@
         android:id="@+id/textview_transaction_compulsory_savings"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/edittext_transaction_optional_savings"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:inputType="textNoSuggestions" />
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/textview_transaction_total_saving"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:id="@+id/tv_transaction_loan_emi"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" />
+
+    <EditText
+        android:id="@+id/et_transaction_loan_repayment"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tv_transaction_loan_outstanding"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp" />

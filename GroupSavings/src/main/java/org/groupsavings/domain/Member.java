@@ -18,7 +18,7 @@ public class Member {
     public String AddressLine2;
     public String ContactInfo;
     public double TotalSavings;
-    public double TotalLoan;
+    public double OutstandingLoan;
     public Date CreatedAt;
 
 

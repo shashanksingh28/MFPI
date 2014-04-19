@@ -183,8 +183,10 @@ public class SyncHelper {
             collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_Id, savingTransaction.Id);
             collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_GroupMeetingId, savingTransaction.grpMeetingId);
             collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_GroupMemberSavingId, savingTransaction.memberSavingAccId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_Amount, savingTransaction.Amount);
-            //collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_DateTime ,);
+            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_OptionalSavings, savingTransaction.optionalSavings);
+            // Don't use getTotalSaving as it needs groupCompulsory savings which isn't populated directly via db
+            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_TransactionTotalSaving, savingTransaction.transactionTotalSaving);
+            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_DateTime, savingTransaction.timeStamp);
             //collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_SignedBy ,);
         } catch (JSONException e) {
             e.printStackTrace();

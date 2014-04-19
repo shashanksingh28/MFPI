@@ -8,10 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.groupsavings.activities.AddGroupActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <include
         android:id="@+id/layout_add_group"
         layout="@layout/group_details" />
-
+    </ScrollView>
     <Button
         android:id="@+id/button_save_group"
         android:layout_width="200dp"

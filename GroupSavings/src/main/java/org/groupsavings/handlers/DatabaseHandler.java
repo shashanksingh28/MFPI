@@ -126,14 +126,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_SAVINGTRANSACTION_Id = "Id";
     public static final String COLUMN_SAVINGTRANSACTION_GroupMeetingId = "GroupMeetingId";
     public static final String COLUMN_SAVINGTRANSACTION_GroupMemberSavingId = "GroupMemberSavingId";
-    public static final String COLUMN_SAVINGTRANSACTION_Amount = "Amount";
+    public static final String COLUMN_SAVINGTRANSACTION_OptionalSavings = "OptionalSaving";
+    public static final String COLUMN_SAVINGTRANSACTION_TransactionTotalSaving = "TotalTransactionSaving";
     public static final String COLUMN_SAVINGTRANSACTION_DateTime = "DateTime";
     public static final String COLUMN_SAVINGTRANSACTION_SignedBy = "SignedBy";
     private static final String CREATE_SAVINGTRANSACTION_TABLE = "Create table " + TABLE_SAVINGTRANSACTION
             + " (" + COLUMN_SAVINGTRANSACTION_Id + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_SAVINGTRANSACTION_GroupMeetingId + " INTEGER,"
             + COLUMN_SAVINGTRANSACTION_GroupMemberSavingId + " INTEGER,"
-            + COLUMN_SAVINGTRANSACTION_Amount + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_OptionalSavings + " INTEGER,"
+            + COLUMN_SAVINGTRANSACTION_TransactionTotalSaving + " INTEGER,"
             + COLUMN_SAVINGTRANSACTION_DateTime + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + COLUMN_SAVINGTRANSACTION_SignedBy + " TEXT"
             + ");";
@@ -183,12 +185,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOANACCOUNT_MemberId + " INTEGER,"
             + COLUMN_LOANACCOUNT_PrincipalAmount + " INTEGER,"
             + COLUMN_LOANACCOUNT_InterestRate + " INTEGER,"
-            + COLUMN_LOANACCOUNT_StartDate + " TIMESTAMP,"
-            + COLUMN_LOANACCOUNT_EndDate + " TIMESTAMP,"
+            + COLUMN_LOANACCOUNT_NoOfInstallments + " INTEGER,"
+            + COLUMN_LOANACCOUNT_InstallmentAmount + " INTEGER,"
+            + COLUMN_LOANACCOUNT_StartDate + " TEXT,"
+            + COLUMN_LOANACCOUNT_EndDate + " TEXT,"
             + COLUMN_LOANACCOUNT_Outstanding + " INTEGER,"
             + COLUMN_LOANACCOUNT_Reason + " TEXT,"
-            + COLUMN_LOANACCOUNT_InstallmentAmount + " INTEGER,"
-            + COLUMN_LOANACCOUNT_NoOfInstallments + " INTEGER,"
             + COLUMN_LOANACCOUNT_IsActive +" BOOLEAN,"
             + COLUMN_LOANACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
@@ -343,6 +345,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 member.ContactInfo = cursor.getString(12);
                 member.DOB = cursor.getString(5);
                 member.TotalSavings = getMemberSavings(member.UID, db);
+                member.OutstandingLoan = getMembersOutstanding(member.UID, db);
                 member.AddressLine1 = cursor.getString(13);
                 member.AddressLine2 = cursor.getString(14);
                 // Adding contact to list
@@ -408,6 +411,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 member.AddressLine1 = cursor.getString(13);
                 member.AddressLine2 = cursor.getString(14);
                 member.TotalSavings = getMemberSavings(member.UID, db);
+                member.OutstandingLoan = getMembersOutstanding(member.UID, db);
                 // Adding contact to list
                 membersList.add(member);
             } while (cursor.moveToNext());
@@ -474,6 +478,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return savings;
     }
 
+    private int getMembersOutstanding(int memberId, SQLiteDatabase db)
+    {
+        if (db == null) {
+            db = this.getWritableDatabase();
+        }
+
+        String selectQuery = "SELECT " + COLUMN_LOANACCOUNT_Outstanding + " FROM " + TABLE_LOANSACCOUNT
+                + " Where " + COLUMN_LOANACCOUNT_MemberId + "=" + memberId
+                + " AND " + COLUMN_LOANACCOUNT_IsActive + "=1";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        int outstanding = 0;
+
+        if (cursor.moveToFirst()) {
+            outstanding = cursor.getInt(0);
+        }
+
+        return outstanding;
+    }
+
     private SavingsAccount getMemberSavingAccount(int memberId, SQLiteDatabase db) {
         if (db == null) {
             db = this.getWritableDatabase();
@@ -515,16 +540,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         for (MeetingTransaction transaction : transactions) {
             // Get Savings account
-            SavingsAccount savingsAccount = getMemberSavingAccount(transaction.member.UID, db);
+            SavingsAccount savingsAccount = getMemberSavingAccount(transaction.GroupMember.UID, db);
             // calculate updated total savings
-            int updatedTotalSavings = savingsAccount.TotalSavings + transaction.getTotalSavings();
+            int updatedTotalSavings = savingsAccount.TotalSavings + transaction.SavingTransaction.getTotalSavings();
 
             // insert transaction
             ContentValues savingtransaction = new ContentValues();
             savingtransaction.put(COLUMN_SAVINGTRANSACTION_GroupMemberSavingId, savingsAccount.Id);
             savingtransaction.put(COLUMN_SAVINGTRANSACTION_GroupMeetingId, meetingId);
-            //savingtransaction.put(COLUM);
-            savingtransaction.put(COLUMN_SAVINGTRANSACTION_Amount, transaction.getTotalSavings());
+            savingtransaction.put(COLUMN_SAVINGTRANSACTION_OptionalSavings, transaction.SavingTransaction.optionalSavings);
+            savingtransaction.put(COLUMN_SAVINGTRANSACTION_TransactionTotalSaving, transaction.SavingTransaction.getTotalSavings());
             savingtransaction.put(COLUMN_SAVINGTRANSACTION_DateTime, dateTime);
             db.insertOrThrow(TABLE_SAVINGTRANSACTION, null, savingtransaction);
 
@@ -533,6 +558,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             savingAccountUpdate.put(COLUMN_SAVING_ACCOUNT_TotalSaving, updatedTotalSavings);
             db.update(TABLE_SAVINGSACCOUNT, savingAccountUpdate,
                     COLUMN_SAVING_ACCOUNT_Id + "=" + savingsAccount.Id, null);
+
+            ContentValues loanTransaction = new ContentValues();
+            if(transaction.LoanTransaction.EMI > 0)
+            {
+                // insert transaction
+                loanTransaction.put(COLUMN_LOAN_TRANSACTION_GroupMeetingId, meetingId);
+                loanTransaction.put(COLUMN_LOAN_TRANSACTION_GroupMemberLoanId, transaction.LoanTransaction.GroupMemberLoanAccountId);
+                loanTransaction.put(COLUMN_LOAN_TRANSACTION_Repayment, transaction.LoanTransaction.Repayment);
+
+                db.insertOrThrow(TABLE_LOANTRANSACTION, null, loanTransaction);
+
+                //update loans account
+                ContentValues loanAccountUpdate = new ContentValues();
+                loanAccountUpdate.put(COLUMN_LOANACCOUNT_Outstanding, transaction.LoanTransaction.getUpdatedOutstanding());
+                // make account inactive if no more left to pay
+                if(transaction.LoanTransaction.getUpdatedOutstanding() <= 0)
+                {
+                    loanAccountUpdate.put(COLUMN_LOANACCOUNT_IsActive,false);
+                }
+                db.update(TABLE_LOANSACCOUNT,loanAccountUpdate,
+                        COLUMN_LOANACCOUNT_Id+"="+transaction.LoanTransaction.GroupMemberLoanAccountId,null);
+            }
+
         }
     }
 
@@ -580,11 +628,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues loanAccValues = new ContentValues();
         loanAccValues.put(COLUMN_LOANACCOUNT_GroupId,la.groupId);
-        loanAccValues.put(COLUMN_LOANACCOUNT_MemberId, la.member.UID);
+        loanAccValues.put(COLUMN_LOANACCOUNT_MemberId, la.memberId);
         loanAccValues.put(COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
         loanAccValues.put(COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
-        loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.periodInMonths);
+        loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.PeriodInMonths);
         loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
+        loanAccValues.put(COLUMN_LOANACCOUNT_StartDate, la.StartDate);
+        loanAccValues.put(COLUMN_LOANACCOUNT_EndDate, la.EndDate);
+        loanAccValues.put(COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
         loanAccValues.put(COLUMN_LOANACCOUNT_IsActive, la.IsActive);
 
         if(la.Id == 0)
@@ -597,17 +648,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void getAllLoanAccounts()
+    public LoanAccount getMemberLoanAccount(int memberId)
     {
+        String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT + " WHERE "+COLUMN_LOANACCOUNT_MemberId+"="+memberId;
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT;
 
-        Cursor cursor = db.rawQuery(selectQuery,null);
-        if (cursor.moveToFirst()) {
-            do {
-                SavingsAccount sa = new SavingsAccount();
-            } while (cursor.moveToNext());
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        LoanAccount la = null;
+        if(cursor.moveToFirst()){
+            la = new LoanAccount();
+            la.Id = cursor.getInt(0);
+            la.groupId = cursor.getInt(1);
+            la.memberId = cursor.getInt(2);
+            la.Principal = cursor.getInt(3);
+            la.InterestPerAnnum = cursor.getFloat(4);
+            la.PeriodInMonths = cursor.getInt(5);
+            la.EMI = cursor.getInt(6);
+            la.StartDate = cursor.getString(7);
+            la.EndDate = cursor.getString(8);
+            la.OutStanding = cursor.getInt(9);
+            la.Reason = cursor.getString(10);
+            la.IsActive = cursor.getInt(11) == 1;
         }
+
+        return la;
     }
 
 
@@ -647,7 +711,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 st.Id = cursor.getInt(0);
                 st.grpMeetingId = cursor.getInt(1);
                 st.memberSavingAccId = cursor.getInt(2);
-                st.Amount = cursor.getInt(3);
+                st.optionalSavings = cursor.getInt(3);
+                st.transactionTotalSaving = cursor.getInt(4);
+                st.timeStamp = cursor.getString(5);
                 allSavingTrans.add(st);
             } while (cursor.moveToNext());
         }
