@@ -35,14 +35,6 @@ public class LoansFragment extends Fragment implements View.OnClickListener {
     ArrayAdapter<GroupMeeting> meetingsAdapter;
     int groupUID;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoansFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static LoansFragment newInstance(int param1) {
         LoansFragment fragment = new LoansFragment();

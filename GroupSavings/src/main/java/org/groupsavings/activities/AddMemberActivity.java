@@ -101,7 +101,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             dob_year = year;
-            dob_month = monthOfYear;
+            dob_month = monthOfYear+1;
             dob_day = dayOfMonth;
             updateDOBDisplay();
         }

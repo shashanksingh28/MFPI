@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingTransaction;
@@ -417,15 +418,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         saving_acc_values.put(COLUMN_SAVING_ACCOUNT_TotalSaving, 0);
 
         db.insertOrThrow(TABLE_SAVINGSACCOUNT, null, saving_acc_values);
-
-        ContentValues loan_acc_values = new ContentValues();
-
-        loan_acc_values.put(COLUMN_LOANACCOUNT_GroupId, member.GroupUID);
-        loan_acc_values.put(COLUMN_LOANACCOUNT_MemberId, member.UID);
-        loan_acc_values.put(COLUMN_LOANACCOUNT_PrincipalAmount, 0);
-
-        db.insertOrThrow(TABLE_LOANSACCOUNT, null, loan_acc_values);
-
     }
 
     private int getMemberSavings(int memberId, SQLiteDatabase db) {
@@ -546,6 +538,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //-------------------------- Transaction related functions ---------------//
+    //-------------------------------------------------------------------------------//
+    public void addUpdateLoanAccount(LoanAccount la)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues loanAccValues = new ContentValues();
+        loanAccValues.put(COLUMN_LOANACCOUNT_GroupId,la.groupId);
+        loanAccValues.put(COLUMN_LOANACCOUNT_MemberId, la.member.UID);
+        loanAccValues.put(COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
+        loanAccValues.put(COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
+        loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.periodInMonths);
+        loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
+
+        if(la.Id == 0)
+        {
+            db.insertOrThrow(TABLE_LOANSACCOUNT,null,loanAccValues);
+        }
+        else
+        {
+
+        }
+    }
+
 
     public ArrayList<SavingsAccount> getAllSavingAccounts() {
         ArrayList<SavingsAccount> allAccounts = new ArrayList<SavingsAccount>();
