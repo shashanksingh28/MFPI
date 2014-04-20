@@ -3,6 +3,7 @@ package org.groupsavings.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.groupsavings.R;
+import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
@@ -31,6 +33,8 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     ArrayAdapter<Member> grpMembersAdapter;
     Spinner members_spinner;
     LoanAccount la;
+
+    public static final String INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON="LoanAccount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +97,13 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 la.IsActive = true;
-                                db_handler.addUpdateLoanAccount(la);
+                                // Pass loan account as a JSONObject to the activity that called it
+                                Intent returnLoanAccount = new Intent();
+                                returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
+                                setResult(RESULT_OK,returnLoanAccount);
+                                //db_handler.addUpdateLoanAccount(la);
                                 finish();
                                 break;
-
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button clicked
                                 break;
@@ -142,4 +149,5 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
 
         return la;
     }
+
 }

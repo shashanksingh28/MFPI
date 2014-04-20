@@ -3,9 +3,9 @@ package org.groupsavings.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.domain.Group;
+import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.Calendar;
 
@@ -57,15 +57,10 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
             groupUID = getArguments().getInt(ARG_PARAM1);
         }
 
-
         Calendar c = Calendar.getInstance();
         mmd_year = c.get(Calendar.YEAR)-20;
         mmd_month = c.get(Calendar.MONTH);
         mmd_day = c.get(Calendar.DAY_OF_MONTH);
-
-        ImageButton ib = (ImageButton) getActivity().findViewById(R.id.imgbtn_pick_mmd);
-        ib.setOnClickListener(this);
-        tv_mmd = (TextView) getActivity().findViewById(R.id.tv_group_mmd);
         db_handler = new DatabaseHandler(getActivity());
         group = db_handler.getGroup(groupUID);
     }
@@ -85,6 +80,10 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         if(saveGroupButton != null){
             saveGroupButton.setOnClickListener(this);
         }
+        ImageButton ib = (ImageButton) getActivity().findViewById(R.id.imgbtn_pick_mmd);
+        ib.setOnClickListener(this);
+        tv_mmd = (TextView) getActivity().findViewById(R.id.tv_group_mmd);
+
         ViewHelper.populateGroupDetailsToView(getActivity().findViewById(R.id.layout_group_details), group);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
@@ -122,7 +121,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             mmd_year  = year;
-            mmd_month = monthOfYear;
+            mmd_month = monthOfYear+1;
             mmd_day = dayOfMonth;
             updateMMDDisplay();
         }
@@ -130,7 +129,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
 
     private void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day+"/"+mmd_month+"/"+mmd_year);
+        tv_mmd.setText(mmd_day+" of every month");
     }
 
 

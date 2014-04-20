@@ -43,7 +43,8 @@
         <activity
             android:name="org.groupsavings.activities.AddMeetingActivity"
             android:label="@string/title_activity_add_meeting"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="org.groupsavings.activities.AddMemberActivity"
             android:label="@string/title_activity_add_member"

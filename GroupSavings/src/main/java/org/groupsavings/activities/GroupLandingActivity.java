@@ -59,7 +59,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         fragment_members = MembersFragment.newInstance(groupUID);
         fragment_group_details = GroupDetailsFragment.newInstance(groupUID);
         fragment_meetings = MeetingsFragment.newInstance(groupUID);
-        fragment_loans = LoansFragment.newInstance(groupUID);
+        //fragment_loans = LoansFragment.newInstance(groupUID);
 
 
         // Set up the action bar.
@@ -156,8 +156,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_members;
                 case 2:
                     return fragment_meetings;
-                case 3:
-                    return fragment_loans;
+                //case 3:
+                    //return fragment_loans;
                 default:
                     return fragment_meetings;
             }
@@ -166,7 +166,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 3;
         }
 
         @Override
@@ -179,8 +179,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
-                case 3:
-                    return getString(R.string.title_section4).toUpperCase();
+                //case 3:
+                    //return getString(R.string.title_section4).toUpperCase();
             }
             return null;
         }

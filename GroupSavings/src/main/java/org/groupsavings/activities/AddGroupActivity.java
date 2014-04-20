@@ -8,16 +8,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
+import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.DatabaseHandler;
-import org.groupsavings.domain.*;
 
 import java.util.Calendar;
 
@@ -110,6 +110,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
     private void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day+"/"+mmd_month+"/"+mmd_year);
+        tv_mmd.setText(mmd_day+" of every month");
     }
 }

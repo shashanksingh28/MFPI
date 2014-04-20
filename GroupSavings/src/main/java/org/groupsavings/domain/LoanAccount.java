@@ -7,7 +7,9 @@ public class LoanAccount {
 
     public int Id;
     public int groupId;
+    public int groupMeetingId;
     public int memberId;
+    public Member GroupMember;
 
     public int Principal;
     public float InterestPerAnnum;

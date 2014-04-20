@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.groupsavings.domain.Group;
+import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
@@ -195,32 +196,51 @@ public class SyncHelper {
         return collectJSON;
     }	
 
-/* Commenting out for POC
-
 	// Name Value pairs for Loan Accounts
-	public static JSONObject getJsonLoanAcc(LoanAccount loanAccount)
+	public static JSONObject getJsonLoanAcc(LoanAccount la)
     {
         JSONObject collectJSON = new JSONObject();
         try {
-			collectJSON.put(COLUMN_LOANACCOUNT_Id ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_GroupId ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_MemberId ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_PrincipalAmount ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_InterestRate ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_StartDate ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_EndDate ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_Outstanding ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_Reason ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_InstallmentAmount ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_NoOfInstallments ,);
-			collectJSON.put(COLUMN_LOANACCOUNT_CreatedDate ,);		
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Id, la.Id);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_GroupId, la.groupId);
+            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_GroupMeetingId, la.groupMeetingId);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_MemberId, la.memberId);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
+            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_NoOfInstallments, la.PeriodInMonths);
+            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_StartDate, la.StartDate);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_EndDate, la.EndDate);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
+			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Reason, la.Reason);
+			//collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_CreatedDate ,);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return collectJSON;
-    }	
-	
+    }
+
+    public static LoanAccount getLoanAccFromJson(JSONObject jsonLA) throws JSONException {
+        LoanAccount la = new LoanAccount();
+        la.Id = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_Id);
+        la.groupId = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_GroupId);
+        la.groupMeetingId = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_GroupMeetingId);
+        la.memberId = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_MemberId);
+        la.Principal = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_PrincipalAmount);
+        la.InterestPerAnnum = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_InterestRate);
+        la.PeriodInMonths = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_NoOfInstallments);
+        la.EMI = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_InstallmentAmount);
+        la.StartDate = jsonLA.getString(DatabaseHandler.COLUMN_LOANACCOUNT_StartDate);
+        la.EndDate = jsonLA.getString(DatabaseHandler.COLUMN_LOANACCOUNT_EndDate);
+        la.OutStanding = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_Outstanding);
+        la.Reason = jsonLA.getString(DatabaseHandler.COLUMN_LOANACCOUNT_Reason);
+
+        return la;
+    }
+
+
+/* Commenting out for POC
 	// Name Value pairs for Loan Transactions
 	public static JSONObject getJsonLoanTrans(LoanTransaction loanTransaction)
     {

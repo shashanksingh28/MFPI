@@ -1,8 +1,6 @@
 package org.groupsavings;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,93 +37,84 @@ public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction>
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convert_view = inflater.inflate(R.layout.meeting_transaction_row, viewGroup, false);
 
-            TextView tv_memberName = (TextView) convert_view.findViewById(R.id.textview_transaction_name);
+            TextView tv_memberName = (TextView) convert_view.findViewById(R.id.tv_transaction_name);
             tv_memberName.setText(transaction.GroupMember.toString());
 
-            TextView tv_grpCompSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_compulsory_savings);
-            tv_grpCompSavings.setText(String.valueOf(transaction.SavingTransaction.groupCompulsorySavings));
+            final EditText et_grpCompSavings = (EditText) convert_view.findViewById(R.id.et_transaction_compulsory_savings);
+            et_grpCompSavings.setText(String.valueOf(transaction.SavingTransaction.groupCompulsorySavings));
+            et_grpCompSavings.setOnFocusChangeListener(new View.OnFocusChangeListener()
+            {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if(!hasFocus)
+                    {
+                        // A kind of workaround since this is being called more than once weirdly
+                        int prev = transaction.SavingTransaction.groupCompulsorySavings;
+                        int curr = Integer.valueOf(et_grpCompSavings.getText().toString());
+                        if(prev != curr)
+                        {
+                            transaction.SavingTransaction.groupCompulsorySavings = curr;
+                            notifyDataSetChanged();
+                        }
+                    }
+                }
+            });
 
-            EditText tv_optionalSavings = (EditText) convert_view.findViewById(R.id.edittext_transaction_optional_savings);
-            //tv_optionalSavings.setTag(transaction.savingTransaction.optionalSavings);
-            tv_optionalSavings.setText(String.valueOf(transaction.SavingTransaction.optionalSavings));
-            tv_optionalSavings.addTextChangedListener(new OptionalSavingsTextWatcher(transaction));
-
-            TextView tv_totalSavings = (TextView) convert_view.findViewById(R.id.textview_transaction_total_saving);
+            TextView tv_totalSavings = (TextView) convert_view.findViewById(R.id.tv_transaction_total_saving);
             tv_totalSavings.setText(String.valueOf(transaction.SavingTransaction.getTotalSavings()));
-            //tv_totalSavings.setTag(transaction.hashCode());
+
+            final EditText et_optionalSavings = (EditText) convert_view.findViewById(R.id.et_transaction_optional_savings);
+            et_optionalSavings.setText(String.valueOf(transaction.SavingTransaction.optionalSavings));
+            et_optionalSavings.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(!hasFocus)
+                    {
+                        // A kind of workaround since this is being called more than once weirdly
+                        int prev = transaction.SavingTransaction.optionalSavings;
+                        int curr =  Integer.valueOf(et_optionalSavings.getText().toString());
+                        if(prev != curr) {
+                            transaction.SavingTransaction.optionalSavings = curr;
+                            notifyDataSetChanged();
+                        }
+                    }
+                }});
 
             if(transaction.LoanTransaction.EMI > 0)
             {
                 TextView tv_emi = (TextView) convert_view.findViewById(R.id.tv_transaction_loan_emi);
                 tv_emi.setText(String.valueOf(transaction.LoanTransaction.EMI));
 
-                EditText tv_repayment = (EditText) convert_view.findViewById(R.id.et_transaction_loan_repayment);
-                tv_repayment.setText(String.valueOf(transaction.LoanTransaction.Repayment));
-                tv_repayment.addTextChangedListener(new EMIRepaymentTextWatcher(transaction));
+                final EditText et_repayment = (EditText) convert_view.findViewById(R.id.et_transaction_loan_repayment);
+                et_repayment.setText(String.valueOf(transaction.LoanTransaction.Repayment));
+                et_repayment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        if(!hasFocus)
+                        {
+                            // A kind of workaround since this is being called more than once weirdly
+                            int prev = transaction.LoanTransaction.Repayment;
+                            int curr = Integer.valueOf(et_repayment.getText().toString());
+                            if(prev != curr)
+                            {
+                                transaction.LoanTransaction.Repayment = curr;
+                                notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
 
                 TextView tv_outstanding = (TextView) convert_view.findViewById(R.id.tv_transaction_loan_outstanding);
                 tv_outstanding.setText(String.valueOf(transaction.LoanTransaction.getUpdatedOutstanding()));
+            }
+            else
+            {
+                EditText tv_repayment = (EditText) convert_view.findViewById(R.id.et_transaction_loan_repayment);
+                tv_repayment.setVisibility(View.INVISIBLE);
             }
         } catch (Exception ex) {
             Log.d("ERROR", ex.getMessage());
         }
 
         return convert_view;
-    }
-}
-
-class OptionalSavingsTextWatcher implements TextWatcher {
-    MeetingTransaction transToUpdate;
-
-    public OptionalSavingsTextWatcher(MeetingTransaction trans) {
-        this.transToUpdate = trans;
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        try {
-            int value = Integer.parseInt(editable.toString());
-            Log.d("TRANS", "TextChanged for " + transToUpdate.GroupMember.toString() + " called with value :" + value);
-            transToUpdate.SavingTransaction.optionalSavings = value;
-        } catch (Exception ex) {
-            // This will be happen in case string is empty or not valid int
-        }
-    }
-}
-
-class EMIRepaymentTextWatcher implements TextWatcher {
-    MeetingTransaction transToUpdate;
-
-    public EMIRepaymentTextWatcher(MeetingTransaction trans) {
-        this.transToUpdate = trans;
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        try {
-            int value = Integer.parseInt(editable.toString());
-            Log.d("TRANS", "TextChanged for " + transToUpdate.GroupMember.toString() + " called with value :" + value);
-            transToUpdate.LoanTransaction.Repayment = value;
-        } catch (Exception ex) {
-            // This will be happen in case string is empty or not valid int
-        }
     }
 }
