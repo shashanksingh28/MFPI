@@ -38,7 +38,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         setContentView(R.layout.activity_add_member);
         db_handler = new DatabaseHandler(getApplicationContext());
         Calendar c = Calendar.getInstance();
-        dob_year = c.get(Calendar.YEAR)-20;
+        dob_year = c.get(Calendar.YEAR);
         dob_month = c.get(Calendar.MONTH);
         dob_day = c.get(Calendar.DAY_OF_MONTH);
 
