@@ -64,9 +64,17 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId())
+        {
+            case R.id.action_settings:
+                return true;
+
+            case R.id.button_save_new_member:
+                Member newMember = getMemberFromView();
+                newMember.GroupUID = groupUID;
+                db_handler.addUpdateMember(newMember);
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -101,7 +109,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             dob_year = year;
-            dob_month = monthOfYear+1;
+            dob_month = monthOfYear;
             dob_day = dayOfMonth;
             updateDOBDisplay();
         }
@@ -109,7 +117,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
     private void updateDOBDisplay() {
         tv_dob.setVisibility(View.VISIBLE);
-        tv_dob.setText(dob_day+"/"+dob_month+"/"+dob_year);
+        tv_dob.setText(dob_day+"/"+(dob_month+1)+"/"+dob_year);
     }
 
     private Member getMemberFromView()
