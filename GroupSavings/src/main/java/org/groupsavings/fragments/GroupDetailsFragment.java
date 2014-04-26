@@ -7,6 +7,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -63,6 +66,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         mmd_day = c.get(Calendar.DAY_OF_MONTH);
         db_handler = new DatabaseHandler(getActivity());
         group = db_handler.getGroup(groupUID);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -86,6 +90,30 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
 
         ViewHelper.populateGroupDetailsToView(getActivity().findViewById(R.id.layout_group_details), group);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.group_details, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.button_save_group_details:
+                Group group = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
+                if(group != null)
+                {
+                    db_handler.addUpdateGroup(group);
+                }
+                HideKeypad();
+                Toast.makeText(getActivity(), "Group Saved", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -97,7 +125,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
 
-            case R.id.button_save_group_details:
+            /*case R.id.button_save_group_details:
                 Group group = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
                 if(group != null)
                 {
@@ -105,7 +133,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
                 }
                 HideKeypad();
                 Toast.makeText(getActivity(), "Group Saved", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
         }
     }
 

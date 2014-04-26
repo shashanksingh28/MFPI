@@ -1,9 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.communityfinance.MemberScreenActivity" >
+    tools:context="org.groupsavings.fragments.MembersFragment" >
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item
+        android:id="@+id/button_add_member"
+        android:icon="@drawable/ic_action_add_person"
+        android:showAsAction="always"
+        android:title="Add Member"
+        />
+    <item
+        android:id="@+id/button_save_member"
+        android:icon="@drawable/ic_action_save"
+        android:title="Save Member"
+        android:showAsAction="always"/>
 </menu>

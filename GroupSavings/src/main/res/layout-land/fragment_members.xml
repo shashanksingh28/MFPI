@@ -25,7 +25,8 @@
                 android:drawableLeft="@drawable/ic_action_add_person"
                 android:text="Add New"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"/>
 
             <ListView
                 android:id="@+id/listview_member_names"
@@ -54,7 +55,8 @@
                 android:drawableLeft="@drawable/ic_action_save"
                 android:text="Save Member"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
