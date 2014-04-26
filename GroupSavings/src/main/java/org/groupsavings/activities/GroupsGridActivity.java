@@ -70,7 +70,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.groups_grid, menu);
+        getMenuInflater().inflate(R.menu.groups_grid, menu);
         return true;
     }
 
@@ -79,9 +79,16 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId())
+        {
+            case R.id.button_add_group:
+                Intent intent = new Intent(getApplicationContext(),AddGroupActivity.class);
+                startActivityForResult(intent,REQUEST_ADD_GROUP);
+                return true;
+            case R.id.button_syc:
+                PushDataAsync asyncTask = new PushDataAsync();
+                asyncTask.execute();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -95,17 +102,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.button_add_group:
-                Intent intent = new Intent(getApplicationContext(),AddGroupActivity.class);
-                startActivityForResult(intent,REQUEST_ADD_GROUP);
-                break;
-            case R.id.button_syc:
-                PushDataAsync asyncTask = new PushDataAsync();
-                asyncTask.execute();
-                break;
-        }
     }
 
     public class PushDataAsync extends AsyncTask<String, String, String> {

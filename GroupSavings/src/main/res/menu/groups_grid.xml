@@ -1,9 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.android.communityfinance.activities.GroupsGridActivity" >
+    tools:context="org.groupsavings.activities.GroupsGridActivity" >
     
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item
+        android:id="@+id/button_add_group"
+        android:icon="@drawable/ic_action_add_group"
+        android:title="Add New"
+        android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/button_syc"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="Push to Server"
+        android:showAsAction="always"/>
 </menu>
