@@ -290,8 +290,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.RecurringSavings = cursor.getInt(9);
                 group.AddressLine1 = cursor.getString(13);
                 group.AddressLine2 = cursor.getString(14);
-                group.TotalSavings = getTotalSavings(group.UID);
-                group.TotalOutstanding = getTotalOutstanding(group.UID);
+                group.TotalSavings = getTotalSavings(group.UID,db);
+                group.TotalOutstanding = getTotalOutstanding(group.UID,db);
                 groupList.add(group);
             } while (cursor.moveToNext());
         }
@@ -318,8 +318,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             group.GroupName = cursor.getString(1);
             group.AddressLine1 = cursor.getString(13);
             group.AddressLine2 = cursor.getString(14);
-            group.TotalSavings = getTotalSavings(group.UID);
-            group.TotalOutstanding = getTotalOutstanding(group.UID);
+            group.TotalSavings = getTotalSavings(group.UID,db);
+            group.TotalOutstanding = getTotalOutstanding(group.UID,db);
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
@@ -333,22 +333,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return group;
     }
 
-    public Long getTotalSavings(int groupUID){
-        String selectQuery = "SELECT  SUM(COLUMN_SAVING_ACCOUNT_TotalSaving) FROM " + TABLE_SAVINGSACCOUNT + " Where " + COLUMN_GROUP_HashId + "=" + groupUID;
+    public Long getTotalSavings(int groupUID , SQLiteDatabase db){
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        if(db == null) db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT  SUM("+COLUMN_SAVING_ACCOUNT_TotalSaving+") FROM " + TABLE_SAVINGSACCOUNT + " Where " + COLUMN_SAVING_ACCOUNT_GroupId + "=" + groupUID;
+
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return cursor.getLong(0);
+        long totalSavings =0;
+        if(cursor.moveToFirst())
+        {
+            totalSavings = cursor.getLong(0);
+        }
+        return totalSavings;
     }
 
-    public Long getTotalOutstanding(int groupUID){
-        String selectQuery = "SELECT  SUM(COLUMN_LOANACCOUNT_Outstanding) FROM " + TABLE_LOANSACCOUNT + " Where " + COLUMN_GROUP_HashId + "=" + groupUID;
+    public Long getTotalOutstanding(int groupUID, SQLiteDatabase db){
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        if(db == null) db = this.getWritableDatabase();
+        String selectQuery = "SELECT  SUM("+COLUMN_LOANACCOUNT_Outstanding+") FROM " + TABLE_LOANSACCOUNT + " Where " + COLUMN_LOANACCOUNT_GroupId + "=" + groupUID;
+
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return cursor.getLong(0);
+        long totalOutstanding = 0;
+        if(cursor.moveToFirst())
+        {
+            totalOutstanding = cursor.getLong(0);
+        }
+        return totalOutstanding;
     }
 
 
@@ -683,7 +694,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT +
                 " WHERE "+COLUMN_LOANACCOUNT_MemberId+"="+memberId +
-                " AND "+COLUMN_LOANACCOUNT_IsActive+"="+1;
+                " AND "+COLUMN_LOANACCOUNT_IsActive+"=1";
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(selectQuery, null);

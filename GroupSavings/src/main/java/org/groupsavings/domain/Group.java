@@ -23,7 +23,7 @@ public class Group {
     @Override
     public String toString()
     {
-        return GroupName + " - " + AddressLine2 + "\nTotal Savings : " + TotalSavings + "\nTotal Outstanding : " + TotalOutstanding;
+        return GroupName + " - " + AddressLine2 + "    Savings : " + TotalSavings + "    Outstanding : " + TotalOutstanding;
     }
 
 }

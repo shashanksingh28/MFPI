@@ -146,6 +146,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
                         if(member.UID == la.memberId)
                         {
                             la.GroupMember = member;
+                            la.memberId = member.UID;
                             break;
                         }
                     }
