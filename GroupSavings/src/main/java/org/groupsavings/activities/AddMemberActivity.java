@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -46,8 +45,8 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         ib.setOnClickListener(this);
         tv_dob = (TextView) findViewById(R.id.tv_member_dob);
 
-        Button saveButton = (Button) findViewById(R.id.button_save_new_member);
-        saveButton.setOnClickListener(this);
+        /*Button saveButton = (Button) findViewById(R.id.button_save_new_member);
+        saveButton.setOnClickListener(this);*/
     }
 
 

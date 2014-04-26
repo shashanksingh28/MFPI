@@ -18,13 +18,13 @@ import android.widget.Toast;
 import org.groupsavings.R;
 import org.groupsavings.activities.AddMeetingActivity;
 import org.groupsavings.activities.GroupLandingActivity;
+import org.groupsavings.activities.ViewMeetingActivity;
 import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
 
-public class MeetingsFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MeetingsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private static final String ARG_PARAM1 = "Group UID";
     Activity activity;
@@ -53,7 +53,6 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         if (getArguments() != null) {
             groupUID = getArguments().getInt(ARG_PARAM1);
         }
-
     }
 
     @Override
@@ -77,7 +76,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
             lv.setAdapter(meetingsAdapter);
             lv.setOnItemClickListener(this);
 
-/*            Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
+            /* Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
             addNewMeeting.setOnClickListener(this);*/
 
         } catch (Exception ex) {
@@ -104,17 +103,9 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-        int meetingId = meetings.get(i).id;
-        ArrayList<MeetingTransaction> readTrans = dbHandler.getMeetingTransactions(meetingId);
-        Intent intent = new Intent(getActivity(), GroupLandingActivity.class);
-        //intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP,groups.get(i).UID);
-        //startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        Intent intent = new Intent(getActivity(), ViewMeetingActivity.class);
+        intent.putExtra(GroupLandingActivity.INTENT_EXTRA_MEETINGID,meetings.get(i).id);
+        startActivity(intent);
     }
 
     @Override

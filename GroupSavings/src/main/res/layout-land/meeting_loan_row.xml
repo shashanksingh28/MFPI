@@ -32,6 +32,12 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:id="@+id/tv_meeting_loan_months"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:id="@+id/tv_meeting_loan_emi"/>
 
 </LinearLayout>

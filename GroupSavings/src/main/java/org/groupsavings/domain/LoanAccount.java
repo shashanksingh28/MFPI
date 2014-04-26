@@ -11,28 +11,33 @@ public class LoanAccount {
     public int memberId;
     public Member GroupMember;
 
-    public int Principal;
+    public long Principal;
     public float InterestPerAnnum;
     public int PeriodInMonths;
-    public int EMI;
+    public long OutStanding;
+    public long EMI;
+
     public String StartDate;
     public String EndDate;
-
-    public int OutStanding;
     public String Reason;
     public boolean IsActive;
 
-
-    public int getEMI()
+    public long getEMI()
     {
         int simpleInterest = (int) (Principal * InterestPerAnnum * PeriodInMonths / 1200);
-        int total = Principal + simpleInterest;
-        int quotient = total / PeriodInMonths;
-        int remainder = total % PeriodInMonths;
+        long total = Principal + simpleInterest;
+        int quotient = (int) total / PeriodInMonths;
+        int remainder = (int) total % PeriodInMonths;
         if(remainder > 0) quotient ++;
 
         EMI = quotient;
         return EMI;
+    }
+
+    public long getInitialOutstanding()
+    {
+        long simpleInterest = (int) (Principal * InterestPerAnnum * PeriodInMonths / 1200);
+        return Principal + simpleInterest;
     }
 
 }

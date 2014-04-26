@@ -35,7 +35,7 @@
         <activity
             android:name="org.groupsavings.activities.AddGroupActivity"
             android:label="@string/title_activity_add_group"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name="org.groupsavings.activities.GroupLandingActivity"
             android:label="@string/title_activity_group_landing"
@@ -49,13 +49,18 @@
         <activity
             android:name="org.groupsavings.activities.AddMemberActivity"
             android:label="@string/title_activity_add_member"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="org.groupsavings.activities.NewLoanActivity"
             android:label="@string/title_activity_new_loan"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="org.groupsavings.activities.ViewMeetingActivity"
+            android:label="@string/title_activity_view_meeting"
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 

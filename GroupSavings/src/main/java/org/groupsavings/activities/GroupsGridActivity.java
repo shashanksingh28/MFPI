@@ -53,7 +53,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         catch (Exception ex)
         {
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -69,7 +68,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.groups_grid, menu);
         return true;

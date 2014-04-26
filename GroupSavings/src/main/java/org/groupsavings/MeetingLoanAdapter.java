@@ -64,6 +64,9 @@ public class MeetingLoanAdapter extends ArrayAdapter<LoanAccount> {
             TextView tv_interest = (TextView) convert_view.findViewById(R.id.tv_meeting_loan_interest);
             tv_interest.setText(String.valueOf(la.InterestPerAnnum));
 
+            TextView tv_period = (TextView) convert_view.findViewById(R.id.tv_meeting_loan_months);
+            tv_period.setText(String.valueOf(la.PeriodInMonths));
+
             TextView tv_emi = (TextView) convert_view.findViewById(R.id.tv_meeting_loan_emi);
             tv_emi.setText(String.valueOf(la.EMI));
 

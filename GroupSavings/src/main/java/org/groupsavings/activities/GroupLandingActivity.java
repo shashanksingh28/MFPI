@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import org.groupsavings.R;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
-import org.groupsavings.fragments.LoansFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
 import org.groupsavings.handlers.DatabaseHandler;
@@ -22,6 +21,7 @@ import java.util.Locale;
 public class GroupLandingActivity extends Activity implements ActionBar.TabListener {
 
     public static final String INTENT_EXTRA_GROUP = "GroupUID";
+    public static final String INTENT_EXTRA_MEETINGID = "GrpMeetingID";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     int TAB_POSITION = 0;
@@ -40,7 +40,6 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     MembersFragment fragment_members;
     GroupDetailsFragment fragment_group_details;
     MeetingsFragment fragment_meetings;
-    LoansFragment fragment_loans;
     /**
      * The {@link ViewPager} that will host the section contents.
      */

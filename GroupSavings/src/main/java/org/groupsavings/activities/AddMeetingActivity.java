@@ -53,7 +53,7 @@ public class AddMeetingActivity extends Activity {
             transactions = populateMeetingTransactions(group, groupMembers);
 
             ListView lv_transactions = (ListView) findViewById(R.id.listview_meeting_transactions);
-            transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions);
+            transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions,false);
             lv_transactions.setAdapter(transactionsAdapter);
 
             loanAccounts = new ArrayList<LoanAccount>();
@@ -71,7 +71,6 @@ public class AddMeetingActivity extends Activity {
         {
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
-
     }
 
     private ArrayList<MeetingTransaction> populateMeetingTransactions(Group group, ArrayList<Member> members) {
@@ -102,7 +101,6 @@ public class AddMeetingActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_meeting, menu);
         return true;

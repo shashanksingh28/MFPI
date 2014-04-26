@@ -466,8 +466,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return membersList;
     }
 
-    public Member getBasicMember(int memberId, SQLiteDatabase db)
-    {
+    public Member getBasicMember(int memberId, SQLiteDatabase db) {
         if (db == null) db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_MEMBER
@@ -486,6 +485,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return member;
     }
+
     public void addUpdateMember(Member member) {
         if (member == null) return;
 
@@ -543,8 +543,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return savings;
     }
 
-    private int getMembersOutstanding(int memberId, SQLiteDatabase db)
-    {
+    private int getMembersOutstanding(int memberId, SQLiteDatabase db) {
         if (db == null) {
             db = this.getWritableDatabase();
         }
@@ -586,8 +585,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return account;
     }
 
-    private int getSavingsAccountMemberId(int savingAccId, SQLiteDatabase db)
-    {
+    private int getSavingsAccountMemberId(int savingAccId, SQLiteDatabase db) {
         if(db == null) db = getReadableDatabase();
 
         String selectQuery = "SELECT "+COLUMN_SAVING_ACCOUNT_MemberId+" FROM " + TABLE_SAVINGSACCOUNT
@@ -601,8 +599,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return memberId;
     }
 
-    private int getLoanAccountMemberId(int loanAccId, SQLiteDatabase db)
-    {
+    private int getLoanAccountMemberId(int loanAccId, SQLiteDatabase db) {
         if(db == null) db = getReadableDatabase();
 
         String selectQuery = "SELECT "+COLUMN_LOANACCOUNT_MemberId+" FROM " + TABLE_LOANSACCOUNT
@@ -616,8 +613,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return memberId;
     }
 
-    private LoanAccount getLoanAccount(int loanAccId, SQLiteDatabase db)
-    {
+    private LoanAccount getLoanAccount(int loanAccId, SQLiteDatabase db) {
         if(db == null) db = getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT
@@ -632,23 +628,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             la.groupId = cursor.getInt(1);
             la.groupMeetingId = cursor.getInt(2);
             la.memberId = cursor.getInt(3);
-            la.Principal = cursor.getInt(4);
+            la.Principal = cursor.getLong(4);
             la.InterestPerAnnum = cursor.getFloat(5);
-            la.StartDate = cursor.getString(6);
-            la.EndDate = cursor.getString(7);
-            la.OutStanding = cursor.getInt(8);
-            la.Reason = cursor.getString(9);
-            la.EMI = cursor.getInt(10);
-            la.PeriodInMonths = cursor.getInt(11);
+            la.StartDate = cursor.getString(8);
+            la.EndDate = cursor.getString(9);
+            la.OutStanding = cursor.getLong(10);
+            la.Reason = cursor.getString(11);
+            la.EMI = cursor.getLong(7);
+            la.PeriodInMonths = cursor.getInt(6);
             la.IsActive = cursor.getInt(12) == 1;
+            la.GroupMember = getBasicMember(la.memberId,db);
         }
         return la;
-    }
-
-    public void deleteAllMembers() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_MEMBER, null, null);
-        db.close();
     }
 
     //-------------------------- Meeting related functions ----------------------------//
@@ -667,7 +658,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cr_savings.moveToFirst()) {
             do {
                 // Get member id
-                int memberId = getSavingsAccountMemberId(cr_savings.getInt(0),db);
+                int memberId = getSavingsAccountMemberId(cr_savings.getInt(2),db);
                 // Get Member
                 Member member = getBasicMember(memberId,db);
                 MeetingTransaction tran = new MeetingTransaction(member.GroupUID,member);
@@ -686,7 +677,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cr_loans.moveToFirst()) {
             do {
                 // Get member id
-                int memberId = getLoanAccountMemberId(cr_savings.getInt(0), db);
+                int memberId = getLoanAccountMemberId(cr_loans.getInt(2), db);
                 // Get Member
                 for(MeetingTransaction trans : transactions)
                 {
@@ -702,6 +693,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return transactions;
+    }
+
+    public ArrayList<LoanAccount> getMeetingLoans(int grpMeetingId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM "+TABLE_LOANSACCOUNT
+                + " WHERE "+COLUMN_LOANACCOUNT_GroupMeetingId +"="+grpMeetingId;
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+        ArrayList<LoanAccount> loanAccounts = new ArrayList<LoanAccount>();
+        if(cursor.moveToFirst())
+        {
+            LoanAccount la = getLoanAccount(cursor.getInt(0),db);
+            loanAccounts.add(la);
+        }
+
+        return loanAccounts;
     }
 
     public void saveMeetingDetails(int groupId, ArrayList<MeetingTransaction> transactions, ArrayList<LoanAccount> loanAccounts) {
@@ -740,6 +748,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 loanTransaction.put(COLUMN_LOAN_TRANSACTION_GroupMeetingId, meetingId);
                 loanTransaction.put(COLUMN_LOAN_TRANSACTION_GroupMemberLoanId, transaction.LoanTransaction.GroupMemberLoanAccountId);
                 loanTransaction.put(COLUMN_LOAN_TRANSACTION_Repayment, transaction.LoanTransaction.Repayment);
+                loanTransaction.put(COLUMN_LOAN_TRANSACTION_OutstandingLeft, transaction.LoanTransaction.getUpdatedOutstanding());
 
                 db.insertOrThrow(TABLE_LOANTRANSACTION, null, loanTransaction);
 
