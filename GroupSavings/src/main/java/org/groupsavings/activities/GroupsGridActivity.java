@@ -35,7 +35,8 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_groups_grid);
             db_handler = new DatabaseHandler(getApplicationContext());
-            //db_handler.createSchema(null);
+            // Uncomment this once only when there is change in schema and revert back
+            // db_handler.createSchema(null);
 
             groups = new ArrayList<Group>();
             Button addGroupButton =(Button) findViewById(R.id.button_add_group);

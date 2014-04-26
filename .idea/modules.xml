@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidApp.iml" filepath="$PROJECT_DIR$/AndroidApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/GroupSavings/GroupSavings.iml" filepath="$PROJECT_DIR$/GroupSavings/GroupSavings.iml" />
       <module fileurl="file://$PROJECT_DIR$/MFPI2.iml" filepath="$PROJECT_DIR$/MFPI2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>

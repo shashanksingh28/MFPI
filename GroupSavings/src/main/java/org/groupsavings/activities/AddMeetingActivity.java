@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,7 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class AddMeetingActivity extends Activity implements View.OnClickListener {
+public class AddMeetingActivity extends Activity {
 
     int groupId;
     Group group;
@@ -63,11 +61,11 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
             loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
             lv_loanAccounts.setAdapter(loansAdapter);
 
-            Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
+            /*Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
             bt_save_meeting.setOnClickListener(this);
 
             Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
-            bt_add_loan.setOnClickListener(this);
+            bt_add_loan.setOnClickListener(this);*/
         }
         catch (Exception ex)
         {
@@ -166,4 +164,5 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);;
         lv_loanAccounts.setAdapter(loansAdapter);
     }
+
 }
