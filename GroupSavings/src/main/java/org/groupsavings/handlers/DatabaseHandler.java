@@ -47,6 +47,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_GROUP_State = "State";
     public static final String COLUMN_GROUP_Country = "Country";
     public static final String COLUMN_GROUP_BankAccount = "BankAccount";
+    public static final String COLUMN_GROUP_TotalSavings = "TotalSavings";
+    public static final String COLUMN_GROUP_TotalOutstanding = "TotalOutstanding";
     private static final String CREATE_GROUP_TABLE = "Create table " + TABLE_GROUP
             + " (" + COLUMN_GROUP_HashId + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + COLUMN_GROUP_Name + " TEXT,"
@@ -66,7 +68,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_GROUP_City + " TEXT,"
             + COLUMN_GROUP_State + " TEXT,"
             + COLUMN_GROUP_Country + " TEXT,"
-            + COLUMN_GROUP_BankAccount + " TEXT"
+            + COLUMN_GROUP_BankAccount + " TEXT,"
+            + COLUMN_GROUP_TotalSavings + " LONG,"
+            + COLUMN_GROUP_TotalOutstanding + " LONG"
             + ");";
 
     private static final String TABLE_MEMBER = "Members";
@@ -255,6 +259,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_GROUP_NoOfSubgroups, group.NoOfSubgroups);
         values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
         values.put(COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
+        values.put(COLUMN_GROUP_TotalSavings, group.TotalSavings);
+        values.put(COLUMN_GROUP_TotalOutstanding, group.TotalOutstanding);
 
         if (group.UID == 0) {
             // TODO: get field officer Id from security
@@ -286,6 +292,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.RecurringSavings = cursor.getInt(9);
                 group.AddressLine1 = cursor.getString(13);
                 group.AddressLine2 = cursor.getString(14);
+                group.TotalSavings = getTotalSavings(group.UID);
+                group.TotalOutstanding = getTotalOutstanding(group.UID);
                 groupList.add(group);
             } while (cursor.moveToNext());
         }
@@ -310,6 +318,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             group.GroupName = cursor.getString(1);
             group.AddressLine1 = cursor.getString(13);
             group.AddressLine2 = cursor.getString(14);
+            group.TotalSavings = getTotalSavings(group.UID);
+            group.TotalOutstanding = getTotalOutstanding(group.UID);
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
@@ -322,6 +332,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return group;
     }
+
+    public Long getTotalSavings(int groupUID){
+        String selectQuery = "SELECT  SUM(COLUMN_SAVING_ACCOUNT_TotalSaving) FROM " + TABLE_SAVINGSACCOUNT + " Where " + COLUMN_GROUP_HashId + "=" + groupUID;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        return cursor.getLong(0);
+    }
+
+    public Long getTotalOutstanding(int groupUID){
+        String selectQuery = "SELECT  SUM(COLUMN_LOANACCOUNT_Outstanding) FROM " + TABLE_LOANSACCOUNT + " Where " + COLUMN_GROUP_HashId + "=" + groupUID;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        return cursor.getLong(0);
+    }
+
 
     public void deleteAllGroups() {
         SQLiteDatabase db = this.getWritableDatabase();
