@@ -6,4 +6,10 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item
+        android:id="@+id/button_save_group"
+        android:icon="@drawable/ic_action_save"
+        android:title="Save"
+        android:showAsAction="always"/>
 </menu>
