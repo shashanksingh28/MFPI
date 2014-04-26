@@ -31,23 +31,29 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groups_grid);
-        db_handler = new DatabaseHandler(getApplicationContext());
-        //db_handler.createSchema(null);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_groups_grid);
+            db_handler = new DatabaseHandler(getApplicationContext());
+            //db_handler.createSchema(null);
 
-        groups = new ArrayList<Group>();
-        Button addGroupButton =(Button) findViewById(R.id.button_add_group);
-        addGroupButton.setOnClickListener(this);
+            groups = new ArrayList<Group>();
+            Button addGroupButton =(Button) findViewById(R.id.button_add_group);
+            addGroupButton.setOnClickListener(this);
 
-        Button syncGroup = (Button) findViewById(R.id.button_syc);
-        syncGroup.setOnClickListener(this);
+            Button syncGroup = (Button) findViewById(R.id.button_syc);
+            syncGroup.setOnClickListener(this);
 
-        ListView gv = (ListView) findViewById(R.id.layout_groups_grid);
-        adapter_grid = new ArrayAdapter(this,android.R.layout.simple_list_item_1,groups);
-        gv.setAdapter(adapter_grid);
-        gv.setOnItemClickListener(this);
+            ListView gv = (ListView) findViewById(R.id.layout_groups_grid);
+            adapter_grid = new ArrayAdapter(this,android.R.layout.simple_list_item_1,groups);
+            gv.setAdapter(adapter_grid);
+            gv.setOnItemClickListener(this);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
 
+        }
     }
 
     @Override

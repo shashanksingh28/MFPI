@@ -30,22 +30,29 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     DatabaseHandler db_handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_group);
+        try
+        {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_add_group);
 
-        Calendar c = Calendar.getInstance();
-        mmd_year = c.get(Calendar.YEAR)-20;
-        mmd_month = c.get(Calendar.MONTH);
-        mmd_day = c.get(Calendar.DAY_OF_MONTH);
+            Calendar c = Calendar.getInstance();
+            mmd_year = c.get(Calendar.YEAR)-20;
+            mmd_month = c.get(Calendar.MONTH);
+            mmd_day = c.get(Calendar.DAY_OF_MONTH);
 
-        ImageButton ib = (ImageButton) findViewById(R.id.imgbtn_pick_mmd);
-        ib.setOnClickListener(this);
-        tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);
+            ImageButton ib = (ImageButton) findViewById(R.id.imgbtn_pick_mmd);
+            ib.setOnClickListener(this);
+            tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);
 
 
-        db_handler = new DatabaseHandler(getApplicationContext());
-        Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
-        if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
+            db_handler = new DatabaseHandler(getApplicationContext());
+            Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
+            if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG);
+        }
     }
 
 
