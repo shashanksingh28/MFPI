@@ -195,7 +195,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOANACCOUNT_EndDate + " TEXT,"
             + COLUMN_LOANACCOUNT_Outstanding + " INTEGER,"
             + COLUMN_LOANACCOUNT_Reason + " TEXT,"
-            + COLUMN_LOANACCOUNT_IsActive +" BOOLEAN,"
+            + COLUMN_LOANACCOUNT_IsActive + " BOOLEAN,"
             + COLUMN_LOANACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
 
@@ -293,6 +293,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return groupList;
     }
+
+
 
     public Group getGroup(int groupUID) {
         ArrayList<Group> groupList = new ArrayList<Group>();
@@ -536,7 +538,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //-------------------------- Meeting related functions ----------------------------//
     //-------------------------------------------------------------------------------//
 
-    public void saveMeetingDetails(int groupId, ArrayList<MeetingTransaction> transactions) {
+    public void saveMeetingDetails(int groupId, ArrayList<MeetingTransaction> transactions, ArrayList<LoanAccount> loanAccounts) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
@@ -586,7 +588,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 db.update(TABLE_LOANSACCOUNT,loanAccountUpdate,
                         COLUMN_LOANACCOUNT_Id+"="+transaction.LoanTransaction.GroupMemberLoanAccountId,null);
             }
+        }
 
+        for(LoanAccount la : loanAccounts) {
+
+            ContentValues loanAccValues = new ContentValues();
+            loanAccValues.put(COLUMN_LOANACCOUNT_GroupId, la.groupId);
+            loanAccValues.put(COLUMN_LOANACCOUNT_GroupMeetingId, meetingId);
+            loanAccValues.put(COLUMN_LOANACCOUNT_MemberId, la.memberId);
+            loanAccValues.put(COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
+            loanAccValues.put(COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
+            loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.PeriodInMonths);
+            loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
+            loanAccValues.put(COLUMN_LOANACCOUNT_StartDate, la.StartDate);
+            loanAccValues.put(COLUMN_LOANACCOUNT_EndDate, la.EndDate);
+            loanAccValues.put(COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
+            loanAccValues.put(COLUMN_LOANACCOUNT_IsActive, la.IsActive);
+
+            if (la.Id == 0) {
+                db.insertOrThrow(TABLE_LOANSACCOUNT, null, loanAccValues);
+            } else {
+                db.update(TABLE_LOANSACCOUNT, loanAccValues, COLUMN_LOANACCOUNT_Id + "=" + la.Id, null);
+            }
         }
     }
 
@@ -628,35 +651,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //-------------------------- Transaction related functions ---------------//
     //-------------------------------------------------------------------------------//
-    public void addUpdateLoanAccounts(ArrayList<LoanAccount> loanAccounts)
+
+    public LoanAccount getMemberActiveLoanAccount(int memberId)
     {
-        SQLiteDatabase db = this.getWritableDatabase();
-        for(LoanAccount la : loanAccounts) {
-
-            ContentValues loanAccValues = new ContentValues();
-            loanAccValues.put(COLUMN_LOANACCOUNT_GroupId, la.groupId);
-            loanAccValues.put(COLUMN_LOANACCOUNT_GroupMeetingId, la.groupMeetingId);
-            loanAccValues.put(COLUMN_LOANACCOUNT_MemberId, la.memberId);
-            loanAccValues.put(COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
-            loanAccValues.put(COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
-            loanAccValues.put(COLUMN_LOANACCOUNT_NoOfInstallments, la.PeriodInMonths);
-            loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
-            loanAccValues.put(COLUMN_LOANACCOUNT_StartDate, la.StartDate);
-            loanAccValues.put(COLUMN_LOANACCOUNT_EndDate, la.EndDate);
-            loanAccValues.put(COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
-            loanAccValues.put(COLUMN_LOANACCOUNT_IsActive, la.IsActive);
-
-            if (la.Id == 0) {
-                db.insertOrThrow(TABLE_LOANSACCOUNT, null, loanAccValues);
-            } else {
-                db.update(TABLE_LOANSACCOUNT, loanAccValues, COLUMN_LOANACCOUNT_Id + "=" + la.Id, null);
-            }
-        }
-    }
-
-    public LoanAccount getMemberLoanAccount(int memberId)
-    {
-        String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT + " WHERE "+COLUMN_LOANACCOUNT_MemberId+"="+memberId;
+        String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT +
+                " WHERE "+COLUMN_LOANACCOUNT_MemberId+"="+memberId +
+                " AND "+COLUMN_LOANACCOUNT_IsActive+"="+1;
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
