@@ -38,6 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_GROUP_CreatedBy = "CreatedBy";
     public static final String COLUMN_GROUP_Active = "Active";
     public static final String COLUMN_GROUP_RecurringIndividualAmount = "RecurringIndividualAmount";
+    public static final String COLUMN_GROUP_NoOfSubgroups = "NoOfSubgroups";
     public static final String COLUMN_GROUP_MonthlyMeetingDate = "MonthlyMeetingDate";
     public static final String COLUMN_GROUP_ClusterId = "ClusterId";
     public static final String COLUMN_GROUP_AddressLine1 = "AddressLine1";
@@ -57,6 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_GROUP_CreatedBy + " TEXT,"
             + COLUMN_GROUP_Active + " BOOLEAN,"
             + COLUMN_GROUP_RecurringIndividualAmount + " INTEGER,"
+            + COLUMN_GROUP_NoOfSubgroups + " INTEGER,"
             + COLUMN_GROUP_MonthlyMeetingDate + " TIMESTAMP,"
             + COLUMN_GROUP_ClusterId + " INTEGER,"
             + COLUMN_GROUP_AddressLine1 + " TEXT,"
@@ -250,6 +252,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
         values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
         values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
+        values.put(COLUMN_GROUP_NoOfSubgroups, group.NoOfSubgroups);
         values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
         values.put(COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
 
@@ -281,8 +284,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.CreatedAt = cursor.getString(6);
                 group.CreatedBy = cursor.getInt(7);
                 group.RecurringSavings = cursor.getInt(9);
-                group.AddressLine1 = cursor.getString(12);
-                group.AddressLine2 = cursor.getString(13);
+                group.AddressLine1 = cursor.getString(13);
+                group.AddressLine2 = cursor.getString(14);
                 groupList.add(group);
             } while (cursor.moveToNext());
         }
@@ -305,13 +308,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             group = new Group();
             group.UID = cursor.getInt(0);
             group.GroupName = cursor.getString(1);
-            group.AddressLine1 = cursor.getString(12);
-            group.AddressLine2 = cursor.getString(13);
+            group.AddressLine1 = cursor.getString(13);
+            group.AddressLine2 = cursor.getString(14);
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
-            group.MonthlyMeetingDate = cursor.getString(10);
-            group.BankAccount = cursor.getString(17);
+            group.NoOfSubgroups = cursor.getInt(10);
+            group.MonthlyMeetingDate = cursor.getString(11);
+            group.BankAccount = cursor.getString(18);
             group.CreatedAt = cursor.getString(6);
             //group.CreatedBy = Integer.parseInt(cursor.getString(7));
         }

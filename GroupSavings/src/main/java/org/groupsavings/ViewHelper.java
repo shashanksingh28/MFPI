@@ -160,6 +160,14 @@ public class ViewHelper {
                 updatedGroup.RecurringSavings = Integer.parseInt(savings);
         }
 
+        EditText grpNoOfSubgroupsEditor =(EditText) view.findViewById(R.id.edit_group_no_of_subgroups);
+        if(grpNoOfSubgroupsEditor !=null && grpNoOfSubgroupsEditor.getText() != null)
+        {
+            String subgroups = grpNoOfSubgroupsEditor.getText().toString();
+            if(subgroups != null && !subgroups.isEmpty())
+                updatedGroup.NoOfSubgroups = Integer.parseInt(subgroups);
+        }
+
         EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
         if (groupBankAccountEditor != null && groupBankAccountEditor.getText() != null)
             updatedGroup.BankAccount = groupBankAccountEditor.getText().toString();
@@ -197,6 +205,9 @@ public class ViewHelper {
 
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
+
+        EditText grpNoOfSubgroupsEditor =(EditText) view.findViewById(R.id.edit_group_no_of_subgroups);
+        grpNoOfSubgroupsEditor.setText(String.valueOf(groupToPopulate.NoOfSubgroups));
 
         EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
         groupBankAccountEditor.setText(groupToPopulate.BankAccount);
