@@ -17,11 +17,13 @@ public class Group {
     public String BankAccount;
     public String MonthlyMeetingDate;
     public int NoOfSubgroups;
+    public long TotalSavings;
+    public long TotalOutstanding;
 
     @Override
     public String toString()
     {
-        return GroupName + " - " + AddressLine2;
+        return GroupName + " - " + AddressLine2 + "\nTotal Savings : " + TotalSavings + "\nTotal Outstanding : " + TotalOutstanding;
     }
 
 }
