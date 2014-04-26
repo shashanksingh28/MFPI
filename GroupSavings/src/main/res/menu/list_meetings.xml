@@ -1,15 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.groupsavings.fragments.GroupDetailsFragment">
+    tools:context="org.groupsavings.activities.GroupsGridActivity" >
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
 
-    <item android:id="@+id/button_save_group_details"
-        android:title="@string/save"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_action_save"/>
+    <item
+        android:id="@+id/button_add_meeting"
+        android:icon="@drawable/ic_action_add_group"
+        android:title="Add new meeting"
+        android:showAsAction="always"/>
 
 </menu>

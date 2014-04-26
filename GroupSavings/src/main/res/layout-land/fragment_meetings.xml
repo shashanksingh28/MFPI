@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="5px"
     tools:context="org.groupsavings.fragments.MeetingsFragment">
-
+<!--
     <Button
         android:id="@+id/button_add_meeting"
         android:layout_width="match_parent"
@@ -12,13 +12,12 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:drawableLeft="@drawable/ic_action_add_group"
-        android:text="Add new meeting" />
+        android:text="Add new meeting" />-->
 
     <ListView
         android:id="@+id/listview_meeting_dates"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_add_meeting"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
