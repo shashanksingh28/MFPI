@@ -15,7 +15,6 @@ public class LoanAccount {
     public float InterestPerAnnum;
     public int PeriodInMonths;
     public int EMI;
-
     public String StartDate;
     public String EndDate;
 
@@ -26,7 +25,13 @@ public class LoanAccount {
 
     public int getEMI()
     {
-        EMI = (int) (Principal * (1 + (PeriodInMonths *InterestPerAnnum)/1200))/ PeriodInMonths;
+        int simpleInterest = (int) (Principal * InterestPerAnnum * PeriodInMonths / 1200);
+        int total = Principal + simpleInterest;
+        int quotient = total / PeriodInMonths;
+        int remainder = total % PeriodInMonths;
+        if(remainder > 0) quotient ++;
+
+        EMI = quotient;
         return EMI;
     }
 

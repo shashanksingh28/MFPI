@@ -127,7 +127,7 @@
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/datepicker_icon"
+                    android:src="@drawable/date"
                     android:id="@+id/imgbtn_pick_dob" />
             </LinearLayout>
 
@@ -185,7 +185,6 @@
         android:drawableLeft="@drawable/ic_action_save"
         android:gravity="center|center_horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"/>
+        android:layout_alignParentBottom="true"  />
 
 </RelativeLayout>

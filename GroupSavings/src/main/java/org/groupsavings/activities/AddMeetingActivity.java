@@ -78,7 +78,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
             MeetingTransaction transaction = new MeetingTransaction(groupId, member);
             transaction.SavingTransaction.groupCompulsorySavings = group.RecurringSavings;
 
-            LoanAccount la = dbHandler.getMemberLoanAccount(member.UID);
+            LoanAccount la = dbHandler.getMemberActiveLoanAccount(member.UID);
             if (la != null)
             {
                 transaction.LoanTransaction.GroupMemberLoanAccountId = la.Id;
@@ -117,8 +117,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_save_meeting_details:
-                dbHandler.saveMeetingDetails(groupId, transactions);
-                dbHandler.addUpdateLoanAccounts(loanAccounts);
+                dbHandler.saveMeetingDetails(groupId, transactions, loanAccounts);
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
@@ -147,6 +146,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
                         if(member.UID == la.memberId)
                         {
                             la.GroupMember = member;
+                            la.memberId = member.UID;
                             break;
                         }
                     }

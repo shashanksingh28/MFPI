@@ -213,6 +213,7 @@ public class SyncHelper {
 			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_EndDate, la.EndDate);
 			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
 			collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Reason, la.Reason);
+            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_IsActive, la.IsActive);
 			//collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_CreatedDate ,);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -235,6 +236,7 @@ public class SyncHelper {
         la.EndDate = jsonLA.getString(DatabaseHandler.COLUMN_LOANACCOUNT_EndDate);
         la.OutStanding = jsonLA.getInt(DatabaseHandler.COLUMN_LOANACCOUNT_Outstanding);
         la.Reason = jsonLA.getString(DatabaseHandler.COLUMN_LOANACCOUNT_Reason);
+        la.IsActive = jsonLA.getBoolean(DatabaseHandler.COLUMN_LOANACCOUNT_IsActive);
 
         return la;
     }

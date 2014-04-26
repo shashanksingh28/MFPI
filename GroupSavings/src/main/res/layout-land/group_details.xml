@@ -98,6 +98,24 @@
         </LinearLayout>
 
         <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                     android:layout_width="200dp"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:padding="10dp"
+                     android:text="No of Subgroups :"
+                     android:textSize="18dp" />
+                <EditText android:id="@+id/edit_group_no_of_subgroups"
+                     android:layout_width="400dp"
+                     android:layout_height="wrap_content"
+                     android:inputType="number"
+                     android:padding="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
