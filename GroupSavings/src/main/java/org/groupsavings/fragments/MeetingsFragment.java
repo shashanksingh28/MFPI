@@ -17,6 +17,7 @@ import org.groupsavings.R;
 import org.groupsavings.activities.AddMeetingActivity;
 import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.handlers.DatabaseHandler;
 
 import java.util.ArrayList;
@@ -100,7 +101,12 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        // TODO Code here to call read-only meeting details page
+
+        int meetingId = meetings.get(i).id;
+        ArrayList<MeetingTransaction> readTrans = dbHandler.getMeetingTransactions(meetingId);
+        Intent intent = new Intent(getActivity(), GroupLandingActivity.class);
+        //intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP,groups.get(i).UID);
+        //startActivity(intent);
     }
 
     @Override

@@ -44,29 +44,35 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_meeting);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_add_meeting);
 
-        groupId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
-        dbHandler = new DatabaseHandler(getApplicationContext());
-        group = dbHandler.getGroup(groupId);
-        groupMembers = dbHandler.getAllMembers(groupId);
-        transactions = populateMeetingTransactions(group, groupMembers);
+            groupId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+            dbHandler = new DatabaseHandler(getApplicationContext());
+            group = dbHandler.getGroup(groupId);
+            groupMembers = dbHandler.getAllMembers(groupId);
+            transactions = populateMeetingTransactions(group, groupMembers);
 
-        ListView lv_transactions = (ListView) findViewById(R.id.listview_meeting_transactions);
-        transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions);
-        lv_transactions.setAdapter(transactionsAdapter);
+            ListView lv_transactions = (ListView) findViewById(R.id.listview_meeting_transactions);
+            transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions);
+            lv_transactions.setAdapter(transactionsAdapter);
 
-        loanAccounts = new ArrayList<LoanAccount>();
-        lv_loanAccounts = (ListView) findViewById(R.id.lv_meeting_loans);
-        loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
-        lv_loanAccounts.setAdapter(loansAdapter);
+            loanAccounts = new ArrayList<LoanAccount>();
+            lv_loanAccounts = (ListView) findViewById(R.id.lv_meeting_loans);
+            loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
+            lv_loanAccounts.setAdapter(loansAdapter);
 
-        Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
-        bt_save_meeting.setOnClickListener(this);
+            Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
+            bt_save_meeting.setOnClickListener(this);
 
-        Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
-        bt_add_loan.setOnClickListener(this);
+            Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
+            bt_add_loan.setOnClickListener(this);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -83,7 +89,10 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
             {
                 transaction.LoanTransaction.GroupMemberLoanAccountId = la.Id;
                 transaction.LoanTransaction.EMI = la.EMI;
-                transaction.LoanTransaction.Repayment = la.EMI;
+                if(transaction.LoanTransaction.EMI > la.OutStanding)
+                    transaction.LoanTransaction.Repayment = la.OutStanding;
+                else
+                    transaction.LoanTransaction.Repayment = la.EMI;
                 transaction.LoanTransaction.setOutstandingDue(la.OutStanding);
             }
             transactions.add(transaction);
@@ -92,10 +101,8 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         return transactions;
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_meeting, menu);
         return true;
@@ -135,9 +142,8 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         if (requestCode == REQUEST_GET_NEW_LOANACCOUNT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
                 try {
+                    // Get the new loan object fetched via JSON
                     JSONObject jo = new JSONObject(data.getStringExtra(NewLoanActivity.INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON));
                     LoanAccount la = SyncHelper.getLoanAccFromJson(jo);
                     // Put Member object in place of member id
@@ -153,9 +159,8 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
                     loanAccounts.add(la);
                     RefreshView();
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
                 }
-                // Do something with the contact here (bigger example below)
             }
         }
     }
