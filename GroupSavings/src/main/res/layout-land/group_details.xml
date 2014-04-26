@@ -107,7 +107,9 @@
                      android:layout_gravity="center"
                      android:padding="10dp"
                      android:text="No of Subgroups :"
-                     android:textSize="18dp" />
+                     android:textSize="18dp"
+                    android:drawableLeft="@drawable/subgroups"/>
+
                 <EditText android:id="@+id/edit_group_no_of_subgroups"
                      android:layout_width="400dp"
                      android:layout_height="wrap_content"

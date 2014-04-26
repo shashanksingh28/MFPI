@@ -162,20 +162,6 @@
             android:weightSum="1"
             android:layout_centerHorizontal="true">
 
-            <Button
-                android:id="@+id/bt_add_new_loan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_add_person"
-                android:text="Add new Loan" />
-
-            <Button
-                android:id="@+id/button_save_meeting_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_save"
-                android:text="Save Meeting Details" />
-
         </LinearLayout>
 
     </LinearLayout>

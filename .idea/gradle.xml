@@ -7,9 +7,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/GroupSavings" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="C:\Users\admin\AndroidStudioProjects\MFPI2" />
+            <option value="C:\Users\admin\AndroidStudioProjects\MFPI2\GroupSavings" />
+            <option value="C:\Users\admin\AndroidStudioProjects\MFPI2\app" />
           </set>
         </option>
       </GradleProjectSettings>

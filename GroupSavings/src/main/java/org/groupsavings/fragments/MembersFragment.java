@@ -15,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
@@ -59,7 +62,7 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         activity = getActivity();
         dbHandler = new DatabaseHandler(activity.getApplicationContext());
         members = dbHandler.getAllMembers(groupUID);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -74,10 +77,10 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
     {
         super.onStart();
         detailsContainer = activity.findViewById(R.id.layout_member_details_container);
-        Button addMemberButton = (Button) activity.findViewById(R.id.button_add_member);
+        /*Button addMemberButton = (Button) activity.findViewById(R.id.button_add_member);
         addMemberButton.setOnClickListener(this);
         Button saveMemberButton = (Button) activity.findViewById(R.id.button_save_member);
-        saveMemberButton.setOnClickListener(this);
+        saveMemberButton.setOnClickListener(this);*/
 
         ListView lv = (ListView) activity.findViewById(R.id.listview_member_names);
         membersAdapter = new ArrayAdapter<Member>(activity,android.R.layout.simple_list_item_1,members);
@@ -101,7 +104,7 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
+        /*switch (view.getId())
         {
             case R.id.button_add_member:
                 Intent intent = new Intent(getActivity(),AddMemberActivity.class);
@@ -120,7 +123,7 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -140,5 +143,35 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
+@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.member_screen, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.button_add_member:
+                Intent intent = new Intent(getActivity(),AddMemberActivity.class);
+                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
+                startActivity(intent);
+                Refresh();
+                break;
+            case R.id.button_save_member:
+                Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
+                updatedMember.GroupUID = groupUID;
+                dbHandler.addUpdateMember(updatedMember);
+                HideKeypad();
+                Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();
+                ViewHelper.populateMemberDetailsToView(detailsContainer, new Member());
+                Refresh();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

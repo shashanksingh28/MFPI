@@ -102,7 +102,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="601dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:visibility="invisible"
-                    android:layout_weight="0.31" />
+                    android:layout_weight="0.77" />
 
                 <ImageButton
                     android:layout_width="50dp"
@@ -176,15 +176,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_save_new_member"
-        android:layout_below="@id/scroll_add_member_details"
-        android:text="Save Member"
-        android:drawableLeft="@drawable/ic_action_save"
-        android:gravity="center|center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"  />
 
 </RelativeLayout>

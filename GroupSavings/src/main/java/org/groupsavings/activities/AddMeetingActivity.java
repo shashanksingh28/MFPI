@@ -101,8 +101,10 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         return transactions;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_meeting, menu);
         return true;
@@ -113,16 +115,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
+        switch (item.getItemId()) {
             case R.id.button_save_meeting_details:
                 dbHandler.saveMeetingDetails(groupId, transactions, loanAccounts);
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
@@ -134,6 +127,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
                 startActivityForResult(intent,REQUEST_GET_NEW_LOANACCOUNT);
                 break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -142,6 +136,8 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         if (requestCode == REQUEST_GET_NEW_LOANACCOUNT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
                 try {
                     // Get the new loan object fetched via JSON
                     JSONObject jo = new JSONObject(data.getStringExtra(NewLoanActivity.INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON));

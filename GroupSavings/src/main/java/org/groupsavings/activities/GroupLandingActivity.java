@@ -25,6 +25,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
     public static final String INTENT_EXTRA_GROUP = "GroupUID";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
+
+    int TAB_POSITION = 0;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -82,6 +84,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                invalidateOptionsMenu();
             }
         });
 
@@ -100,31 +103,27 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.group_landing, menu);
-        return true;
-    }
-
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
+        TAB_POSITION=tab.getPosition();
         mViewPager.setCurrentItem(tab.getPosition());
+
     }
 
     @Override

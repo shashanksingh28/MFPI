@@ -70,8 +70,18 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.button_save_group:
+                Group group = ViewHelper.fetchGroupDetailsFromView(findViewById(R.id.layout_group_details));
+                if(group != null)
+                {
+                    db_handler.addUpdateGroup(group);
+                }
+                Toast.makeText(getApplicationContext(),"Group Saved",Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -84,7 +94,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
-            case R.id.button_save_group:
+            /*case R.id.button_save_group:
                 Group group = ViewHelper.fetchGroupDetailsFromView(findViewById(R.id.layout_group_details));
                 if(group != null)
                 {
@@ -92,7 +102,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 }
                 Toast.makeText(getApplicationContext(),"Group Saved",Toast.LENGTH_SHORT).show();
                 finish();
-                break;
+                break;*/
         }
     }
 

@@ -5,6 +5,9 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,6 +49,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             groupUID = getArguments().getInt(ARG_PARAM1);
@@ -74,8 +78,8 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
             lv.setAdapter(meetingsAdapter);
             lv.setOnItemClickListener(this);
 
-            Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
-            addNewMeeting.setOnClickListener(this);
+/*            Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
+            addNewMeeting.setOnClickListener(this);*/
 
         } catch (Exception ex) {
             Toast.makeText(activity, ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -111,12 +115,24 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.list_meetings,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.button_add_meeting:
                 Intent startMeetingActivity = new Intent(getActivity(), AddMeetingActivity.class);
                 startMeetingActivity.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
                 startActivity(startMeetingActivity);
-                break;
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

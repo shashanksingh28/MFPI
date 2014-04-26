@@ -23,6 +23,7 @@
         android:layout_centerHorizontal="true"
         android:drawableLeft="@drawable/ic_action_save"
         android:gravity="center"
-        android:text="Save" />
+        android:text="Save"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
