@@ -259,8 +259,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_GROUP_NoOfSubgroups, group.NoOfSubgroups);
         values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
         values.put(COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
-        values.put(COLUMN_GROUP_TotalSavings, group.TotalSavings);
-        values.put(COLUMN_GROUP_TotalOutstanding, group.TotalOutstanding);
 
         if (group.UID == 0) {
             // TODO: get field officer Id from security
