@@ -61,12 +61,12 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         lv_loanAccounts = (ListView) findViewById(R.id.lv_meeting_loans);
         loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
         lv_loanAccounts.setAdapter(loansAdapter);
-
+/*
         Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
         bt_save_meeting.setOnClickListener(this);
 
         Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
-        bt_add_loan.setOnClickListener(this);
+        bt_add_loan.setOnClickListener(this);*/
 
     }
 
@@ -106,16 +106,7 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
+        switch (item.getItemId()) {
             case R.id.button_save_meeting_details:
                 dbHandler.saveMeetingDetails(groupId, transactions, loanAccounts);
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
@@ -127,6 +118,11 @@ public class AddMeetingActivity extends Activity implements View.OnClickListener
                 startActivityForResult(intent,REQUEST_GET_NEW_LOANACCOUNT);
                 break;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
     }
 
     @Override

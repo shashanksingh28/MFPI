@@ -7,4 +7,16 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings" />
+
+    <item
+        android:id="@+id/bt_add_new_loan"
+        android:icon="@drawable/loan_lg"
+        android:title="Add New Loan"
+        android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/button_save_meeting_details"
+        android:icon="@drawable/ic_action_save"
+        android:title="Save Meeting Details"
+        android:showAsAction="always"/>
 </menu>
