@@ -17,6 +17,7 @@ import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +43,14 @@ public class AddMeetingActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         try{
             super.onCreate(savedInstanceState);
+
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
             setContentView(R.layout.activity_add_meeting);
 
             groupId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);

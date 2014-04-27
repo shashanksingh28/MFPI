@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import org.groupsavings.R;
+import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 public class LoginActivity extends Activity {
@@ -24,6 +25,9 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         setContentView(R.layout.activity_login);
 
         // User Session Manager

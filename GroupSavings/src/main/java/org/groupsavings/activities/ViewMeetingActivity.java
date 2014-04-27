@@ -14,6 +14,7 @@ import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,9 @@ public class ViewMeetingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
+
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
             setContentView(R.layout.activity_view_meeting);
 
             grpMeetingId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_MEETINGID, 0);

@@ -18,6 +18,7 @@ import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.ArrayList;
 
@@ -33,10 +34,13 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
+
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
             setContentView(R.layout.activity_groups_grid);
             db_handler = new DatabaseHandler(getApplicationContext());
             // Uncomment this once only when there is change in schema and revert back
-            // db_handler.createSchema(null);
+            //db_handler.createSchema(null);
 
             groups = new ArrayList<Group>();
             Button addGroupButton =(Button) findViewById(R.id.button_add_group);

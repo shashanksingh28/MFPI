@@ -19,6 +19,7 @@ import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
         db_handler = new DatabaseHandler(getApplicationContext());
         groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);

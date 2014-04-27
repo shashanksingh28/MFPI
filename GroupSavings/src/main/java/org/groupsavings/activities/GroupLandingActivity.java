@@ -15,6 +15,7 @@ import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.Locale;
 
@@ -48,6 +49,9 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         setContentView(R.layout.activity_group_landing);
         db_handler = new DatabaseHandler(getApplicationContext());
 

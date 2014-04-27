@@ -14,13 +14,13 @@
             android:name="org.groupsavings.activities.LoginActivity"
             android:label="@string/title_activity_login" >
             android:screenOrientation="landscape" >
-            <!--
-            Only avoid for debugging. uncomment when releasing
+<!--             Only avoid for debugging. uncomment when releasing
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
+        -->
         </activity>
         <activity
             android:name="org.groupsavings.activities.GroupsGridActivity"
@@ -61,6 +61,10 @@
             android:name="org.groupsavings.activities.ViewMeetingActivity"
             android:label="@string/title_activity_view_meeting"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="org.groupsavings.activities.CrashActivity"
+            android:label="@string/title_activity_crash" >
         </activity>
     </application>
 

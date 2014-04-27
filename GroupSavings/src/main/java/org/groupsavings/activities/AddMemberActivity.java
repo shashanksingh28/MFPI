@@ -18,6 +18,7 @@ import android.widget.TextView;
 import org.groupsavings.R;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.Calendar;
 
@@ -33,6 +34,9 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
         setContentView(R.layout.activity_add_member);
         db_handler = new DatabaseHandler(getApplicationContext());

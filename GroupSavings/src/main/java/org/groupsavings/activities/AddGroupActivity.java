@@ -18,6 +18,7 @@ import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.Calendar;
 
@@ -34,6 +35,8 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_add_group);
+
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             Calendar c = Calendar.getInstance();
             mmd_year = c.get(Calendar.YEAR)-20;

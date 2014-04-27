@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidApp.iml" filepath="$PROJECT_DIR$/AndroidApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/GroupSavings/GroupSavings.iml" filepath="$PROJECT_DIR$/GroupSavings/GroupSavings.iml" />
       <module fileurl="file://$PROJECT_DIR$/MFPI2.iml" filepath="$PROJECT_DIR$/MFPI2.iml" />
     </modules>

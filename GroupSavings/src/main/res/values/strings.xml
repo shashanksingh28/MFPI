@@ -18,5 +18,6 @@
     <string name="title_activity_add_member">AddMemberActivity</string>
     <string name="title_activity_new_loan">NewLoanActivity</string>
     <string name="title_activity_view_meeting">ViewMeetingActivity</string>
+    <string name="title_activity_crash">CrashActivity</string>
 
 </resources>
