@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.domain.Member;
@@ -75,8 +74,15 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             case R.id.button_save_new_member:
                 Member newMember = getMemberFromView();
                 newMember.GroupUID = groupUID;
-                db_handler.addUpdateMember(newMember);
-                finish();
+                String validationString = ValidateMember(newMember);
+                if(validationString.equals("")){
+                    db_handler.addUpdateMember(newMember);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(this,validationString,Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -89,12 +95,6 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             case R.id.imgbtn_pick_dob:
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Date of Birth");
-                break;
-            case R.id.button_save_new_member:
-                Member newMember = getMemberFromView();
-                newMember.GroupUID = groupUID;
-                db_handler.addUpdateMember(newMember);
-                finish();
                 break;
         }
 
@@ -151,9 +151,12 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         return newMember;
     }
 
-    public void HideKeypad()
+    public String ValidateMember(Member member)
     {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+        if(member.FirstName == null || member.FirstName.length() == 0)
+            return "Please enter a valid First Name";
+
+        return "";
     }
 }

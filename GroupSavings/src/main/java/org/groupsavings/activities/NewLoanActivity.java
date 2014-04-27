@@ -146,7 +146,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         la.EndDate = sdf.format(endDate.get(Calendar.DATE));
 
         la.EMI = la.getEMI();
-        la.OutStanding = la.EMI * la.PeriodInMonths;
+        la.OutStanding = la.getInitialOutstanding();
 
         EditText et_reason = (EditText) findViewById(R.id.et_loan_reason);
         la.Reason = et_reason.getText().toString();

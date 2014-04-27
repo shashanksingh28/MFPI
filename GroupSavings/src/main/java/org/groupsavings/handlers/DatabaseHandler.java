@@ -292,8 +292,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.RecurringSavings = cursor.getInt(9);
                 group.AddressLine1 = cursor.getString(13);
                 group.AddressLine2 = cursor.getString(14);
-                group.TotalSavings = getTotalSavings(group.UID,db);
-                group.TotalOutstanding = getTotalOutstanding(group.UID,db);
+                group.TotalSavings = getGroupTotalSavings(group.UID,db);
+                group.TotalOutstanding = getGroupTotalOutstanding(group.UID,db);
                 group.NoOfMembers = getActiveMembers(group.UID,db);
                 groupList.add(group);
             } while (cursor.moveToNext());
@@ -319,8 +319,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             group.GroupName = cursor.getString(1);
             group.AddressLine1 = cursor.getString(13);
             group.AddressLine2 = cursor.getString(14);
-            group.TotalSavings = getTotalSavings(group.UID,db);
-            group.TotalOutstanding = getTotalOutstanding(group.UID,db);
+            group.TotalSavings = getGroupTotalSavings(group.UID,db);
+            group.TotalOutstanding = getGroupTotalOutstanding(group.UID,db);
             //group.FOId=Integer.parseInt(cursor.getString(3));
             //group.PresidentId = Integer.parseInt(cursor.getString(4));
             group.RecurringSavings = cursor.getInt(9);
@@ -334,7 +334,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return group;
     }
 
-    public Long getTotalSavings(int groupUID , SQLiteDatabase db){
+    public Long getGroupTotalSavings(int groupUID , SQLiteDatabase db){
 
         if(db == null) db = this.getWritableDatabase();
 
@@ -349,7 +349,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return totalSavings;
     }
 
-    public Long getTotalOutstanding(int groupUID, SQLiteDatabase db){
+    public Long getGroupTotalOutstanding(int groupUID, SQLiteDatabase db){
 
         if(db == null) db = this.getWritableDatabase();
         String selectQuery = "SELECT  SUM("+COLUMN_LOANACCOUNT_Outstanding+") FROM " + TABLE_LOANSACCOUNT + " Where " + COLUMN_LOANACCOUNT_GroupId + "=" + groupUID;
@@ -375,12 +375,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             totalMembers = cursor.getInt(0);
         }
         return totalMembers;
-    }
-
-    public void deleteAllGroups() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_GROUP, null, null);
-        db.close();
     }
 
     //------------------------ Member related functions ----------------------------//
@@ -792,7 +786,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             loanAccValues.put(COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
             loanAccValues.put(COLUMN_LOANACCOUNT_StartDate, la.StartDate);
             loanAccValues.put(COLUMN_LOANACCOUNT_EndDate, la.EndDate);
-            loanAccValues.put(COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
+            loanAccValues.put(COLUMN_LOANACCOUNT_Outstanding, la.getInitialOutstanding());
             loanAccValues.put(COLUMN_LOANACCOUNT_IsActive, la.IsActive);
 
             if (la.Id == 0) {

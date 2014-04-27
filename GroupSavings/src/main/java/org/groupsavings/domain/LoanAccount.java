@@ -24,8 +24,8 @@ public class LoanAccount {
 
     public long getEMI()
     {
-        int simpleInterest = (int) (Principal * InterestPerAnnum * PeriodInMonths / 1200);
-        long total = Principal + simpleInterest;
+        double simpleInterest = (Principal * InterestPerAnnum * PeriodInMonths / 1200);
+        long total = Principal + Math.round(simpleInterest);
         int quotient = (int) total / PeriodInMonths;
         int remainder = (int) total % PeriodInMonths;
         if(remainder > 0) quotient ++;
@@ -36,8 +36,8 @@ public class LoanAccount {
 
     public long getInitialOutstanding()
     {
-        long simpleInterest = (int) (Principal * InterestPerAnnum * PeriodInMonths / 1200);
-        return Principal + simpleInterest;
+        double simpleInterest = (Principal * InterestPerAnnum * PeriodInMonths / 1200);
+        return Principal +  Math.round(simpleInterest);
     }
 
 }
