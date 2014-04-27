@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.domain.Group;
@@ -48,6 +49,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    try
+    {
         super.onCreate(savedInstanceState);
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
@@ -101,7 +104,11 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                             .setTabListener(this)
             );
         }
-
+    }
+    catch (Exception ex)
+    {
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+    }
     }
 
 

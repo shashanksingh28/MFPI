@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
@@ -39,24 +40,32 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        try
+        {
+            super.onCreate(savedInstanceState);
 
-        groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
-        db_handler = new DatabaseHandler(getApplicationContext());
-        groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);
-        setContentView(R.layout.activity_new_loan);
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
-        grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
-        members_spinner.setAdapter(grpMembersAdapter);
+            groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+            db_handler = new DatabaseHandler(getApplicationContext());
+            groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);
+            setContentView(R.layout.activity_new_loan);
 
-        Button calcEmi = (Button) findViewById(R.id.bt_calulate_emi);
-        calcEmi.setOnClickListener(this);
+            members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
+            grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
+            members_spinner.setAdapter(grpMembersAdapter);
 
-        Button createLoan = (Button) findViewById(R.id.bt_create_loan);
-        createLoan.setOnClickListener(this);
+            Button calcEmi = (Button) findViewById(R.id.bt_calulate_emi);
+            calcEmi.setOnClickListener(this);
+
+            Button createLoan = (Button) findViewById(R.id.bt_create_loan);
+            createLoan.setOnClickListener(this);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+        }
     }
 
 
