@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.domain.Member;
@@ -33,24 +34,32 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        try
+        {
+            super.onCreate(savedInstanceState);
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
-        setContentView(R.layout.activity_add_member);
-        db_handler = new DatabaseHandler(getApplicationContext());
-        Calendar c = Calendar.getInstance();
-        dob_year = c.get(Calendar.YEAR);
-        dob_month = c.get(Calendar.MONTH);
-        dob_day = c.get(Calendar.DAY_OF_MONTH);
+            groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+            setContentView(R.layout.activity_add_member);
+            db_handler = new DatabaseHandler(getApplicationContext());
+            Calendar c = Calendar.getInstance();
+            dob_year = c.get(Calendar.YEAR);
+            dob_month = c.get(Calendar.MONTH);
+            dob_day = c.get(Calendar.DAY_OF_MONTH);
 
-        ImageButton ib = (ImageButton) findViewById(R.id.imgbtn_pick_dob);
-        ib.setOnClickListener(this);
-        tv_dob = (TextView) findViewById(R.id.tv_member_dob);
+            ImageButton ib = (ImageButton) findViewById(R.id.imgbtn_pick_dob);
+            ib.setOnClickListener(this);
+            tv_dob = (TextView) findViewById(R.id.tv_member_dob);
 
-        /*Button saveButton = (Button) findViewById(R.id.button_save_new_member);
-        saveButton.setOnClickListener(this);*/
+            /*Button saveButton = (Button) findViewById(R.id.button_save_new_member);
+            saveButton.setOnClickListener(this);*/
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+        }
+
     }
 
 
