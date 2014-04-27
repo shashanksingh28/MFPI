@@ -294,6 +294,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 group.AddressLine2 = cursor.getString(14);
                 group.TotalSavings = getTotalSavings(group.UID,db);
                 group.TotalOutstanding = getTotalOutstanding(group.UID,db);
+                group.NoOfMembers = getActiveMembers(group.UID,db);
                 groupList.add(group);
             } while (cursor.moveToNext());
         }
@@ -360,6 +361,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             totalOutstanding = cursor.getLong(0);
         }
         return totalOutstanding;
+    }
+
+    public int getActiveMembers(int groupUID, SQLiteDatabase db){
+        if(db == null) db = this.getWritableDatabase();
+        String selectQuery = "SELECT  COUNT("+COLUMN_MEMBER_UID+") FROM "
+                + TABLE_MEMBER + " Where " + COLUMN_MEMBER_GroupUID +"=" + groupUID;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int totalMembers = 0;
+        if(cursor.moveToFirst())
+        {
+            totalMembers = cursor.getInt(0);
+        }
+        return totalMembers;
     }
 
     public void deleteAllGroups() {

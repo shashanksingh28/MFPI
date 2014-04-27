@@ -19,11 +19,13 @@ public class Group {
     public int NoOfSubgroups;
     public long TotalSavings;
     public long TotalOutstanding;
+    public int NoOfMembers;
 
     @Override
     public String toString()
     {
-        return GroupName + " - " + AddressLine2 + "    Savings : " + TotalSavings + "    Outstanding : " + TotalOutstanding;
+        return GroupName + "    Area : " + AddressLine2 + "    Savings : " + TotalSavings + "    Outstanding Loans : " + TotalOutstanding
+                + "    Members : "+NoOfMembers;
     }
 
 }

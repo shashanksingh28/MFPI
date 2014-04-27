@@ -11,8 +11,7 @@
         android:id="@+id/button_add_member"
         android:icon="@drawable/ic_action_add_person"
         android:showAsAction="always"
-        android:title="Add Member"
-        />
+        android:title="Add Member"  />
     <item
         android:id="@+id/button_save_member"
         android:icon="@drawable/ic_action_save"

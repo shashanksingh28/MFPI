@@ -4,34 +4,41 @@
     android:orientation="vertical"
     android:padding="10dip">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username (Enter 'admin')"
-        android:singleLine="true"
-        android:layout_marginBottom="5dip"/>
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center|center_vertical|center_horizontal"
+        android:layout_weight="1">
 
-    <EditText android:id="@+id/txtUsername"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Username (Enter 'admin')"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dip"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Password (Enter 'admin')"
-        android:layout_marginBottom="5dip"/>
+        <EditText android:id="@+id/txtUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"/>
 
-    <EditText android:id="@+id/txtPassword"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
-        android:password="true"
-        android:singleLine="true"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Password (Enter 'admin')"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dip"/>
 
-    <Button android:id="@+id/btnLogin"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"/>
+        <EditText android:id="@+id/txtPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:password="true"
+            android:singleLine="true"/>
+    </LinearLayout>
+
 
 </LinearLayout>

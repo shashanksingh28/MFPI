@@ -162,6 +162,11 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
             case R.id.button_save_member:
                 Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
                 updatedMember.GroupUID = groupUID;
+                if(updatedMember.UID == 0)
+                {
+                    Toast.makeText(getActivity(),"Please choose a member to update",Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 dbHandler.addUpdateMember(updatedMember);
                 HideKeypad();
                 Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();

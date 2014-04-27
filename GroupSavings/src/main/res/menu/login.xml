@@ -6,4 +6,11 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item android:id="@+id/btnLogin"
+        android:title="Login"
+        android:showAsAction="always"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_action_forward"/>
 </menu>
