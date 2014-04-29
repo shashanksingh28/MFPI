@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:textSize="18sp">
+            android:orientation="horizontal" >
             <TextView
                 android:text="Member Name:"
                 android:layout_width="200dp"
@@ -63,11 +63,15 @@
                 android:layout_marginLeft="5dp"
                 android:id="@+id/et_loan_interetest_rate"
                 android:inputType="number"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:text="Number of months :"
-                android:layout_marginLeft="15dp"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -98,7 +102,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
             <TextView
                 android:text="Total Outstanding :"
                 android:layout_width="200dp"
@@ -115,7 +120,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
             <TextView
                 android:text="EMI per month:"
                 android:layout_width="200dp"

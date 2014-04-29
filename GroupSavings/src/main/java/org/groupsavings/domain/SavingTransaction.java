@@ -6,6 +6,7 @@ package org.groupsavings.domain;
 public class SavingTransaction {
 
     public int Id;
+    public int groupId;
     public int grpMeetingId;
     public int memberSavingAccId;
     public int optionalSavings;

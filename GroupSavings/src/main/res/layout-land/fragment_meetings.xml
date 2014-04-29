@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5px"
+    android:layout_margin="5dp"
     tools:context="org.groupsavings.fragments.MeetingsFragment">
 <!--
     <Button
@@ -16,8 +16,9 @@
 
     <ListView
         android:id="@+id/listview_meeting_dates"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"/>
 
 </RelativeLayout>

@@ -6,12 +6,13 @@ package org.groupsavings.domain;
 public class LoanTransaction
 {
     public int Id;
+    public int groupId;
     public long EMI;
     public int GroupMeetingId;
     public int GroupMemberLoanAccountId;
     public long Repayment;
     // This is private because outstanding according to db should not change
-    private long OutstandingDue;
+    public long OutstandingDue;
     public String Date;
 
     public void setOutstandingDue(long outstandingDue)

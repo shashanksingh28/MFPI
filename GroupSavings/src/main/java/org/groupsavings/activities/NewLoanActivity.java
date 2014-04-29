@@ -107,7 +107,14 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         switch(view.getId())
         {
             case R.id.bt_calulate_emi:
-                la = getLoanDetailsFromView();
+                try{
+                    la = getLoanDetailsFromView();
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(this,"Please check if all numbers are valid",Toast.LENGTH_SHORT).show();
+                    break;
+                }
 
                 TextView tv_calcEmi = (TextView) findViewById(R.id.tv_loan_emi);
                 tv_calcEmi.setText(String.valueOf(la.getEMI()));
@@ -137,7 +144,14 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                     }
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                la = getLoanDetailsFromView();
+                try{
+                    la = getLoanDetailsFromView();
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(this,"Please check if all numbers are valid",Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 builder.setMessage("Are you sure? EMI for "+la.PeriodInMonths + " months will be "+la.getEMI()).setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
                 break;

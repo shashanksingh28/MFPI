@@ -9,11 +9,12 @@ import java.util.Date;
 public class GroupMeeting {
     public int id;
     public int groupId;
-    public Date date;
+    public String date;
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        return sdf.format(date);
+        //return sdf.format(date);
+        return date;
     }
 }
