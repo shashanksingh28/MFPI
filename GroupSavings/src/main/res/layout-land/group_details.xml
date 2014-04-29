@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -106,7 +107,7 @@
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:padding="10dp"
-                     android:text="No of Subgroups :"
+                     android:text="No of Subgroups:"
                      android:textSize="18dp"
                     android:drawableLeft="@drawable/subgroups"/>
 
@@ -128,7 +129,7 @@
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/bank"
                 android:padding="10dp"
-                android:text="Bank Account:"
+                android:text="Bank :"
                 android:textSize="18dp" />
 
             <EditText

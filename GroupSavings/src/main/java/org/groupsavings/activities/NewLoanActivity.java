@@ -24,6 +24,7 @@ import org.groupsavings.handlers.ExceptionHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,6 +36,8 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     ArrayAdapter<Member> grpMembersAdapter;
     Spinner members_spinner;
     LoanAccount la;
+    int [] alreadyLoanedMembers;
+    int alreadyLoanedCount;
 
     public static final String INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON="LoanAccount";
 
@@ -48,8 +51,18 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+            alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
+            alreadyLoanedCount = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
             db_handler = new DatabaseHandler(getApplicationContext());
             groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);
+
+            for(Member member : (ArrayList<Member>) groupMembers.clone())
+            {
+                for(int i : alreadyLoanedMembers)
+                {
+                    if(i == member.UID) groupMembers.remove(member);
+                }
+            }
             setContentView(R.layout.activity_new_loan);
 
             members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
@@ -64,7 +77,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         }
         catch (Exception ex)
         {
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

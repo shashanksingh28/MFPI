@@ -714,8 +714,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<LoanAccount> loanAccounts = new ArrayList<LoanAccount>();
         if(cursor.moveToFirst())
         {
-            LoanAccount la = getLoanAccount(cursor.getInt(0),db);
-            loanAccounts.add(la);
+            do{
+                LoanAccount la = getLoanAccount(cursor.getInt(0),db);
+                loanAccounts.add(la);
+            }while(cursor.moveToNext());
         }
 
         return loanAccounts;

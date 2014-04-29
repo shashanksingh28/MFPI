@@ -11,12 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:textSize="18sp">
             <TextView
                 android:text="Member Name:"
                 android:layout_width="200dp"
@@ -64,8 +66,8 @@
 
             <TextView
                 android:text="Number of months :"
-                android:layout_marginLeft="5dp"
-                android:layout_width="200dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content" />
 
             <EditText

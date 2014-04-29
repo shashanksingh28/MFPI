@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GroupSavings/GroupSavings.iml" filepath="$PROJECT_DIR$/GroupSavings/GroupSavings.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MFPI.iml" filepath="$PROJECT_DIR$/MFPI.iml" />
     </modules>
   </component>
 </project>

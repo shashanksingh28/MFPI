@@ -24,6 +24,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
     public static final String INTENT_EXTRA_GROUP = "GroupUID";
     public static final String INTENT_EXTRA_MEETINGID = "GrpMeetingID";
+    public static final String INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS = "AlreadyLoanedMemberIDs";
+    public static final String INTENT_EXTRA_ALREADY_LOANED_COUNT = "AlreadyLoanedCount";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     int TAB_POSITION = 0;

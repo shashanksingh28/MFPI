@@ -78,11 +78,21 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 return true;
             case R.id.button_save_group:
                 Group group = ViewHelper.fetchGroupDetailsFromView(findViewById(R.id.layout_group_details));
+                if(group.GroupName == null || group.GroupName.equals(""))
+                {
+                    Toast.makeText(this,"Please enter a group name.",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if(group.RecurringSavings == 0)
+                {
+                    Toast.makeText(this,"Please enter a group savings value",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
                 if(group != null)
                 {
                     db_handler.addUpdateGroup(group);
                 }
-                Toast.makeText(getApplicationContext(),"Group Saved",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Group Saved",Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
         }

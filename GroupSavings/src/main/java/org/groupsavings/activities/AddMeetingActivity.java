@@ -126,8 +126,15 @@ public class AddMeetingActivity extends Activity {
                 break;
             case R.id.bt_add_new_loan:
                 Intent intent = new Intent(this,NewLoanActivity.class);
+                int [] alreadyLoaned = new int[loanAccounts.size()];
+                for(int i = 0; i<loanAccounts.size(); i++)
+                {
+                    alreadyLoaned[i]=loanAccounts.get(i).memberId;
+                }
                 intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupId);
-                startActivityForResult(intent,REQUEST_GET_NEW_LOANACCOUNT);
+                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS,alreadyLoaned);
+                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,loanAccounts.size());
+                startActivityForResult(intent, REQUEST_GET_NEW_LOANACCOUNT);
                 break;
         }
         return super.onOptionsItemSelected(item);
