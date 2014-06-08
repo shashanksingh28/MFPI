@@ -1,174 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/layout_group_details"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:orientation="vertical">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout_group_details"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView android:id="@+id/view_group_uid"
                 android:layout_width="0dp"
                 android:layout_height="0dp" android:visibility="invisible"/>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textview_general_details"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="General Details"
+                    android:background="#dfe2e2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/group"
+                    android:padding="10dp"
+                    android:text="Group Name :"
+                    android:textSize="18dp" />
+                <EditText android:id="@+id/edit_group_name"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:padding="10dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/group"
-                android:padding="10dp"
-                android:text="Group Name :"
-                android:textSize="18dp" />
-            <EditText android:id="@+id/edit_group_name"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:padding="10dp" />
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/address"
+                    android:padding="10dp"
+                    android:text="Block/Street:"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/edit_group_addressline1"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:padding="10dp" />
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="200dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/address"
-                android:padding="10dp"
-                android:text="Block/Street:"
-                android:textSize="18dp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edit_group_addressline1"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:padding="10dp" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/address"
+                    android:padding="10dp"
+                    android:text="Area:"
+                    android:textSize="18dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edit_group_addressline2"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:padding="10dp" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/address"
-                android:padding="10dp"
-                android:text="Area:"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/edit_group_addressline2"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:padding="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/savings"
-                android:padding="10dp"
-                android:text="Recurring Savings :"
-                android:textSize="18dp" />
-            <EditText android:id="@+id/edit_group_recurring_savings"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:padding="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                     android:layout_width="200dp"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center"
-                     android:padding="10dp"
-                     android:text="No of Subgroups:"
-                     android:textSize="18dp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:text="No of Subgroups :"
+                    android:textSize="18dp"
                     android:drawableLeft="@drawable/subgroups"/>
 
                 <EditText android:id="@+id/edit_group_no_of_subgroups"
-                     android:layout_width="400dp"
-                     android:layout_height="wrap_content"
-                     android:inputType="number"
-                     android:padding="10dp" />
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/date"
+                    android:padding="10dp"
+                    android:text="Monthly Meeting Date:"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/tv_group_mmd"
+                    android:layout_width="200dp"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/imgbtn_pick_mmd"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textview_general_details"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Committee Details"
+                    android:background="#dfe2e2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Field Supervisor"
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/subgroups"/>
+
+                <TextView
+                    android:id="@+id/textview_field_supervisor"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Field Officer"
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/subgroups"/>
+
+                <TextView
+                    android:id="@+id/textview_field_officer"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Group President"
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/subgroups"/>
+
+                <TextView
+                    android:id="@+id/textview_president"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Field Secretary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textview_secretary"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="Group Treasurer"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textview_treasurer"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textview_general_details"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Bank Details"
+                    android:background="#dfe2e2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/savings"
+                    android:padding="10dp"
+                    android:text="Recurring Savings :"
+                    android:textSize="18dp" />
+                <EditText android:id="@+id/edit_group_recurring_savings"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/bank"
+                    android:padding="10dp"
+                    android:text="Bank Account:"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/edit_group_bank_account"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:padding="10dp" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/bank"
-                android:padding="10dp"
-                android:text="Bank :"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/edit_group_bank_account"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:padding="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/date"
-                android:padding="10dp"
-                android:text="Monthly Meeting Date:"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/tv_group_mmd"
-                android:layout_width="200dp"
-                android:textSize="18sp"
-                android:layout_height="wrap_content"
-                android:padding="8dp" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_edit"
-                android:id="@+id/imgbtn_pick_mmd"
-                android:padding="8dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
     </ScrollView>
 </RelativeLayout>
