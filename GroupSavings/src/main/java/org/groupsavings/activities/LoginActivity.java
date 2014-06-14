@@ -61,8 +61,7 @@ public class LoginActivity extends Activity {
                     {
                         // Creating user login session
                         // Statically storing name="Sample Name"
-                        // and email="sample@email.com"
-                        session.createUserLoginSession("Sample Name","sample@email.com");
+                        session.createUserLoginSession(username);
 
                         // Starting MainActivity
                         Intent i = new Intent(getApplicationContext(), GroupsGridActivity.class);
@@ -95,13 +94,19 @@ public class LoginActivity extends Activity {
     public boolean checkLogin(String username, String password)
     {
         if(username.trim().length() > 0 && password.trim().length() > 0) {
-            // For testing puspose username, password is checked with static data
+            // For testing purpose username, password is checked with static data
             // username = admin
             // password = admin
-
             if (username.equals("admin") && password.equals("admin")) {
                 return true;
             }
+/********
+ * Action:
+ * replace static values with db check
+ * If username = FieldOfficers.Id and password = FieldOfficers.PasswordHash
+ *  return true
+********/
+
         }
         return false;
     }

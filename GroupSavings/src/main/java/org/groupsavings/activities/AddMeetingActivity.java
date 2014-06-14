@@ -3,6 +3,7 @@ package org.groupsavings.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -18,10 +19,12 @@ import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
+import org.groupsavings.handlers.UserSessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AddMeetingActivity extends Activity {
 
@@ -39,6 +42,11 @@ public class AddMeetingActivity extends Activity {
     MeetingLoanAdapter loansAdapter;
     ListView lv_loanAccounts;
 
+//  session management declarations start
+    UserSessionManager session;
+    private Handler handler = new Handler();
+//  session management declarations end
+
     public final int REQUEST_GET_NEW_LOANACCOUNT = 2;
 
     @Override
@@ -52,6 +60,28 @@ public class AddMeetingActivity extends Activity {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             setContentView(R.layout.activity_add_meeting);
+
+            //user session management starts
+            session = new UserSessionManager(getApplicationContext());
+
+            if(!session.isUserLoggedIn()) {
+                //redirect to login activity
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+
+            HashMap<String, String> user = session.getUserDetails();
+            String name = user.get(UserSessionManager.KEY_NAME);
+            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }, 1800000);// session timeout of 30 minutes
+            //user session management ends
+
 
             groupId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
             dbHandler = new DatabaseHandler(getApplicationContext());

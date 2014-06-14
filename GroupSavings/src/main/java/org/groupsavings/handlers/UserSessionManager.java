@@ -17,31 +17,19 @@ import android.content.SharedPreferences.Editor;
 import org.groupsavings.activities.LoginActivity;
 
 public class UserSessionManager {
-    // Shared Preferences reference
-    SharedPreferences pref;
 
-    // Editor reference for Shared preferences
-    Editor editor;
-
-    // Context
-    Context _context;
-
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
+    SharedPreferences pref;     // Shared Preferences reference
+    Editor editor; // Editor reference for Shared preferences
+    Context _context;     // Context
+    int PRIVATE_MODE = 0;    // Shared pref mode
 
     // Sharedpref file name
-    private static final String PREFER_NAME = "AndroidExamplePref";
+    private static final String PREFER_NAME = "GroupSavingsPref";
 
     // All Shared Preferences Keys
     private static final String IS_USER_LOGIN = "IsUserLoggedIn";
-
-    // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
 
-    // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
-
-    // Constructor
     public UserSessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREFER_NAME, PRIVATE_MODE);
@@ -49,25 +37,12 @@ public class UserSessionManager {
     }
 
     //Create login session
-    public void createUserLoginSession(String name, String email){
-        // Storing login value as TRUE
-        editor.putBoolean(IS_USER_LOGIN, true);
-
-        // Storing name in pref
-        editor.putString(KEY_NAME, name);
-
-        // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
-
-        // commit changes
-        editor.commit();
+    public void createUserLoginSession(String name){
+        editor.putBoolean(IS_USER_LOGIN, true);        // Storing login value as TRUE
+        editor.putString(KEY_NAME, name);        // Storing name in pref
+        editor.commit();        // commit changes
     }
 
-    /**
-     * Check login method will check user login status
-     * If false it will redirect user to login page
-     * Else do anything
-     * */
     public boolean checkLogin(){
         // Check login status
         if(!this.isUserLoggedIn()){
@@ -101,9 +76,6 @@ public class UserSessionManager {
 
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 
         // return user
         return user;

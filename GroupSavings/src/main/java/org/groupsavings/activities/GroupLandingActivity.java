@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
@@ -17,7 +19,9 @@ import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
 import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
+import org.groupsavings.handlers.UserSessionManager;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 public class GroupLandingActivity extends Activity implements ActionBar.TabListener {
@@ -27,6 +31,11 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     public static final String INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS = "AlreadyLoanedMemberIDs";
     public static final String INTENT_EXTRA_ALREADY_LOANED_COUNT = "AlreadyLoanedCount";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
+
+    //  session management declarations start
+    UserSessionManager session;
+    private Handler handler = new Handler();
+    //  session management declarations end
 
     int TAB_POSITION = 0;
     /**
@@ -60,6 +69,26 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         setContentView(R.layout.activity_group_landing);
         db_handler = new DatabaseHandler(getApplicationContext());
 
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_NAME);
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
 
         int groupUID = getIntent().getIntExtra(INTENT_EXTRA_GROUP, 0);
         group = db_handler.getGroup(groupUID);

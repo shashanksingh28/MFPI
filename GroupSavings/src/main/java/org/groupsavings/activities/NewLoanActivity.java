@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +22,14 @@ import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
+import org.groupsavings.handlers.UserSessionManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class NewLoanActivity extends Activity implements View.OnClickListener {
 
@@ -39,6 +42,12 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     int [] alreadyLoanedMembers;
     int alreadyLoanedCount;
 
+    //  session management declarations start
+    UserSessionManager session;
+    private Handler handler = new Handler();
+    //  session management declarations end
+
+
     public static final String INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON="LoanAccount";
 
     @Override
@@ -49,6 +58,26 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             super.onCreate(savedInstanceState);
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //user session management starts
+            session = new UserSessionManager(getApplicationContext());
+
+            if(!session.isUserLoggedIn()) {
+                //redirect to login activity
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+
+            HashMap<String, String> user = session.getUserDetails();
+            String name = user.get(UserSessionManager.KEY_NAME);
+            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }, 1800000);// session timeout of 30 minutes
+            //user session management ends
 
             groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
             alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);

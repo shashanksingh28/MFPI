@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +20,10 @@ import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
+import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GroupsGridActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
@@ -30,6 +33,11 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     ArrayAdapter adapter_grid;
     private ProgressDialog pDialog;
 
+    //  session management declarations start
+        UserSessionManager session;
+        private Handler handler = new Handler();
+    //  session management declarations end
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -38,6 +46,28 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             setContentView(R.layout.activity_groups_grid);
+
+            //user session management starts
+            session = new UserSessionManager(getApplicationContext());
+
+            if(!session.isUserLoggedIn()) {
+                //redirect to login activity
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+
+            HashMap<String, String> user = session.getUserDetails();
+            String name = user.get(UserSessionManager.KEY_NAME);
+            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }, 1800000);// session timeout of 30 minutes
+            //user session management ends
+
             db_handler = new DatabaseHandler(getApplicationContext());
             // Uncomment this once only when there is change in schema and revert back
             // db_handler.createSchema(null);
@@ -53,6 +83,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             adapter_grid = new ArrayAdapter(this,android.R.layout.simple_list_item_1,groups);
             gv.setAdapter(adapter_grid);
             gv.setOnItemClickListener(this);
+
         }
         catch (Exception ex)
         {
