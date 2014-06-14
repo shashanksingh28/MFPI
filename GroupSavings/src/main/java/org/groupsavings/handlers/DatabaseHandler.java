@@ -20,9 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by shashank on 4/3/14.
- */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
@@ -210,15 +207,63 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + COLUMN_LOANACCOUNT_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             + ");";
 
+    private static class Patch {
+        public void apply(SQLiteDatabase db) {}
+
+        public void revert(SQLiteDatabase db) {}
+    }
+
+    private static final Patch[] PATCHES = new Patch[] {
+            new Patch() {
+                public void apply(SQLiteDatabase db) {
+                    //db.execSQL("create table ...");
+                    db.execSQL(CREATE_GROUP_TABLE);
+                    db.execSQL(CREATE_MEMBER_TABLE);
+                    db.execSQL(CREATE_SAVINGS_TABLE);
+                    db.execSQL(CREATE_SAVINGTRANSACTION_TABLE);
+                    db.execSQL(CREATE_LOANS_TABLE);
+                    db.execSQL(CREATE_LOANTRANSACTION_TABLE);
+                    db.execSQL(CREATE_GROUPMEETING_TABLE);
+                }
+
+                public void revert(SQLiteDatabase db) {
+                    //db.execSQL("drop table ...");
+                }
+            }
+            , new Patch() {
+        public void apply(SQLiteDatabase db) { /*...*/ }
+        public void revert(SQLiteDatabase db) { /*...*/ }
+    }
+    };
+
     public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+//        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, PATCHES.length); //1
+
     }
 
-    @Override
+//    @Override
     public void onCreate(SQLiteDatabase db) {
-        createSchema(db);
+//        createSchema(db);
+        for (int i=0; i<PATCHES.length; i++) {
+            PATCHES[i].apply(db);
+        }
+
     }
 
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        for (int i=oldVersion; i<newVersion; i++) {
+            PATCHES[i].apply(db);
+        }
+    }
+
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        for (int i=oldVersion; i>newVersion; i++) {
+            PATCHES[i-1].revert(db);
+        }
+    }
+
+/*
     private void dropSchema(SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
 
@@ -244,11 +289,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOANTRANSACTION_TABLE);
         db.execSQL(CREATE_GROUPMEETING_TABLE);
     }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-    }
-
+*/
     //------------------------ Group related functions ----------------------------//
     //-----------------------------------------------------------------------------//
     public void addUpdateGroup(Group group) {
