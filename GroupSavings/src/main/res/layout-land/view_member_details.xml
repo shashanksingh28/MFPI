@@ -146,6 +146,177 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="8dp"
+            android:text="Pass Book No:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_pass_book_no"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Father/Husband Name:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_guardian_name"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Economic Condition:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_economic_condition"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Education Qualification:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_education_qualification"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Member's Occupation:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_member_occupation"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Annual Income:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_annual_income"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Physical Disability:"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/sp_physical_disability"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="No of Family Members:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_count_family_members"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
             android:text="Savings :"
             android:textSize="18sp" />
 
