@@ -1,13 +1,13 @@
 package org.groupsavings.constants;
 
 /**
- * Created by shashank on 14/6/14.
+ * CREATEd by shashank on 14/6/14.
  */
 public class Tables {
 
     public static final String GROUPS = "Groups";
 
-    public static final String CREATE_TABLE_Groups = "Create table " + GROUPS
+    public static final String CREATE_TABLE_Groups = "CREATE TABLE " + GROUPS
             + " (" + Columns.GROUP_Id + " TEXT PRIMARY KEY,"
             + Columns.GROUP_Name + " TEXT,"
             + Columns.GROUP_PresidentId + " TEXT,"
@@ -34,10 +34,13 @@ public class Tables {
             + Columns.GROUP_ModifiedDate + " TIMESTAMP,"
             + Columns.GROUP_ModifiedBy + " TEXT"
             + ");";
+    
+    public static final String DROP_TABLE_Groups = "Drop Table "+GROUPS +";";
+    
 
     public static final String GROUPMEETINGS = "GroupMeetings";
 
-    public static final String CREATE_TABLE_GROUPMEETINGS = "Create table " + GROUPMEETINGS
+    public static final String CREATE_TABLE_GROUPMEETINGS = "CREATE TABLE " + GROUPMEETINGS
             + " (" + Columns.GROUPMEETING_Id + " TEXT PRIMARY KEY,"
             + Columns.GROUPMEETING_GroupId + " TEXT,"
             + Columns.GROUPMEETING_Date + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
@@ -45,7 +48,7 @@ public class Tables {
             + ");";
 
     public static final String MEETINGDETAILS = "MeetingDetails";
-    public static final String CREATE_TABLE_MEETINGDETAILS = "Create table "+ MEETINGDETAILS
+    public static final String CREATE_TABLE_MEETINGDETAILS = "CREATE TABLE "+ MEETINGDETAILS
             + " (" + Columns.MEETINGDETAILS_MeetingId + " TEXT,"
             + Columns.MEETINGDETAILS_MemberId + " TEXT,"
             + Columns.MEETINGDETAILS_IsAbsent + " BOOLEAN,"
@@ -54,7 +57,7 @@ public class Tables {
 
     public static final String MEMBERS = "Members";
     
-    public static final String CREATE_MEMBER_TABLE = "Create table " + MEMBERS
+    public static final String CREATE_TABLE_MEMBERS = "CREATE TABLE " + MEMBERS
             + " (" + Columns.MEMBER_ID + " TEXT PRIMARY KEY,"
             + Columns.MEMBER_GroupID + " TEXT,"
             + Columns.MEMBER_FirstName + " TEXT,"
@@ -69,6 +72,7 @@ public class Tables {
             + Columns.MEMBER_AddressLine2 + " TEXT,"
             + Columns.MEMBER_Occupation + " TEXT,"
             + Columns.MEMBER_AnnualIncome + " TEXT,"
+            + Columns.MEMBER_EconomicCondition + " TEXT,"
             + Columns.MEMBER_Education + " TEXT,"
             + Columns.MEMBER_Disability + " BOOLEAN,"
             + Columns.MEMBER_NoOfFamilyMembers + " INTEGER,"
@@ -85,7 +89,7 @@ public class Tables {
 
     public static final String SAVINGACCOUNTS = "SavingAccounts";
 
-    public static final String CREATE_TABLE_SAVINGS = "Create table " + SAVINGACCOUNTS
+    public static final String CREATE_TABLE_SAVINGACCOUNTS = "CREATE TABLE " + SAVINGACCOUNTS
             + " (" + Columns.SAVINGACCOUNTS_Id + " TEXT PRIMARY KEY,"
             + Columns.SAVINGACCOUNTS_GroupId + " TEXT,"
             + Columns.SAVINGACCOUNTS_MemberId + " TEXT,"
@@ -100,7 +104,7 @@ public class Tables {
 
     public static final String SAVINGACCTRANSACTIONSS = "SAVINGACCTRANSACTIONSs";
 
-    public static final String CREATE_TABLE_SAVINGACCTRANSACTIONS = "Create table " + SAVINGACCTRANSACTIONSS
+    public static final String CREATE_TABLE_SAVINGACCTRANSACTIONS = "CREATE TABLE " + SAVINGACCTRANSACTIONSS
             + " (" + Columns.SAVINGACCTRANSACTIONS_GroupId + " TEXT,"
             + Columns.SAVINGACCTRANSACTIONS_MeetingId + " TEXT,"
             + Columns.SAVINGACCTRANSACTIONS_SavingAccountId + "TEXT,"
@@ -112,7 +116,7 @@ public class Tables {
 
     public static final String LOANACCOUNTS = "LoanAccounts";
 
-    public static final String CREATE_TABLE_LOANACCOUNTS = "Create table " + LOANACCOUNTS
+    public static final String CREATE_TABLE_LOANACCOUNTS = "CREATE TABLE " + LOANACCOUNTS
             + " (" + Columns.LOANACCOUNTS_Id + " TEXT PRIMARY KEY,"
             + Columns.LOANACCOUNTS_MemberId + " TEXT,"
             + Columns.LOANACCOUNTS_GroupId + " TEXT,"
@@ -134,7 +138,7 @@ public class Tables {
 
     public static final String LOANACCTRANSACTIONS = "LoanAccTransactions";
 
-    public static final String CREATE_TABLE_LOANTRANSACTIONS = "Create table " + LOANACCTRANSACTIONS
+    public static final String CREATE_TABLE_LOANTRANSACTIONS = "CREATE TABLE " + LOANACCTRANSACTIONS
             + " (" + Columns.LOANACCTRANSACTIONS_GroupId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_MeetingId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_LoanAccountId + " TEXT,"
@@ -145,7 +149,7 @@ public class Tables {
 
     public static final String FIELDOFFICERS = "FieldOfficers";
 
-    public static final String CREATE_TABLE_FIELDOFFICERS = "Create table " + FIELDOFFICERS
+    public static final String CREATE_TABLE_FIELDOFFICERS = "CREATE TABLE " + FIELDOFFICERS
             + " (" + Columns.FIELDOFFICERS_Id + " INTEGER,"
             + Columns.FIELDOFFICERS_Name + " TEXT,"
             + Columns.FIELDOFFICERS_PasswordHash + " TEXT"
