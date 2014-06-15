@@ -7,13 +7,13 @@ public class Group {
 
     public int Id;
     public String Name;
-    public String PresidentId;
-    public String SecretaryId;
-    public String TreasurerId;
+    public Member President;
+    public Member Secretary;
+    public Member Treasurer;
     public String FieldOfficerId;
     public int Active;
     public int MonthlyCompulsoryAmount;
-    public String MonthlyMeetingDate;
+    public int MonthlyMeetingDate;
     public String Bank;
     public int ClusterId;
     public int CummulativeSavings;
@@ -27,9 +27,11 @@ public class Group {
     public String State;
     public String Country;
     public String CreatedDate;
-    public int CreatedBy;
+    public String CreatedBy;
     public String ModifiedDate;
-    public int ModifiedBy;
+    public String ModifiedBy;
+
+    public int NoOfActiveMembers;
 
     @Override
     public String toString()
