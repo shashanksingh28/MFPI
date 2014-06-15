@@ -5,30 +5,37 @@ package org.groupsavings.domain;
  */
 public class Group {
 
-    public int UID;
-    public String GroupName;
+    public int Id;
+    public String Name;
+    public String PresidentId;
+    public String SecretaryId;
+    public String TreasurerId;
+    public String FieldOfficerId;
+    public int Active;
+    public int MonthlyCompulsoryAmount;
+    public String MonthlyMeetingDate;
+    public String Bank;
+    public int ClusterId;
+    public int CummulativeSavings;
+    public int OtherIncome;
+    public int OutstandingLoans;
+    public String DateOfFormation;
+    public int NoOfSubgroups;
     public String AddressLine1;
     public String AddressLine2;
-    public int FOId;
-    public int PresidentId;
-    public Member President;
-    public Member Secretary;
-    public Member Treasurer;
-    public int RecurringSavings;
-    public String BankAccount;
-    public String MonthlyMeetingDate;
-    public int NoOfSubgroups;
-    public int NoOfMembers;
-    public long TotalSavings;
-    public long TotalOutstanding;
-    public String CreatedAt;
+    public String City;
+    public String State;
+    public String Country;
+    public String CreatedDate;
     public int CreatedBy;
+    public String ModifiedDate;
+    public int ModifiedBy;
 
     @Override
     public String toString()
     {
-        return GroupName + "    Area : " + AddressLine2 + "    Savings : " + TotalSavings + "    Outstanding Loans : " + TotalOutstanding
-                + "    Members : "+NoOfMembers;
+        return Name + "    Area : " + AddressLine2 + "    Savings : " + CummulativeSavings + "    Outstanding Loans : " + OutstandingLoans;
+             //   + "    Members : "+NoOfMembers;
     }
 
 }

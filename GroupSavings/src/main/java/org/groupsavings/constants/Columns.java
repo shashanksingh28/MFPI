@@ -47,6 +47,7 @@ public class Columns {
     public static final String MEMBER_AddressLine2 = "AddressLine2";
     public static final String MEMBER_Occupation = "Occupation";
     public static final String MEMBER_AnnualIncome = "AnnualIncome";
+    public static final String MEMBER_EconomicCondition = "EconomicCondition";
     public static final String MEMBER_Education = "Education";
     public static final String MEMBER_Disability = "Disability";
     public static final String MEMBER_NoOfFamilyMembers = "NoOfFamilyMembers";
