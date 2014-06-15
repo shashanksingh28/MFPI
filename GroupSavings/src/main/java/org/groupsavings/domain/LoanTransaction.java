@@ -5,29 +5,26 @@ package org.groupsavings.domain;
  */
 public class LoanTransaction
 {
-    public int Id;
-    public int groupId;
-    public long EMI;
-    public int GroupMeetingId;
-    public int GroupMemberLoanAccountId;
-    public long Repayment;
-    // This is private because outstanding according to db should not change
-    public long OutstandingDue;
-    public String Date;
+    public String GroupId;
+    public String MeetingId;
+    public String LoanAccountId;
+    public float Repayment;
+    public float Outstanding;
+    public String DateTime;
 
     public void setOutstandingDue(long outstandingDue)
     {
-        this.OutstandingDue = outstandingDue;
+        this.Outstanding = outstandingDue;
     }
 
-    public long getUpdatedOutstanding()
+    public float getUpdatedOutstanding()
     {
-        return this.OutstandingDue - Repayment;
+        return this.Outstanding - Repayment;
     }
 
-    public long getAsIsOutstanding()
+    public float getAsIsOutstanding()
     {
-        return this.OutstandingDue;
+        return this.Outstanding;
     }
 }
 
