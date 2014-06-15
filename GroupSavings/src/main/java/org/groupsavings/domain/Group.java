@@ -12,8 +12,8 @@ public class Group {
     public int FOId;
     public int PresidentId;
     public Member President;
-    public Member Secretary;
     public Member Treasurer;
+    public Member Secretary;
     public int RecurringSavings;
     public String BankAccount;
     public String MonthlyMeetingDate;

@@ -11,13 +11,13 @@ public class Member {
     public int GroupUID;
     public String FirstName;
     public String LastName;
+    public String GuardianName;
     public String Email;
     public char Sex;
     public String DOB;
     public String AddressLine1;
     public String AddressLine2;
     public String ContactInfo;
-    public String GuardianName;
     public String Passbook;
     public String Occupation;
     public long AnnualIncome;
