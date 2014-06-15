@@ -5,22 +5,22 @@ package org.groupsavings.domain;
  */
 public class Group {
 
-    public int Id;
+    public String Id;
     public String Name;
     public Member President;
     public Member Secretary;
     public Member Treasurer;
     public String FieldOfficerId;
-    public String Active;
-    public String MonthlyMeetingDate;
-    public String MonthlyCompulsoryAmount;
+    public boolean Active;
+    public int MonthlyMeetingDate;
+    public float MonthlyCompulsoryAmount;
     public String Bank;
     public float ClusterId;
     public float CummulativeSavings;
     public float OtherIncome;
     public float OutstandingLoans;
     public String DateOfFormation;
-    public String NoOfSubgroups;
+    public int NoOfSubgroups;
     public String AddressLine1;
     public String AddressLine2;
     public String City;

@@ -1,7 +1,5 @@
 package org.groupsavings.domain;
 
-import java.util.Date;
-
 /**
  * Created by shashank on 1/3/14.
  */
@@ -15,18 +13,17 @@ public class Member {
     public String Gender;
     public String DOB;
     public String EmailId;
-    public String Active;
+    public boolean Active;
     public String ContactNumber;
     public String AddressLine1;
     public String AddressLine2;
-    public String State;
     public String Occupation;
     public float AnnualIncome;
     public String Education;
-    public String Disability;
-    public String NoOfFamilyMembers;
+    public boolean Disability;
+    public int NoOfFamilyMembers;
     public String Nominee;
-    public String Insurance;
+    public boolean Insurance;
     public String ExitDate;
     public String ExitReason;
     public String CreatedDate;
@@ -35,6 +32,9 @@ public class Member {
     public String ModifiedBy;
     public String Passbook;
     public String EconomicCondition;
+
+    public float CurrentSavings;
+    public float CurrentOutstanding;
 
 
     @Override
