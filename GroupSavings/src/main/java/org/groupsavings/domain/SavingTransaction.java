@@ -5,17 +5,18 @@ package org.groupsavings.domain;
  */
 public class SavingTransaction {
 
-    public int Id;
-    public int groupId;
-    public int grpMeetingId;
-    public int memberSavingAccId;
-    public int optionalSavings;
-    public int groupCompulsorySavings;
-    public int transactionTotalSaving;
-    public String timeStamp;
+    public String GroupId;
+    public String SavingAccountId;
+    public String MeetingId;
+    public String Type;
+    public float Amount;
+    public float CurrentBalance;
+    public String DateTime;
 
-    public int getTotalSavings() {
+    // Moved to Saving Account
+/*    public int getTotalSavings() {
         return groupCompulsorySavings + optionalSavings;
     }
+    */
 
 }

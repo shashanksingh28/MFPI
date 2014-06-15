@@ -21,6 +21,7 @@ public class LoanAccount {
     public String EndDate;
     public String CreatedDate;
     public String CreatedBy;
+    public String Active;
 
     public float getEMI()
     {
