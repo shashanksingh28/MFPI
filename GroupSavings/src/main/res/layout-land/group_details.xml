@@ -150,49 +150,49 @@
                     android:text="Committee Details"
                     android:background="#dfe2e2"/>
             </LinearLayout>
+            <!--As per Shashank, FO and FS not required
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="8dp"
+                                android:text="Field Supervisor"
+                                android:textSize="18sp"
+                                android:drawableLeft="@drawable/subgroups"/>
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="8dp"
-                    android:text="Field Supervisor"
-                    android:textSize="18sp"
-                    android:drawableLeft="@drawable/subgroups"/>
+                            <TextView
+                                android:id="@+id/textview_field_supervisor"
+                                android:layout_width="400dp"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp"/>
+                        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textview_field_supervisor"
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
-            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="8dp"
+                                android:text="Field Officer"
+                                android:textSize="18sp"
+                                android:drawableLeft="@drawable/subgroups"/>
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="8dp"
-                    android:text="Field Officer"
-                    android:textSize="18sp"
-                    android:drawableLeft="@drawable/subgroups"/>
-
-                <TextView
-                    android:id="@+id/textview_field_officer"
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
-            </LinearLayout>
-
+                            <TextView
+                                android:id="@+id/textview_field_officer"
+                                android:layout_width="400dp"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp"/>
+                        </LinearLayout>
+            -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,12 +206,13 @@
                     android:text="Group President"
                     android:textSize="18sp"
                     android:drawableLeft="@drawable/subgroups"/>
-
-                <TextView
-                    android:id="@+id/textview_president"
+                <Spinner
                     android:layout_width="400dp"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:padding="8dp"
+                    android:id="@+id/sp_group_president" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -225,13 +226,15 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="Field Secretary"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/textview_secretary"
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/subgroups"/>
+                <Spinner
                     android:layout_width="400dp"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:padding="8dp"
+                    android:id="@+id/sp_group_secretary" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -245,13 +248,15 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="Group Treasurer"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:drawableLeft="@drawable/subgroups"/>
 
-                <TextView
-                    android:id="@+id/textview_treasurer"
+                <Spinner
                     android:layout_width="400dp"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:padding="8dp"
+                    android:id="@+id/sp_group_treasurer" />
             </LinearLayout>
 
             <LinearLayout
