@@ -68,7 +68,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
             president_spinner.setAdapter(grpMembersAdapter);
 
-
             secretary_spinner = (Spinner) findViewById(R.id.sp_group_secretary);
             grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
             secretary_spinner.setAdapter(grpMembersAdapter);
