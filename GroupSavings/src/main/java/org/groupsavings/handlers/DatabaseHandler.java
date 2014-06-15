@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.groupsavings.constants.Columns;
+import org.groupsavings.constants.Tables;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
@@ -298,22 +300,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_GROUP_Name, group.GroupName);
-        values.put(COLUMN_GROUP_AddressLine1, group.AddressLine1);
-        values.put(COLUMN_GROUP_AddressLine2, group.AddressLine2);
-        values.put(COLUMN_GROUP_PresidentId, group.PresidentId);
-        values.put(COLUMN_GROUP_FieldOfficerId, group.FOId);
-        values.put(COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
-        values.put(COLUMN_GROUP_NoOfSubgroups, group.NoOfSubgroups);
-        values.put(COLUMN_GROUP_BankAccount, group.BankAccount);
-        values.put(COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
+        values.put(Columns.GROUP_Name, group.GroupName);
+        values.put(Columns.GROUP_AddressLine1, group.AddressLine1);
+        values.put(Columns.GROUP_AddressLine2, group.AddressLine2);
+        values.put(Columns.GROUP_PresidentId, group.PresidentId);
+        values.put(Columns.GROUP_FieldOfficerId, group.FOId);
+        //values.put(Columns.GROUP_RecurringIndividualAmount, group.RecurringSavings);
+        values.put(Columns.GROUP_NoOfSubgroups, group.NoOfSubgroups);
+        values.put(Columns.GROUP_Bank, group.BankAccount);
+        values.put(Columns.GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
 
         if (group.UID == 0) {
             // TODO: get field officer Id from security
-            values.put(COLUMN_GROUP_CreatedBy, group.CreatedBy);
-            db.insertOrThrow(TABLE_GROUP, null, values);
+            values.put(Columns.GROUP_CreatedBy, group.CreatedBy);
+            db.insertOrThrow(Tables.GROUPS, null, values);
         } else {
-            db.update(TABLE_GROUP, values, COLUMN_GROUP_HashId + " = " + group.UID, null);
+            db.update(Tables.GROUPS, values, Columns.GROUP_Id + " = " + group.UID, null);
         }
 
         db.close();
@@ -550,22 +552,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         if (member.UID == 0) {
-            values.put(COLUMN_MEMBER_FirstName, member.FirstName);
-            values.put(COLUMN_MEMBER_LastName, member.LastName);
-            values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
-            values.put(COLUMN_MEMBER_GroupUID, member.GroupUID);
-            values.put(COLUMN_MEMBER_DOB, member.DOB);
-            values.put(COLUMN_MEMBER_AddressLine1, member.AddressLine1);
-            values.put(COLUMN_MEMBER_AddressLine2, member.AddressLine2);
+            values.put(Columns.MEMBER_FirstName, member.FirstName);
+            values.put(Columns.MEMBER_LastName, member.LastName);
+            values.put(Columns.MEMBER_ContactNumber, member.ContactInfo);
+            values.put(Columns.MEMBER_GroupID, member.GroupUID);
+            values.put(Columns.MEMBER_DOB, member.DOB);
+            values.put(Columns.MEMBER_AddressLine1, member.AddressLine1);
+            values.put(Columns.MEMBER_AddressLine2, member.AddressLine2);
 
             long memberId = db.insertOrThrow(TABLE_MEMBER, null, values);
             member.UID = (int) memberId;
             createMemberAccounts(member, db);
         } else {
-            values.put(COLUMN_MEMBER_ContactNumber, member.ContactInfo);
-            values.put(COLUMN_MEMBER_AddressLine1, member.AddressLine1);
-            values.put(COLUMN_MEMBER_AddressLine2, member.AddressLine2);
-            db.update(TABLE_MEMBER, values, COLUMN_MEMBER_UID + " = " + member.UID, null);
+            values.put(Columns.MEMBER_ContactNumber, member.ContactInfo);
+            values.put(Columns.MEMBER_AddressLine1, member.AddressLine1);
+            values.put(Columns.MEMBER_AddressLine2, member.AddressLine2);
+            db.update(Tables.MEMBERS, values, Columns.MEMBER_ID + " = " + member.UID, null);
         }
 
         db.close();
