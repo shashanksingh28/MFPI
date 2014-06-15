@@ -124,6 +124,7 @@ public class ViewHelper {
                 updatedMember.Id = Integer.parseInt(uid_string);
         }
 
+
         EditText firstNameEditor=(EditText) view.findViewById(R.id.edit_member_firstname);
         if(firstNameEditor != null && firstNameEditor.getText()!= null) updatedMember.FirstName = firstNameEditor.getText().toString();
 
