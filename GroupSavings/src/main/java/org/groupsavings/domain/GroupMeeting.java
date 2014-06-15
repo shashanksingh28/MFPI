@@ -7,14 +7,15 @@ import java.util.Date;
  * Created by shashank on 30/3/14.
  */
 public class GroupMeeting {
-    public int id;
-    public int groupId;
-    public String date;
+    public String Id;
+    public String GroupId;
+    public String Date;
+    public String FieldOfficerId;
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         //return sdf.format(date);
-        return date;
+        return Date;
     }
 }

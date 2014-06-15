@@ -11,16 +11,16 @@ public class Group {
     public Member Secretary;
     public Member Treasurer;
     public String FieldOfficerId;
-    public int Active;
-    public int MonthlyCompulsoryAmount;
-    public int MonthlyMeetingDate;
+    public String Active;
+    public String MonthlyMeetingDate;
+    public String MonthlyCompulsoryAmount;
     public String Bank;
-    public int ClusterId;
-    public int CummulativeSavings;
-    public int OtherIncome;
-    public int OutstandingLoans;
+    public float ClusterId;
+    public float CummulativeSavings;
+    public float OtherIncome;
+    public float OutstandingLoans;
     public String DateOfFormation;
-    public int NoOfSubgroups;
+    public String NoOfSubgroups;
     public String AddressLine1;
     public String AddressLine2;
     public String City;
@@ -30,8 +30,7 @@ public class Group {
     public String CreatedBy;
     public String ModifiedDate;
     public String ModifiedBy;
-
-    public int NoOfActiveMembers;
+    public String NoOfActiveMembers;
 
     @Override
     public String toString()

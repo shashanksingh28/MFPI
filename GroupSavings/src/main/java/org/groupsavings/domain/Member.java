@@ -12,7 +12,7 @@ public class Member {
     public String FirstName;
     public String LastName;
     public String GuardianName;
-    public char Gender;
+    public String Gender;
     public String DOB;
     public String EmailId;
     public String Active;

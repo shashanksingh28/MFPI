@@ -5,38 +5,38 @@ package org.groupsavings.domain;
  */
 public class LoanAccount {
 
-    public int Id;
-    public int groupId;
-    public int groupMeetingId;
-    public int memberId;
-    public Member GroupMember;
-
-    public long Principal;
-    public float InterestPerAnnum;
-    public int PeriodInMonths;
-    public long OutStanding;
-    public long EMI;
-
+    public String Id;
+    public String MemberId;
+    public String GroupId;
+    public String GroupMeetingId;
+    public float Principal;
+    public float InterestRate;
+    public float PeriodInMonths;
+    public float EMI;
+    public float Outstanding;
+    public String Reason;
+    public String Guarantor;
+    public String IsEmergency;
     public String StartDate;
     public String EndDate;
-    public String Reason;
-    public boolean IsActive;
+    public String CreatedDate;
+    public String CreatedBy;
 
-    public long getEMI()
+    public float getEMI()
     {
-        double simpleInterest = (Principal * InterestPerAnnum * PeriodInMonths / 1200);
-        long total = Principal + Math.round(simpleInterest);
-        int quotient = (int) total / PeriodInMonths;
-        int remainder = (int) total % PeriodInMonths;
+        float simpleInterest = (Principal * InterestRate * PeriodInMonths / 1200);
+        float total = Principal + Math.round(simpleInterest);
+        float quotient = (int) total / PeriodInMonths;
+        float remainder = (int) total % PeriodInMonths;
         if(remainder > 0) quotient ++;
 
         EMI = quotient;
         return EMI;
     }
 
-    public long getInitialOutstanding()
+    public float getInitialOutstanding()
     {
-        double simpleInterest = (Principal * InterestPerAnnum * PeriodInMonths / 1200);
+        float simpleInterest = (Principal * InterestRate * PeriodInMonths / 1200);
         return Principal +  Math.round(simpleInterest);
     }
 
