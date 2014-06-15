@@ -7,19 +7,32 @@ import java.util.Date;
  */
 public class Member {
 
-    public int UID;
-    public int GroupUID;
+    public String Id;
+    public String GroupId;
     public String FirstName;
     public String LastName;
-    public String Email;
-    public char Sex;
+    public String GuardianName;
+    public char Gender;
     public String DOB;
+    public String EmailId;
+    public String Active;
+    public String ContactNumber;
     public String AddressLine1;
     public String AddressLine2;
-    public String ContactInfo;
-    public double TotalSavings;
-    public double OutstandingLoan;
-    public Date CreatedAt;
+    public String State;
+    public String Occupation;
+    public double AnnualIncome;
+    public String Education;
+    public String Disability;
+    public String NoOfFamilyMembers;
+    public String Nominee;
+    public String Insurance;
+    public String ExitDate;
+    public String ExitReason;
+    public String CreatedDate;
+    public String CreatedBy;
+    public String ModifiedDate;
+    public String ModifiedBy;
 
 
     @Override
