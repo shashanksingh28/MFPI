@@ -1,7 +1,7 @@
 package org.groupsavings.constants;
 
 /**
- * Created by shashank on 14/6/14.
+ * Created by shashank on 15/6/14.
  */
 public class Columns {
 
@@ -9,7 +9,7 @@ public class Columns {
     public static final String GROUP_Id = "Id";
     public static final String GROUP_Name = "Name";
     public static final String GROUP_PresidentId = "PresidentId";
-        public static final String GROUP_SecretaryId = "SecretaryId";
+    public static final String GROUP_SecretaryId = "SecretaryId";
     public static final String GROUP_TreasurerId = "TreasurerId";
     public static final String GROUP_FieldOfficerId = "FieldOfficerId";
     public static final String GROUP_Active = "Active";
@@ -128,5 +128,4 @@ public class Columns {
     public static final String FIELDOFFICERS_Id = "Id";
     public static final String FIELDOFFICERS_Name = "Name";
     public static final String FIELDOFFICERS_PasswordHash = "PasswordHash";
-
 }
