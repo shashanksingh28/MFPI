@@ -16,7 +16,7 @@ public class Tables {
             + Columns.GROUP_FieldOfficerId + " TEXT,"
             + Columns.GROUP_Active + " BOOLEAN,"
             + Columns.GROUP_MonthlyCompulsoryAmount + " INTEGER,"
-            + Columns.GROUP_MonthlyMeetingDate + " TIMESTAMP,"
+            + Columns.GROUP_MonthlyMeetingDate + " INTEGER,"
             + Columns.GROUP_Bank + " TEXT,"
             + Columns.GROUP_ClusterId + " INTEGER,"
             + Columns.GROUP_CummulativeSavings + " LONG,"
