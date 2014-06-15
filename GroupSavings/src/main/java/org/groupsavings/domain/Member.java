@@ -21,7 +21,7 @@ public class Member {
     public String AddressLine2;
     public String State;
     public String Occupation;
-    public double AnnualIncome;
+    public float AnnualIncome;
     public String Education;
     public String Disability;
     public String NoOfFamilyMembers;
@@ -33,6 +33,8 @@ public class Member {
     public String CreatedBy;
     public String ModifiedDate;
     public String ModifiedBy;
+    public String Passbook;
+    public String EconomicCondition;
 
 
     @Override
