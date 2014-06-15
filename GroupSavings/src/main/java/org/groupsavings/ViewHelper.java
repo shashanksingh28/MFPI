@@ -268,6 +268,7 @@ public class ViewHelper {
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
 
+
         EditText grpNoOfSubgroupsEditor =(EditText) view.findViewById(R.id.edit_group_no_of_subgroups);
         grpNoOfSubgroupsEditor.setText(String.valueOf(groupToPopulate.NoOfSubgroups));
 
