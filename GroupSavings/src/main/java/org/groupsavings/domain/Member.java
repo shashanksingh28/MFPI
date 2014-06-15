@@ -17,6 +17,14 @@ public class Member {
     public String AddressLine1;
     public String AddressLine2;
     public String ContactInfo;
+    public String GuardianName;
+    public String Passbook;
+    public String Occupation;
+    public long AnnualIncome;
+    public String EconomicCondition;
+    public String Education;
+    public String Disability;
+    public int NoOfFamilyMembers;
     public double TotalSavings;
     public double OutstandingLoan;
     public Date CreatedAt;

@@ -11,15 +11,18 @@ public class Group {
     public String AddressLine2;
     public int FOId;
     public int PresidentId;
+    public Member President;
+    public Member Secretary;
+    public Member Treasurer;
     public int RecurringSavings;
-    public String CreatedAt;
-    public int CreatedBy;
     public String BankAccount;
     public String MonthlyMeetingDate;
     public int NoOfSubgroups;
+    public int NoOfMembers;
     public long TotalSavings;
     public long TotalOutstanding;
-    public int NoOfMembers;
+    public String CreatedAt;
+    public int CreatedBy;
 
     @Override
     public String toString()
