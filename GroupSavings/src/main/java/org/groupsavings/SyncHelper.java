@@ -14,10 +14,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.groupsavings.constants.Columns;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.LoanTransaction;
+import org.groupsavings.domain.MeetingDetails;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
@@ -29,6 +31,14 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+// Added for Sync testing
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Created by Shashank on 16/3/14.
@@ -65,13 +75,17 @@ public class SyncHelper {
             BasicHeader http_JSON_header = new BasicHeader(HTTP.CONTENT_TYPE, "application/json");
             HttpResponse response;
             StringEntity s;
+            String responseEntity;
 
+            // Groups Data Sync
             JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllGroups());
             s = new StringEntity(allGroupsJSON.toString());
             s.setContentEncoding(http_JSON_header);
-            HttpPost httppost = new HttpPost(SERVER_URL+"/SaveGroup.php");
+            HttpPost httppost = new HttpPost(SERVER_URL+"/SaveGroups.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutGroups(EntityUtils.toString(response.getEntity()));
+
 
             JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers());
             s = new StringEntity(allmembersJSON.toString());
@@ -79,6 +93,7 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+
 
             JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler.getAllSavingAccounts());
             s = new StringEntity(allsavingsJSON.toString());
@@ -128,31 +143,191 @@ public class SyncHelper {
         return returnMessage;
     }
 
+    public void SyncOutGroups(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                Group g = new Group();
+
+
+                db_handler.addUpdateGroup(g);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutMembers(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                Member m = new Member();
+
+
+                db_handler.addUpdateMember(m);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutSavingAccounts(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                SavingsAccount sa = new SavingsAccount();
+
+
+                db_handler;
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutSavingTransactions(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                SavingTransaction st = new SavingTransaction();
+
+
+                db_handler.addUpdateGroup(st);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutLoanAccount(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                LoanAccount la = new LoanAccount();
+
+
+                db_handler.addUpdateGroup(st);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutLoanTransaction(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                LoanTransaction la = new LoanTransaction();
+
+
+                db_handler.addUpdateGroup(st);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutGroupMeetings(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                GroupMeeting la = new GroupMeeting();
+
+
+                db_handler.addUpdateGroup(st);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SyncOutMeetingDetails(String responseEntity)
+    {
+        try
+        {
+            final JSONArray jArray=new JSONArray(responseEntity);
+            for(int i=0; i< jArray.length();i++)
+            {
+                JSONObject j = jArray.getJSONObject(i);
+                MeetingDetails la = new MeetingDetails();
+
+
+                db_handler.addUpdateGroup(st);
+            }
+        }
+        catch (Exception e) {
+            //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     // Name Value pairs for All Groups
     public JSONObject getJsonGroup(Group group)
     {
         JSONObject collectJSON = new JSONObject();
         try {
 
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_HashId, group.UID);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_Name, group.GroupName);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_PresidentId,group.PresidentId);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_SecretaryId ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_TreasurerId ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_FieldOfficerId ,);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_CreatedDate, group.CreatedAt);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_BankAccount, group.BankAccount);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_NoOfSubgroups, group.NoOfSubgroups);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_CreatedBy,);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_Active ,);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_RecurringIndividualAmount, group.RecurringSavings);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_MonthlyMeetingDate, group.MonthlyMeetingDate);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_ClusterId ,);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine1, group.AddressLine1);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUP_AddressLine2, group.AddressLine2);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_City ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_State ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_GROUP_Country ,);
+            collectJSON.put(Columns.GROUP_Id, group.Id);
+            collectJSON.put(Columns.GROUP_Name ,group.Name);
+            collectJSON.put(Columns.GROUP_PresidentId, group.President);
+            collectJSON.put(Columns.GROUP_SecretaryId,group.Secretary);
+            collectJSON.put(Columns.GROUP_TreasurerId, group.Treasurer);
+            collectJSON.put(Columns.GROUP_FieldOfficerId, group.FieldOfficerId);
+            collectJSON.put(Columns.GROUP_Active,group.Active);
+            collectJSON.put(Columns.GROUP_MonthlyCompulsoryAmount,group.MonthlyCompulsoryAmount);
+            collectJSON.put(Columns.GROUP_MonthlyMeetingDate,group.MonthlyMeetingDate);
+            collectJSON.put(Columns.GROUP_Bank,group.Bank);
+            collectJSON.put(Columns.GROUP_CummulativeSavings,group.CummulativeSavings);
+            collectJSON.put(Columns.GROUP_OtherIncome,group.OtherIncome);
+            collectJSON.put(Columns.GROUP_OutstandingLoans,group.OutstandingLoans);
+            collectJSON.put(Columns.GROUP_DateOfFormation,group.CreatedDate)
+            collectJSON.put(Columns.GROUP_NoOfSubgroups,group.NoOfSubgroups);
+            collectJSON.put(Columns.GROUP_AddressLine1,group.AddressLine1);
+            collectJSON.put(Columns.GROUP_AddressLine2,group.AddressLine2);
+            collectJSON.put(Columns.GROUP_City,group.City);
+            collectJSON.put(Columns.GROUP_State,group.State);
+            collectJSON.put(Columns.GROUP_Country,group.Country);
+            collectJSON.put(Columns.GROUP_ClusterId,group.ClusterId);
+            collectJSON.put(Columns.GROUP_CreatedDate,group.CreatedDate);
+            collectJSON.put(Columns.GROUP_CreatedBy,group.CreatedBy);
+            collectJSON.put(Columns.GROUP_ModifiedDate,group.ModifiedDate);
+            collectJSON.put(Columns.GROUP_ModifiedBy,group.ModifiedBy);
+            collectJSON.put(Columns.GROUP_NoOfActiveMembers,group.NoOfActiveMembers);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -164,24 +339,34 @@ public class SyncHelper {
     public JSONObject getJsonMember(Member member) {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_UID, member.UID);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_GroupUID, member.GroupUID);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_FirstName, member.FirstName);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_LastName, member.LastName);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Sex,);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_DOB, member.DOB);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_EmailId,);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Active ,);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_TotalSavings, member.TotalSavings);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_TotalDebt ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_CreatedDate, member.);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_CreatedBy ,);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_ContactNumber, member.ContactInfo);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_AddressLine1 , member.AddressLine1);
-            collectJSON.put(DatabaseHandler.COLUMN_MEMBER_AddressLine2 , member.AddressLine2);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_City ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_State ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_MEMBER_Country ,);
+            collectJSON.put(Columns.MEMBER_ID , member.Id);
+            collectJSON.put(Columns.MEMBER_GroupID , member.GroupId);
+            collectJSON.put(Columns.MEMBER_FirstName , member.FirstName);
+            collectJSON.put(Columns.MEMBER_LastName , member.LastName);
+            collectJSON.put(Columns.MEMBER_GuardianName , member.GuardianName);
+            collectJSON.put(Columns.MEMBER_Gender , member.Gender);
+            collectJSON.put(Columns.MEMBER_DOB , member.DOB);
+            collectJSON.put(Columns.MEMBER_EmailId , member.EmailId);
+            collectJSON.put(Columns.MEMBER_Active , member.Active);
+            collectJSON.put(Columns.MEMBER_ContactNumber , member.ContactNumber);
+            collectJSON.put(Columns.MEMBER_AddressLine1 , member.AddressLine1);
+            collectJSON.put(Columns.MEMBER_AddressLine2 , member.AddressLine2);
+            collectJSON.put(Columns.MEMBER_Occupation , member.Occupation);
+            collectJSON.put(Columns.MEMBER_AnnualIncome , member.AnnualIncome);
+            collectJSON.put(Columns.MEMBER_EconomicCondition , member.EconomicCondition);
+            collectJSON.put(Columns.MEMBER_Education , member.Education);
+            collectJSON.put(Columns.MEMBER_Disability , member.Disability);
+            collectJSON.put(Columns.MEMBER_NoOfFamilyMembers , member.NoOfFamilyMembers);
+            collectJSON.put(Columns.MEMBER_Nominee , member.Nominee);
+            collectJSON.put(Columns.MEMBER_Passbook , member.Passbook);
+            collectJSON.put(Columns.MEMBER_Insurance , member.Insurance);
+            collectJSON.put(Columns.MEMBER_ExitDate , member.ExitDate);
+            collectJSON.put(Columns.MEMBER_ExitReason , member.ExitReason);
+            collectJSON.put(Columns.MEMBER_CreatedDate , member.CreatedDate);
+            collectJSON.put(Columns.MEMBER_CreatedBy , member.CreatedBy);
+            collectJSON.put(Columns.MEMBER_ModifiedDate , member.ModifiedDate);
+            collectJSON.put(Columns.MEMBER_ModifiedBy , member.ModifiedBy);
+            collectJSON.put(Columns.MEMBER_EconomicCondition ,member.EconomicCondition);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -193,12 +378,16 @@ public class SyncHelper {
     public JSONObject getJsonSavingAcc(SavingsAccount savingAccount) {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_Id, savingAccount.Id);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_GroupId, savingAccount.groupId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_MemberId, savingAccount.memberId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_TotalSaving, savingAccount.TotalSavings);
-            //collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_InterestAccumulated ,);
-            //collectJSON.put(DatabaseHandler.COLUMN_SAVING_ACCOUNT_CreatedDate, );
+            collectJSON.put(Columns.SAVINGACCOUNTS_Id , savingAccount.Id);
+            collectJSON.put(Columns.SAVINGACCOUNTS_MemberId , savingAccount.MemberId);
+            collectJSON.put(Columns.SAVINGACCOUNTS_GroupId , savingAccount.GroupId);
+            collectJSON.put(Columns.SAVINGACCOUNTS_CompulsorySavings , savingAccount.CompulsorySavings);
+            collectJSON.put(Columns.SAVINGACCOUNTS_OptionalSavings , savingAccount.OptionalSavings);
+            collectJSON.put(Columns.SAVINGACCOUNTS_InterestAccumulated , savingAccount.InterestAccumulated);
+            collectJSON.put(Columns.SAVINGACCOUNTS_CurrentBalance , savingAccount.TotalSavings);
+            collectJSON.put(Columns.SAVINGACCOUNTS_Active , savingAccount.Active);
+            collectJSON.put(Columns.SAVINGACCOUNTS_CreatedDate , savingAccount.CreatedDate);
+            collectJSON.put(Columns.SAVINGACCOUNTS_CreatedBy , savingAccount.CreatedBy);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -210,15 +399,13 @@ public class SyncHelper {
     public JSONObject getJsonSavingTrans(SavingTransaction savingTransaction) {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_Id, savingTransaction.Id);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_GroupId, savingTransaction.groupId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_GroupMeetingId, savingTransaction.grpMeetingId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_GroupMemberSavingId, savingTransaction.memberSavingAccId);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_OptionalSavings, savingTransaction.optionalSavings);
-            // Don't use getTotalSaving as it needs groupCompulsory savings which isn't populated directly via db
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_TransactionTotalSaving, savingTransaction.transactionTotalSaving);
-            collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_DateTime, savingTransaction.timeStamp);
-            //collectJSON.put(DatabaseHandler.COLUMN_SAVINGTRANSACTION_SignedBy ,);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_GroupId , savingTransaction.GroupId);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_MeetingId , savingTransaction.MeetingId);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_SavingAccountId , savingTransaction.SavingAccountId);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_Type , savingTransaction.Type);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_Amount , savingTransaction.Amount);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance , savingTransaction.CurrentBalance);
+            collectJSON.put(Columns.SAVINGACCTRANSACTIONS_DateTime , savingTransaction.DateTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -226,25 +413,29 @@ public class SyncHelper {
         return collectJSON;
     }
 
+
     // Name Value pairs for Loan Accounts
     public static JSONObject getJsonLoanAcc(LoanAccount la)
     {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Id, la.Id);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_GroupId, la.groupId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_GroupMeetingId, la.groupMeetingId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_MemberId, la.memberId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_PrincipalAmount, la.Principal);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_InterestRate, la.InterestPerAnnum);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_NoOfInstallments, la.PeriodInMonths);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_InstallmentAmount, la.getEMI());
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_StartDate, la.StartDate);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_EndDate, la.EndDate);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Outstanding, la.OutStanding);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_Reason, la.Reason);
-            collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_IsActive, la.IsActive);
-            //collectJSON.put(DatabaseHandler.COLUMN_LOANACCOUNT_CreatedDate ,);
+            collectJSON.put(Columns.LOANACCOUNTS_Id , la.Id);
+            collectJSON.put(Columns.LOANACCOUNTS_MemberId , la.MemberId);
+            collectJSON.put(Columns.LOANACCOUNTS_GroupId , la.GroupId);
+            collectJSON.put(Columns.LOANACCOUNTS_GroupMeetingId , la.GroupMeetingId);
+            collectJSON.put(Columns.LOANACCOUNTS_PrincipalAmount , la.Principal);
+            collectJSON.put(Columns.LOANACCOUNTS_InterestRate , la.InterestRate);
+            collectJSON.put(Columns.LOANACCOUNTS_PeriodInMonths , la.PeriodInMonths);
+            collectJSON.put(Columns.LOANACCOUNTS_EMI , la.EMI);
+            collectJSON.put(Columns.LOANACCOUNTS_Outstanding , la.Outstanding);
+            collectJSON.put(Columns.LOANACCOUNTS_Reason , la.Reason);
+            collectJSON.put(Columns.LOANACCOUNTS_GUARANTOR , la.Guarantor);
+            collectJSON.put(Columns.LOANACCOUNTS_IsEmergency , la.IsEmergency);
+            collectJSON.put(Columns.LOANACCOUNTS_StartDate , la.StartDate);
+            collectJSON.put(Columns.LOANACCOUNTS_EndDate , la.EndDate);
+            collectJSON.put(Columns.LOANACCOUNTS_Active , la.Active);
+            collectJSON.put(Columns.LOANACCOUNTS_CreatedDate , la.CreatedDate);
+            collectJSON.put(Columns.LOANACCOUNTS_CreatedBy , la.CreatedBy);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -256,26 +447,43 @@ public class SyncHelper {
     {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_Id, lt.Id);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_GroupId, lt.groupId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_GroupMeetingId, lt.GroupMeetingId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_GroupMemberLoanId, lt.GroupMemberLoanAccountId);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_Repayment, lt.Repayment);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_OutstandingLeft, lt.OutstandingDue);
-            collectJSON.put(DatabaseHandler.COLUMN_LOAN_TRANSACTION_DateTime, lt.Date);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_GroupId , lt.GroupId);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_MeetingId , lt.MeetingId);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_LoanAccountId , lt.LoanAccountId);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_Repayment , lt.Repayment);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_CurrentOutstanding , lt.Outstanding);
+            collectJSON.put(Columns.LOANACCTRANSACTIONS_DateTime , lt.DateTime);
 
         }  catch (JSONException e) {
             e.printStackTrace();
         }
         return collectJSON;
     }
+
     public static JSONObject getJsonGrpMeeting(GroupMeeting gm)
     {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(DatabaseHandler.COLUMN_GROUPMEETING_ID, gm.id);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUPMEETING_GroupId, gm.groupId);
-            collectJSON.put(DatabaseHandler.COLUMN_GROUPMEETING_DATE,gm.date);
+            collectJSON.put(Columns.GROUPMEETING_Id, gm.Id);
+            collectJSON.put(Columns.GROUPMEETING_FieldOfficerId,gm.FieldOfficerId);
+            collectJSON.put(Columns.GROUPMEETING_Date,gm.Date);
+            collectJSON.put(Columns.GROUPMEETING_GroupId,gm.GroupId);
+
+        }  catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return collectJSON;
+    }
+
+    public static JSONObject getJsonMeetingDetails(MeetingDetails md)
+    {
+        JSONObject collectJSON = new JSONObject();
+        try {
+            collectJSON.put(Columns.MEETINGDETAILS_MeetingId,md.MeetingId);
+            collectJSON.put(Columns.MEETINGDETAILS_MemberId,md.MemberId);
+            collectJSON.put(Columns.MEETINGDETAILS_Fine,md.Fine);
+            collectJSON.put(Columns.MEETINGDETAILS_IsAbsent,md.IsAbsent);
 
         }  catch (JSONException e) {
             e.printStackTrace();
@@ -304,26 +512,6 @@ public class SyncHelper {
     }
 
 
-    /* Commenting out for POC
-        // Name Value pairs for Loan Transactions
-        public static JSONObject getJsonLoanTrans(LoanTransaction loanTransaction)
-        {
-            JSONObject collectJSON = new JSONObject();
-            try {
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_Id ,);
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_GroupId ,);
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_GroupMemberLoanId ,);
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_Repayment ,);
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_DateTime ,);
-                collectJSON.put(COLUMN_LOAN_TRANSACTION_SignedBy ,);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return collectJSON;
-        }
-
-    */
 // Coverts data into JSON Array for all tables
     // All Groups
     public JSONArray GetAllGroupsJSON(ArrayList<Group> groups)

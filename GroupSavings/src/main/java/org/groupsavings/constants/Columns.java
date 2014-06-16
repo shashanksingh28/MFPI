@@ -31,6 +31,7 @@ public class Columns {
     public static final String GROUP_CreatedBy = "CreatedBy";
     public static final String GROUP_ModifiedDate = "ModifiedDate";
     public static final String GROUP_ModifiedBy = "ModifiedBy";
+    public static final String GROUP_NoOfActiveMembers = "NoOfActiveMembers";
 
     //---------------- Member Table ---------------------------//
     public static final String MEMBER_ID = "Id";
