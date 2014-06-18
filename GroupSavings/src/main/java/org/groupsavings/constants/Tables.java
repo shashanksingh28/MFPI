@@ -14,7 +14,7 @@ public class Tables {
             + Columns.GROUP_SecretaryId + " TEXT,"
             + Columns.GROUP_TreasurerId + " TEXT,"
             + Columns.GROUP_FieldOfficerId + " TEXT,"
-            + Columns.GROUP_Active + " BOOLEAN,"
+            + Columns.GROUP_Active + " BOOLEAN DEFAULT 1,"
             + Columns.GROUP_MonthlyCompulsoryAmount + " INTEGER,"
             + Columns.GROUP_MonthlyMeetingDate + " INTEGER,"
             + Columns.GROUP_Bank + " TEXT,"
@@ -34,9 +34,6 @@ public class Tables {
             + Columns.GROUP_ModifiedDate + " TIMESTAMP,"
             + Columns.GROUP_ModifiedBy + " TEXT"
             + ");";
-    
-    public static final String DROP_TABLE_Groups = "Drop Table "+GROUPS +";";
-    
 
     public static final String GROUPMEETINGS = "GroupMeetings";
 
@@ -58,33 +55,33 @@ public class Tables {
     public static final String MEMBERS = "Members";
     
     public static final String CREATE_TABLE_MEMBERS = "CREATE TABLE " + MEMBERS
-            + " (" + Columns.MEMBER_ID + " TEXT PRIMARY KEY,"
-            + Columns.MEMBER_GroupID + " TEXT,"
-            + Columns.MEMBER_FirstName + " TEXT,"
-            + Columns.MEMBER_LastName + " TEXT,"
-            + Columns.MEMBER_GuardianName + " TEXT,"
-            + Columns.MEMBER_Gender + " TEXT,"
-            + Columns.MEMBER_DOB + " TEXT,"
-            + Columns.MEMBER_EmailId + " TEXT,"
-            + Columns.MEMBER_Active + " BOOLEAN,"
-            + Columns.MEMBER_ContactNumber + " TEXT,"
-            + Columns.MEMBER_AddressLine1 + " TEXT,"
-            + Columns.MEMBER_AddressLine2 + " TEXT,"
-            + Columns.MEMBER_Occupation + " TEXT,"
-            + Columns.MEMBER_AnnualIncome + " TEXT,"
-            + Columns.MEMBER_EconomicCondition + " TEXT,"
-            + Columns.MEMBER_Education + " TEXT,"
-            + Columns.MEMBER_Disability + " BOOLEAN,"
-            + Columns.MEMBER_NoOfFamilyMembers + " INTEGER,"
-            + Columns.MEMBER_Nominee + " TEXT,"
-            + Columns.MEMBER_Passbook + " TEXT,"
-            + Columns.MEMBER_Insurance + " BOOLEAN,"
-            + Columns.MEMBER_ExitDate + " TIMESTAMP,"
-            + Columns.MEMBER_ExitReason + " TEXT,"
-            + Columns.MEMBER_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-            + Columns.MEMBER_CreatedBy + " TEXT,"
-            + Columns.MEMBER_ModifiedDate + " TIMESTAMP,"
-            + Columns.MEMBER_ModifiedBy + " TEXT"
+            + " (" + Columns.MEMBERS_Id + " TEXT PRIMARY KEY,"
+            + Columns.MEMBERS_GroupId + " TEXT,"
+            + Columns.MEMBERS_FirstName + " TEXT,"
+            + Columns.MEMBERS_LastName + " TEXT,"
+            + Columns.MEMBERS_GuardianName + " TEXT,"
+            + Columns.MEMBERS_Gender + " TEXT,"
+            + Columns.MEMBERS_DOB + " TEXT,"
+            + Columns.MEMBERS_EmailId + " TEXT,"
+            + Columns.MEMBERS_Active + " BOOLEAN DEFAULT 1,"
+            + Columns.MEMBERS_ContactNumber + " TEXT,"
+            + Columns.MEMBERS_AddressLine1 + " TEXT,"
+            + Columns.MEMBERS_AddressLine2 + " TEXT,"
+            + Columns.MEMBERS_Occupation + " TEXT,"
+            + Columns.MEMBERS_AnnualIncome + " TEXT,"
+            + Columns.MEMBERS_EconomicCondition + " TEXT,"
+            + Columns.MEMBERS_Education + " TEXT,"
+            + Columns.MEMBERS_Disability + " BOOLEAN,"
+            + Columns.MEMBERS_NoOfFamilyMembers + " INTEGER,"
+            + Columns.MEMBERS_Nominee + " TEXT,"
+            + Columns.MEMBERS_Passbook + " TEXT,"
+            + Columns.MEMBERS_Insurance + " BOOLEAN,"
+            + Columns.MEMBERS_ExitDate + " TIMESTAMP,"
+            + Columns.MEMBERS_ExitReason + " TEXT,"
+            + Columns.MEMBERS_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+            + Columns.MEMBERS_CreatedBy + " TEXT,"
+            + Columns.MEMBERS_ModifiedDate + " TIMESTAMP,"
+            + Columns.MEMBERS_ModifiedBy + " TEXT"
             + ");";
 
     public static final String SAVINGACCOUNTS = "SavingAccounts";
@@ -99,7 +96,7 @@ public class Tables {
             + Columns.SAVINGACCOUNTS_CurrentBalance + " INTEGER,"
             + Columns.SAVINGACCOUNTS_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + Columns.SAVINGACCOUNTS_CreatedBy + " TEXT,"
-            + Columns.SAVINGACCOUNTS_Active + " BOOLEAN"
+            + Columns.SAVINGACCOUNTS_Active + " BOOLEAN DEFAULT 1"
             + ");";
 
     public static final String SAVINGACCTRANSACTIONSS = "SAVINGACCTRANSACTIONSs";
@@ -133,7 +130,7 @@ public class Tables {
             + Columns.LOANACCOUNTS_EndDate + " TEXT,"
             + Columns.LOANACCOUNTS_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + Columns.LOANACCOUNTS_CreatedBy + " TEXT,"
-            + Columns.LOANACCOUNTS_Active + " BOOLEAN"
+            + Columns.LOANACCOUNTS_Active + " BOOLEAN DEFAULT 1"
             + ");";
 
     public static final String LOANACCTRANSACTIONS = "LoanAccTransactions";

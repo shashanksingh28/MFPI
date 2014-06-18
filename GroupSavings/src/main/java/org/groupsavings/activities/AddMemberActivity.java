@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,10 +173,10 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         if(lastNameEditor.getText()!= null) newMember.LastName = lastNameEditor.getText().toString();
 
         EditText contactEditor=(EditText) findViewById(R.id.edit_member_contact);
-        if(contactEditor.getText() != null) newMember.ContactInfo = contactEditor.getText().toString();
+        if(contactEditor.getText() != null) newMember.ContactNumber = contactEditor.getText().toString();
 
         EditText emailEditor=(EditText) findViewById(R.id.edit_member_email);
-        if(emailEditor.getText() != null) newMember.Email = emailEditor.getText().toString();
+        if(emailEditor.getText() != null) newMember.EmailId = emailEditor.getText().toString();
 
         TextView tv_dob = (TextView) findViewById(R.id.tv_member_dob);
         if(tv_dob.getText() != null) newMember.DOB = tv_dob.getText().toString();
@@ -186,6 +187,28 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         EditText add2Editor=(EditText) findViewById(R.id.edit_member_addressline2);
         if(add2Editor.getText() != null) newMember.AddressLine2 = add2Editor.getText().toString();
 
+        EditText passBookEditor = (EditText) findViewById(R.id.edit_pass_book_no);
+        if(passBookEditor.getText() != null) newMember.Passbook = passBookEditor.getText().toString();
+
+        EditText guardianNameEditor = (EditText) findViewById(R.id.edit_guardian_name);
+        if(guardianNameEditor.getText() != null) newMember.GuardianName = guardianNameEditor.getText().toString();
+
+        EditText economicConditionEditor = (EditText) findViewById(R.id.edit_economic_condition);
+        if(economicConditionEditor.getText() != null) newMember.EconomicCondition = economicConditionEditor.getText().toString();
+
+        EditText educationEditor = (EditText) findViewById(R.id.edit_education_qualification);
+        if(educationEditor.getText() != null) newMember.Education = educationEditor.getText().toString();
+
+        EditText occupationEditor = (EditText) findViewById(R.id.edit_member_occupation);
+        if(occupationEditor.getText() != null) newMember.Occupation = occupationEditor.getText().toString();
+
+        EditText noOfFamilyMembersEditor = (EditText) findViewById(R.id.edit_count_family_members);
+        if(noOfFamilyMembersEditor.getText() != null)
+        {
+            String noffamilymembers = noOfFamilyMembersEditor.getText().toString();
+            if(noffamilymembers != null && !noffamilymembers.isEmpty())
+                newMember.NoOfFamilyMembers = Integer.parseInt(noffamilymembers);
+        }
         return newMember;
     }
 

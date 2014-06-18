@@ -2,6 +2,7 @@ package org.groupsavings;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.groupsavings.domain.Group;
@@ -28,7 +29,7 @@ public class ViewHelper {
 
         TextView memberIdText = (TextView) view.findViewById(R.id.layout_member_uid);
         if(memberIdText != null){
-            memberIdText.setText(String.valueOf(memberToPopulate.UID));
+            memberIdText.setText(String.valueOf(memberToPopulate.Id));
         }
 
         TextView firstNameEditor=(TextView) view.findViewById(R.id.tv_member_firstname);
@@ -38,7 +39,7 @@ public class ViewHelper {
         lastNameEditor.setText(memberToPopulate.LastName);
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
-        contactEditor.setText(memberToPopulate.ContactInfo);
+        contactEditor.setText(memberToPopulate.ContactNumber);
 
         TextView tv_memberAge = (TextView) view.findViewById(R.id.tv_member_age);
         if (memberToPopulate.DOB != null) {
@@ -71,6 +72,24 @@ public class ViewHelper {
         EditText add2Editor=(EditText) view.findViewById(R.id.et_member_addressline2);
         add2Editor.setText(memberToPopulate.AddressLine2);
 
+        EditText passBookEditor=(EditText) view.findViewById(R.id.edit_pass_book_no);
+        passBookEditor.setText(memberToPopulate.Passbook);
+
+        EditText guardianNameEditor=(EditText) view.findViewById(R.id.edit_guardian_name);
+        guardianNameEditor.setText(memberToPopulate.GuardianName);
+
+        EditText economicConditionEditor=(EditText) view.findViewById(R.id.edit_economic_condition);
+        economicConditionEditor.setText(memberToPopulate.EconomicCondition);
+
+        EditText educationEditor=(EditText) view.findViewById(R.id.edit_education_qualification);
+        educationEditor.setText(memberToPopulate.Education);
+
+        EditText occupationEditor=(EditText) view.findViewById(R.id.edit_member_occupation);
+        occupationEditor.setText(memberToPopulate.Occupation);
+
+        EditText noOfFamilyMembersEditor=(EditText) view.findViewById(R.id.edit_count_family_members);
+        noOfFamilyMembersEditor.setText(String.valueOf(memberToPopulate.NoOfFamilyMembers));
+
         TextView tv_member_savings = (TextView) view.findViewById(R.id.textview_member_savings);
         if (memberToPopulate.TotalSavings==0) {
             tv_member_savings.setText("");
@@ -102,8 +121,9 @@ public class ViewHelper {
         {
             String uid_string = memberIdText.getText().toString();
             if(uid_string != null && !uid_string.isEmpty())
-                updatedMember.UID = Integer.parseInt(uid_string);
+                updatedMember.Id = Integer.parseInt(uid_string);
         }
+
 
         EditText firstNameEditor=(EditText) view.findViewById(R.id.edit_member_firstname);
         if(firstNameEditor != null && firstNameEditor.getText()!= null) updatedMember.FirstName = firstNameEditor.getText().toString();
@@ -112,7 +132,7 @@ public class ViewHelper {
         if(lastNameEditor !=null && lastNameEditor.getText()!= null) updatedMember.LastName = lastNameEditor.getText().toString();
 
         EditText contactEditor=(EditText) view.findViewById(R.id.edit_member_contact);
-        if(contactEditor !=null && contactEditor.getText() != null) updatedMember.ContactInfo = contactEditor.getText().toString();
+        if(contactEditor !=null && contactEditor.getText() != null) updatedMember.ContactNumber = contactEditor.getText().toString();
 
         EditText add1Editor=(EditText) view.findViewById(R.id.et_member_addressline1);
         if(add1Editor.getText() != null) updatedMember.AddressLine1 = add1Editor.getText().toString();
@@ -120,6 +140,28 @@ public class ViewHelper {
         EditText add2Editor=(EditText) view.findViewById(R.id.et_member_addressline2);
         if(add2Editor.getText() != null) updatedMember.AddressLine2 = add2Editor.getText().toString();
 
+        EditText passBookEditor = (EditText) view.findViewById(R.id.edit_pass_book_no);
+        if(passBookEditor.getText() != null) updatedMember.Passbook = passBookEditor.getText().toString();
+
+        EditText guardianNameEditor = (EditText) view.findViewById(R.id.edit_guardian_name);
+        if(guardianNameEditor.getText() != null) updatedMember.GuardianName = guardianNameEditor.getText().toString();
+
+        EditText economicConditionEditor = (EditText) view.findViewById(R.id.edit_economic_condition);
+        if(economicConditionEditor.getText() != null) updatedMember.EconomicCondition = economicConditionEditor.getText().toString();
+
+        EditText educationEditor = (EditText) view.findViewById(R.id.edit_education_qualification);
+        if(educationEditor.getText() != null) updatedMember.Education = educationEditor.getText().toString();
+
+        EditText occupationEditor = (EditText) view.findViewById(R.id.edit_member_occupation);
+        if(occupationEditor.getText() != null) updatedMember.Occupation = occupationEditor.getText().toString();
+
+        EditText noOfFamilyMembersEditor = (EditText) view.findViewById(R.id.edit_count_family_members);
+        if(noOfFamilyMembersEditor.getText() != null)
+        {
+            String noffamilymembers = noOfFamilyMembersEditor.getText().toString();
+            if(noffamilymembers != null && !noffamilymembers.isEmpty())
+                updatedMember.NoOfFamilyMembers = Integer.parseInt(noffamilymembers);
+        }
         return updatedMember;
     }
 
@@ -138,11 +180,11 @@ public class ViewHelper {
         {
             String uid_string = memberIdText.getText().toString();
             if(uid_string != null && !uid_string.isEmpty())
-                updatedGroup.UID = Integer.parseInt(uid_string);
+                updatedGroup.Id = Integer.parseInt(uid_string);
         }
 
         EditText groupNameEditor =(EditText) view.findViewById(R.id.edit_group_name);
-        if(groupNameEditor != null && groupNameEditor.getText()!= null) updatedGroup.GroupName = groupNameEditor.getText().toString();
+        if(groupNameEditor != null && groupNameEditor.getText()!= null) updatedGroup.Name = groupNameEditor.getText().toString();
 
         EditText groupAddress1Editor = (EditText) view.findViewById(R.id.edit_group_addressline1);
         if (groupAddress1Editor != null && groupAddress1Editor.getText() != null)
@@ -151,6 +193,18 @@ public class ViewHelper {
         EditText groupAddress2Editor = (EditText) view.findViewById(R.id.edit_group_addressline2);
         if (groupAddress2Editor != null && groupAddress2Editor.getText() != null)
             updatedGroup.AddressLine2 = groupAddress2Editor.getText().toString();
+
+        Spinner president_spinner = (Spinner) view.findViewById(R.id.sp_group_president);
+        if(president_spinner.getSelectedItem() != null && president_spinner.getSelectedItem() != null)
+            updatedGroup.President = ((Member)(president_spinner.getSelectedItem()));
+
+        Spinner secretary_spinner = (Spinner) view.findViewById(R.id.sp_group_secretary);
+        if(secretary_spinner.getSelectedItem() != null && secretary_spinner.getSelectedItem() != null)
+            updatedGroup.Secretary = ((Member)(secretary_spinner.getSelectedItem()));
+
+        Spinner treasurer_spinner = (Spinner) view.findViewById(R.id.sp_group_president);
+        if(treasurer_spinner.getSelectedItem() != null && treasurer_spinner.getSelectedItem() != null)
+            updatedGroup.Treasurer = ((Member)(treasurer_spinner.getSelectedItem()));
 
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         if(grpRecurringSavingsEditor !=null && grpRecurringSavingsEditor.getText() != null)
@@ -170,7 +224,7 @@ public class ViewHelper {
 
         EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
         if (groupBankAccountEditor != null && groupBankAccountEditor.getText() != null)
-            updatedGroup.BankAccount = groupBankAccountEditor.getText().toString();
+            updatedGroup.Bank = groupBankAccountEditor.getText().toString();
 
         TextView grpMonthlyMeetDate = (TextView) view.findViewById(R.id.tv_group_mmd);
         if (grpMonthlyMeetDate != null && grpMonthlyMeetDate.getText() != null)
@@ -190,12 +244,12 @@ public class ViewHelper {
 
         TextView memberIdText = (TextView) view.findViewById(R.id.view_group_uid);
         if(memberIdText != null ){
-            memberIdText.setText(String.valueOf(groupToPopulate.UID));
+            memberIdText.setText(String.valueOf(groupToPopulate.Id));
             memberIdText.clearFocus();
         }
 
         EditText groupNameEditor =(EditText) view.findViewById(R.id.edit_group_name);
-        groupNameEditor.setText(groupToPopulate.GroupName);
+        groupNameEditor.setText(groupToPopulate.Name);
 
         EditText groupAddress1Editor = (EditText) view.findViewById(R.id.edit_group_addressline1);
         groupAddress1Editor.setText(groupToPopulate.AddressLine1);
@@ -203,14 +257,24 @@ public class ViewHelper {
         EditText groupAddress2Editor = (EditText) view.findViewById(R.id.edit_group_addressline2);
         groupAddress2Editor.setText(groupToPopulate.AddressLine2);
 
+        Spinner grpPresidentName = (Spinner) view.findViewById(R.id.sp_group_president);
+        grpPresidentName.setContentDescription(String.valueOf(groupToPopulate.President));
+
+        Spinner grpSecretaryName = (Spinner) view.findViewById(R.id.sp_group_secretary);
+        grpSecretaryName.setContentDescription(String.valueOf(groupToPopulate.Secretary));
+
+        Spinner grpTreasurerName = (Spinner) view.findViewById(R.id.sp_group_treasurer);
+        grpTreasurerName.setContentDescription(String.valueOf(groupToPopulate.Treasurer));
+
         EditText grpRecurringSavingsEditor =(EditText) view.findViewById(R.id.edit_group_recurring_savings);
         grpRecurringSavingsEditor.setText(String.valueOf(groupToPopulate.RecurringSavings));
+
 
         EditText grpNoOfSubgroupsEditor =(EditText) view.findViewById(R.id.edit_group_no_of_subgroups);
         grpNoOfSubgroupsEditor.setText(String.valueOf(groupToPopulate.NoOfSubgroups));
 
         EditText groupBankAccountEditor = (EditText) view.findViewById(R.id.edit_group_bank_account);
-        groupBankAccountEditor.setText(groupToPopulate.BankAccount);
+        groupBankAccountEditor.setText(groupToPopulate.Bank);
 
         TextView grpMonthlyMeetDate = (TextView) view.findViewById(R.id.tv_group_mmd);
         if(grpMonthlyMeetDate != null ){

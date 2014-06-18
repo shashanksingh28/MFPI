@@ -8,18 +8,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
+import org.groupsavings.domain.Member;
 import org.groupsavings.handlers.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddGroupActivity extends Activity implements View.OnClickListener {
@@ -29,6 +33,12 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     private int mmd_year;
     private TextView tv_mmd;
     DatabaseHandler db_handler;
+    ArrayList<Member> groupMembers;
+    ArrayAdapter<Member> grpMembersAdapter;
+    Spinner president_spinner;
+    Spinner secretary_spinner;
+    Spinner treasurer_spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try
@@ -51,6 +61,20 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             db_handler = new DatabaseHandler(getApplicationContext());
             Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
             if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
+            groupMembers = db_handler.getAllMembers();
+
+
+            president_spinner = (Spinner) findViewById(R.id.sp_group_president);
+            grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
+            president_spinner.setAdapter(grpMembersAdapter);
+
+            secretary_spinner = (Spinner) findViewById(R.id.sp_group_secretary);
+            grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
+            secretary_spinner.setAdapter(grpMembersAdapter);
+
+            treasurer_spinner = (Spinner) findViewById(R.id.sp_group_treasurer);
+            grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
+            treasurer_spinner.setAdapter(grpMembersAdapter);
         }
         catch (Exception ex)
         {
