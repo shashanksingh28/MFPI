@@ -110,7 +110,7 @@ public class SyncHelper {
             response = httpclient.execute(httppost);
 
             JSONArray allLoanTransJSON = GetAllLoanTransJSON(db_handler.getAllLoanTrans());
-            s = new StringEntity(allLoanTransJSON.toString());
+            s = new StringEntity(allLAdded all fields in MembersoanTransJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/LoanTransaction.php");
             httppost.setEntity(s);
