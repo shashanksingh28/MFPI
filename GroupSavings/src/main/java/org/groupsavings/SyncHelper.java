@@ -93,6 +93,7 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutMembers(EntityUtils.toString(response.getEntity()));
 
 
             JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler.getAllSavingAccounts());
@@ -101,6 +102,7 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/SavingAccount.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutSavingAccounts(EntityUtils.toString(response.getEntity()));
 
             JSONArray allsavingTransJSON = GetAllSavingTransJSON(db_handler.getAllSavingTrans());
             s = new StringEntity(allsavingTransJSON.toString());
@@ -108,13 +110,15 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/SavingTransaction.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutSavingTransactions(EntityUtils.toString(response.getEntity()));
 
             JSONArray allLoanTransJSON = GetAllLoanTransJSON(db_handler.getAllLoanTrans());
-            s = new StringEntity(allLAdded all fields in MembersoanTransJSON.toString());
+            s = new StringEntity(allLoanTransJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/LoanTransaction.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutLoanTransaction(EntityUtils.toString(response.getEntity()));
 
             JSONArray allLoanAccountJSON = GetAllLoanAccJSON(db_handler.getAllLoanAccount());
             s = new StringEntity(allLoanAccountJSON.toString());
@@ -122,18 +126,24 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/LoanAccount.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            SyncOutLoanAccount(EntityUtils.toString(response.getEntity()));
 
-            JSONArray allGrpMeetingJSON = GetAllGroupMeetingJSON(db_handler.getAllMeetingDetails());
+            JSONArray allGrpMeetingJSON = GetAllGroupMeetingJSON(db_handler.());
             s = new StringEntity(allGrpMeetingJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/GroupMeetings.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
-            if(response!=null){
-                InputStream in = response.getEntity().getContent();
-                //responseString = new byte[100000];
-                //in.read(responseString);
-            }
+            SyncOutGroupMeetings(EntityUtils.toString(response.getEntity()));
+
+            JSONArray allMeetingDetailsJSON = GetAllMeetingDetailsJSON(db_handler.());
+            s = new StringEntity(allMeetingDetailsJSON.toString());
+            s.setContentEncoding(http_JSON_header);
+            httppost = new HttpPost(SERVER_URL+"/MeetingDetails.php");
+            httppost.setEntity(s);
+            response = httpclient.execute(httppost);
+            SyncOutGroupMeetings(EntityUtils.toString(response.getEntity()));
+
         }
         catch (Exception e) {
             //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -152,7 +162,32 @@ public class SyncHelper {
             {
                 JSONObject j = jArray.getJSONObject(i);
                 Group g = new Group();
-
+                g.Id 						=	   j.getString("Id");
+                g.Name 					    =      j.getString("Name");
+                g.President 				=      j.getString("President");
+                g.Secretary 				=      j.getString("Secretary");
+                g.Treasurer 				=      j.getString("Treasurer");
+                g.FieldOfficerId 			=      j.getString("FieldOfficerId");
+                g.Active 					=      j.getString("Active");
+                g.MonthlyMeetingDate 		=      j.getString("MonthlyMeetingDate");
+                g.MonthlyCompulsoryAmount 	=      j.getString("MonthlyCompulsoryAmount");
+                g.Bank 					    =      j.getString("Bank");
+                g.ClusterId 				=      j.getLong("ClusterId");
+                g.CummulativeSavings 		=      j.getLong("CummulativeSavings");
+                g.OtherIncome 				=      j.getLong("OtherIncome");
+                g.OutstandingLoans 		    =      j.getLong("OutstandingLoans");
+                g.DateOfFormation 			=      j.getString("DateOfFormation");
+                g.NoOfSubgroups 			=      j.getString("NoOfSubgroups");
+                g.AddressLine1 		    	=      j.getString("AddressLine1");
+                g.AddressLine2 			    =      j.getString("AddressLine2");
+                g.City 					    =      j.getString("City");
+                g.State 					=      j.getString("State");
+                g.Country 					=      j.getString("Country");
+                g.CreatedDate 				=      j.getString("CreatedDate");
+                g.CreatedBy 				=      j.getString("CreatedBy");
+                g.ModifiedDate 			    =      j.getString("ModifiedDate");
+                g.ModifiedBy 				=      j.getString("ModifiedBy");
+                g.NoOfActiveMembers		    =      j.getString("NoOfActiveMembers");
 
                 db_handler.addUpdateGroup(g);
             }
@@ -172,6 +207,34 @@ public class SyncHelper {
                 JSONObject j = jArray.getJSONObject(i);
                 Member m = new Member();
 
+                m.Id                    =      j.getString("Id");
+                m.GroupId               =      j.getString("GroupId");
+                m.FirstName             =      j.getString("FirstName");
+                m.LastName              =      j.getString("LastName");
+                m.GuardianName          =      j.getString("GuardianName");
+                m.Gender                =      j.getString("Gender");
+                m.DOB                   =      j.getString("DOB");
+                m.EmailId               =      j.getString("EmailId");
+                m.Active                =      j.getString("Active");
+                m.ContactNumber         =      j.getString("ContactNumber");
+                m.AddressLine1          =      j.getString("AddressLine1");
+                m.AddressLine2          =      j.getString("AddressLine2");
+                m.State                 =      j.getString("State");
+                m.Occupation            =      j.getString("Occupation");
+                m.AnnualIncome          =      j.getLong("AnnualIncome");
+                m.Education             =      j.getString("Education");
+                m.Disability            =      j.getString("Disability");
+                m.NoOfFamilyMembers     =      j.getString("NoOfFamilyMembers");
+                m.Nominee               =      j.getString("Nominee");
+                m.Insurance             =      j.getString("Insurance");
+                m.ExitDate              =      j.getString("ExitDate");
+                m.ExitReason            =      j.getString("ExitReason");
+                m.CreatedDate           =      j.getString("CreatedDate");
+                m.CreatedBy             =      j.getString("CreatedBy");
+                m.ModifiedDate          =      j.getString("ModifiedDate");
+                m.ModifiedBy            =      j.getString("ModifiedBy");
+                m.Passbook              =      j.getString("Passbook");
+                m.EconomicCondition     =      j.getString("EconomicCondition");
 
                 db_handler.addUpdateMember(m);
             }
@@ -190,7 +253,16 @@ public class SyncHelper {
             {
                 JSONObject j = jArray.getJSONObject(i);
                 SavingsAccount sa = new SavingsAccount();
-
+                sa.Id = 						j.getString("Id");
+                sa.MemberId = 					j.getString("MemberId");
+                sa.GroupId = 					j.getString("GroupId");
+                sa.CompulsorySavings =   		j.getLong("CompulsorySavings");
+                sa.OptionalSavings = 			j.getLong("OptionalSavings");
+                sa.InterestAccumulated = 		j.getLong("InterestAccumulated");
+                sa.TotalSavings = 				j.getLong("TotalSavings");
+                sa.CreatedDate = 				j.getString("CreatedDate");
+                sa.CreatedBy = 			    	j.getString("CreatedBy");
+                sa.Active = 					j.getString("Active");
 
                 db_handler;
             }
@@ -209,7 +281,13 @@ public class SyncHelper {
             {
                 JSONObject j = jArray.getJSONObject(i);
                 SavingTransaction st = new SavingTransaction();
-
+                st.GroupId 			= j.getString("GroupId");
+                st.SavingAccountId 	= j.getString("SavingAccountId");
+                st.MeetingId 			= j.getString("MeetingId");
+                st.Type 				= j.getString("Type");
+                st.Amount 				= j.getLong("Amount");
+                st.CurrentBalance 		= j.getLong("CurrentBalance");
+                st.DateTime 			= j.getString("DateTime");
 
                 db_handler.addUpdateGroup(st);
             }
@@ -229,6 +307,24 @@ public class SyncHelper {
                 JSONObject j = jArray.getJSONObject(i);
                 LoanAccount la = new LoanAccount();
 
+                la.Id               =     j.getString("Id");
+                la.MemberId         =     j.getString("MemberId");
+                la.GroupId          =     j.getString("GroupId");
+                la.GroupMeetingId   =     j.getString("GroupMeetingId");
+                la.Principal        =     j.getLong("Principal");
+                la.InterestRate     =     j.getLong("InterestRate");
+                la.PeriodInMonths   =     j.getLong("PeriodInMonths");
+                la.EMI              =     j.getLong("EMI");
+                la.Outstanding      =     j.getLong("Outstanding");
+                la.Reason           =     j.getString("Reason");
+                la.Guarantor        =     j.getString("Guarantor");
+                la.IsEmergency      =     j.getString("IsEmergency");
+                la.StartDate        =     j.getString("StartDate");
+                la.EndDate          =     j.getString("EndDate");
+                la.CreatedDate      =     j.getString("CreatedDate");
+                la.CreatedBy        =     j.getString("CreatedBy");
+                la.Active           =     j.getString("Active");
+
 
                 db_handler.addUpdateGroup(st);
             }
@@ -246,8 +342,13 @@ public class SyncHelper {
             for(int i=0; i< jArray.length();i++)
             {
                 JSONObject j = jArray.getJSONObject(i);
-                LoanTransaction la = new LoanTransaction();
-
+                LoanTransaction lt` = new LoanTransaction();
+                lt.GroupId = j.getString("GroupId");
+                lt.MeetingId = j.getString("MeetingId");
+                lt.LoanAccountId = j.getString("LoanAccountId");
+                lt.Repayment = j.getLong("Repayment");
+                lt.Outstanding = j.getLong("Outstanding");
+                lt.DateTime = j.getString("DateTime");
 
                 db_handler.addUpdateGroup(st);
             }
@@ -265,8 +366,11 @@ public class SyncHelper {
             for(int i=0; i< jArray.length();i++)
             {
                 JSONObject j = jArray.getJSONObject(i);
-                GroupMeeting la = new GroupMeeting();
-
+                GroupMeeting gm = new GroupMeeting();
+                gm.Id = j.getString("Id");
+                gm.GroupId = j.getString("GroupId");
+                gm.Date = j.getString("Date");
+                gm.FieldOfficerId = j.getString("FieldOfficerId");
 
                 db_handler.addUpdateGroup(st);
             }
@@ -284,8 +388,11 @@ public class SyncHelper {
             for(int i=0; i< jArray.length();i++)
             {
                 JSONObject j = jArray.getJSONObject(i);
-                MeetingDetails la = new MeetingDetails();
-
+                MeetingDetails md = new MeetingDetails();
+                md.MeetingId = j.getString("MeetingId");
+                md.MemberId = j.getString("MemberId");
+                md.IsAbsent = j.getString("IsAbsent");
+                md.Fine = j.getLong("Fine");
 
                 db_handler.addUpdateGroup(st);
             }
@@ -576,6 +683,15 @@ public class SyncHelper {
         JSONArray jsonArray = new JSONArray();
         for (GroupMeeting grpMeeting : grpMeetings) {
             jsonArray.put(getJsonGrpMeeting(grpMeeting));
+        }
+        return jsonArray;
+    }
+
+    public static JSONArray GetAllMeetingDetailsJSON(ArrayList<MeetingDetails> meetingDetails)
+    {
+        JSONArray jsonArray = new JSONArray();
+        for (MeetingDetails meetingDetail : meetingDetails) {
+            jsonArray.put(getJsonMeetingDetails(meetingDetail));
         }
         return jsonArray;
     }

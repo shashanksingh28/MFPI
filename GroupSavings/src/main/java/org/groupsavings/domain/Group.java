@@ -5,7 +5,7 @@ package org.groupsavings.domain;
  */
 public class Group {
 
-    public int Id;
+    public String Id;
     public String Name;
     public Member President;
     public Member Secretary;
