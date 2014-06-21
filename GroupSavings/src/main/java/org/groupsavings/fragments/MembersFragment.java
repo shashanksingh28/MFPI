@@ -19,33 +19,34 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.StringHelper;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.activities.AddMemberActivity;
-import org.groupsavings.activities.GroupLandingActivity;
-import org.groupsavings.domain.Member;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.domain.Member;
 
 import java.util.ArrayList;
 
-public class MembersFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MembersFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    public static final String ARG_PARAM1 = "Group UID";
+    public static final String ARG_PARAM1 = "GroupID";
     Activity activity;
     DatabaseHandler dbHandler;
     ArrayList<Member> members;
     ArrayAdapter<Member> membersAdapter;
     View detailsContainer;
-    int groupUID;
+    String groupId;
 
     public MembersFragment() {
         // Required empty public constructor
     }
 
     // Always use this factory method to instantiate
-    public static MembersFragment newInstance(int groupUID) {
+    public static MembersFragment newInstance(String groupId) {
         MembersFragment fragment = new MembersFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, groupUID);
+        args.putString(ARG_PARAM1, groupId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,12 +56,12 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            groupUID = getArguments().getInt(ARG_PARAM1);
+            groupId = getArguments().getString(ARG_PARAM1);
         }
 
         activity = getActivity();
         dbHandler = new DatabaseHandler(activity.getApplicationContext());
-        members = dbHandler.getAllMembers(groupUID);
+        members = dbHandler.getGroupMembers(groupId);
         setHasOptionsMenu(true);
     }
 
@@ -76,10 +77,6 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
     {
         super.onStart();
         detailsContainer = activity.findViewById(R.id.layout_member_details_container);
-        /*Button addMemberButton = (Button) activity.findViewById(R.id.button_add_member);
-        addMemberButton.setOnClickListener(this);
-        Button saveMemberButton = (Button) activity.findViewById(R.id.button_save_member);
-        saveMemberButton.setOnClickListener(this);*/
 
         ListView lv = (ListView) activity.findViewById(R.id.listview_member_names);
         membersAdapter = new ArrayAdapter<Member>(activity,android.R.layout.simple_list_item_1,members);
@@ -89,7 +86,7 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
 
     public void Refresh()
     {
-        members = dbHandler.getAllMembers(groupUID);
+        members = dbHandler.getGroupMembers(groupId);
         membersAdapter.clear();
         membersAdapter.addAll(members);
         membersAdapter.notifyDataSetChanged();
@@ -99,30 +96,6 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
     public void onResume() {
         super.onResume();
         Refresh();
-    }
-
-    @Override
-    public void onClick(View view) {
-        /*switch (view.getId())
-        {
-            case R.id.button_add_member:
-                Intent intent = new Intent(getActivity(),AddMemberActivity.class);
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
-                startActivity(intent);
-                Refresh();
-                break;
-            case R.id.button_save_member:
-                Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
-                updatedMember.GroupUID = groupUID;
-                dbHandler.addUpdateMember(updatedMember);
-                HideKeypad();
-                Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();
-                ViewHelper.populateMemberDetailsToView(detailsContainer, new Member());
-                Refresh();
-                break;
-            default:
-                break;
-        }*/
     }
 
     @Override
@@ -155,14 +128,14 @@ public class MembersFragment extends Fragment implements View.OnClickListener, A
         {
             case R.id.button_add_member:
                 Intent intent = new Intent(getActivity(),AddMemberActivity.class);
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
+                intent.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
                 startActivity(intent);
                 Refresh();
                 break;
             case R.id.button_save_member:
                 Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
-                updatedMember.GroupUID = groupUID;
-                if(updatedMember.UID == 0)
+                updatedMember.GroupId = groupId;
+                if(StringHelper.IsNullOrEmpty(updatedMember.Id))
                 {
                     Toast.makeText(getActivity(),"Please choose a member to update",Toast.LENGTH_SHORT).show();
                     break;

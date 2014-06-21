@@ -19,6 +19,7 @@ import org.groupsavings.R;
 import org.groupsavings.activities.AddMeetingActivity;
 import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.activities.ViewMeetingActivity;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.database.DatabaseHandler;
 
@@ -26,21 +27,22 @@ import java.util.ArrayList;
 
 public class MeetingsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private static final String ARG_PARAM1 = "Group UID";
+    private static final String ARG_PARAM1 = "GroupId";
+    String groupId;
+
     Activity activity;
     DatabaseHandler dbHandler;
     ArrayList<GroupMeeting> meetings;
     ArrayAdapter<GroupMeeting> meetingsAdapter;
-    int groupUID;
 
     public MeetingsFragment() {
         // Required empty public constructor
     }
 
-    public static MeetingsFragment newInstance(int groupUID) {
+    public static MeetingsFragment newInstance(String paramGroupId) {
         MeetingsFragment fragment = new MeetingsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, groupUID);
+        args.putString(ARG_PARAM1, paramGroupId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +53,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            groupUID = getArguments().getInt(ARG_PARAM1);
+            groupId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -69,7 +71,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         try {
             activity = getActivity();
             dbHandler = new DatabaseHandler(activity.getApplicationContext());
-            meetings = dbHandler.getAllGroupMeetings(groupUID, null);
+            meetings = dbHandler.getAllGroupMeetings(groupId, null);
 
             ListView lv = (ListView) activity.findViewById(R.id.listview_meeting_dates);
             meetingsAdapter = new ArrayAdapter<GroupMeeting>(activity, android.R.layout.simple_list_item_1, meetings);
@@ -86,7 +88,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
 
     public void Refresh() {
         try {
-            meetings = dbHandler.getAllGroupMeetings(groupUID, null);
+            meetings = dbHandler.getAllGroupMeetings(groupId, null);
             meetingsAdapter.clear();
             meetingsAdapter.addAll(meetings);
             meetingsAdapter.notifyDataSetChanged();
@@ -104,7 +106,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity(), ViewMeetingActivity.class);
-        intent.putExtra(GroupLandingActivity.INTENT_EXTRA_MEETINGID,meetings.get(i).id);
+        intent.putExtra(Intents.INTENT_EXTRA_MEETINGID,meetings.get(i).Id);
         startActivity(intent);
     }
 
@@ -119,7 +121,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
         switch (item.getItemId()) {
             case R.id.button_add_meeting:
                 Intent startMeetingActivity = new Intent(getActivity(), AddMeetingActivity.class);
-                startMeetingActivity.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
+                startMeetingActivity.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
                 startActivity(startMeetingActivity);
                 return true;
         }

@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;
@@ -25,12 +26,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class GroupLandingActivity extends Activity implements ActionBar.TabListener {
-
-    public static final String INTENT_EXTRA_GROUP = "GroupUID";
-    public static final String INTENT_EXTRA_MEETINGID = "GrpMeetingID";
-    public static final String INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS = "AlreadyLoanedMemberIDs";
-    public static final String INTENT_EXTRA_ALREADY_LOANED_COUNT = "AlreadyLoanedCount";
-    public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     //  session management declarations start
     UserSessionManager session;
@@ -90,14 +85,12 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         }, 1800000);// session timeout of 30 minutes
         //user session management ends
 
-        int groupUID = getIntent().getIntExtra(INTENT_EXTRA_GROUP, 0);
-        group = db_handler.getGroup(groupUID);
-        this.setTitle(group.GroupName);
-        fragment_members = MembersFragment.newInstance(groupUID);
-        fragment_group_details = GroupDetailsFragment.newInstance(groupUID);
-        fragment_meetings = MeetingsFragment.newInstance(groupUID);
-        //fragment_loans = LoansFragment.newInstance(groupUID);
-
+        String groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
+        group = db_handler.getGroup(groupId);
+        this.setTitle(group.Name);
+        fragment_members = MembersFragment.newInstance(groupId);
+        fragment_group_details = GroupDetailsFragment.newInstance(groupId);
+        fragment_meetings = MeetingsFragment.newInstance(groupId);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -192,10 +185,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_group_details;
                 case 1:
                     return fragment_members;
-                case 2:
-                    return fragment_meetings;
-                //case 3:
-                    //return fragment_loans;
+                /*case 2:
+                    return fragment_meetings;*/
                 default:
                     return fragment_meetings;
             }
@@ -204,7 +195,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            //return 3;
+            return 2;
         }
 
         @Override
@@ -215,10 +207,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return getString(R.string.title_section1).toUpperCase(l);
                 case 1:
                     return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-                //case 3:
-                    //return getString(R.string.title_section4).toUpperCase();
+                /*case 2:
+                    return getString(R.string.title_section3).toUpperCase(l);*/
             }
             return null;
         }

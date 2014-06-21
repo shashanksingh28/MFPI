@@ -30,10 +30,9 @@ import java.util.Calendar;
 
 public class GroupDetailsFragment extends Fragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "groupUID";
+    private static final String ARG_PARAM1 = "GroupId";
 
-
-    private int groupUID;
+    private String groupId;
     private Group group;
     private int mmd_day;
     private int mmd_month;
@@ -42,10 +41,10 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     DatabaseHandler db_handler;
 
     // Use this static factory method to instantiate
-    public static GroupDetailsFragment newInstance(int groupId) {
+    public static GroupDetailsFragment newInstance(String groupId) {
         GroupDetailsFragment fragment = new GroupDetailsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, groupId);
+        args.putString(ARG_PARAM1, groupId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +56,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            groupUID = getArguments().getInt(ARG_PARAM1);
+            groupId = getArguments().getString(ARG_PARAM1);
         }
 
         Calendar c = Calendar.getInstance();
@@ -65,7 +64,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         mmd_month = c.get(Calendar.MONTH);
         mmd_day = c.get(Calendar.DAY_OF_MONTH);
         db_handler = new DatabaseHandler(getActivity());
-        group = db_handler.getGroup(groupUID);
+        group = db_handler.getGroup(groupId);
         setHasOptionsMenu(true);
     }
 
@@ -124,16 +123,6 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
-
-            /*case R.id.button_save_group_details:
-                Group group = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
-                if(group != null)
-                {
-                    db_handler.addUpdateGroup(group);
-                }
-                HideKeypad();
-                Toast.makeText(getActivity(), "Group Saved", Toast.LENGTH_SHORT).show();
-                break;*/
         }
     }
 

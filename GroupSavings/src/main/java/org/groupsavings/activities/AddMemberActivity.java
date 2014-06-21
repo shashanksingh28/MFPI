@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.Member;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
@@ -32,7 +33,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
     private int dob_year;
     private TextView tv_dob;
     DatabaseHandler db_handler;
-    private int groupUID;
+    private String groupId;
 
 //  session management declarations start
     UserSessionManager session;
@@ -47,7 +48,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-            groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
+            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
             setContentView(R.layout.activity_add_member);
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
@@ -80,8 +81,6 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             ib.setOnClickListener(this);
             tv_dob = (TextView) findViewById(R.id.tv_member_dob);
 
-            /*Button saveButton = (Button) findViewById(R.id.button_save_new_member);
-            saveButton.setOnClickListener(this);*/
         }
         catch (Exception ex)
         {
@@ -111,7 +110,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
             case R.id.button_save_new_member:
                 Member newMember = getMemberFromView();
-                newMember.GroupUID = groupUID;
+                newMember.GroupId = groupId;
                 String validationString = ValidateMember(newMember);
                 if(validationString.equals("")){
                     db_handler.addUpdateMember(newMember);

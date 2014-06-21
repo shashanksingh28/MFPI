@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import org.groupsavings.R;
-import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.activities.NewLoanActivity;
-import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.domain.GroupMeeting;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class LoansFragment extends Fragment implements View.OnClickListener {
     DatabaseHandler dbHandler;
     ArrayList<GroupMeeting> meetings;
     ArrayAdapter<GroupMeeting> meetingsAdapter;
-    int groupUID;
+    String groupId;
 
     // TODO: Rename and change types and number of parameters
     public static LoansFragment newInstance(int param1) {
@@ -51,7 +51,7 @@ public class LoansFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            groupUID = getArguments().getInt(ARG_PARAM1);
+            groupId = getArguments().getString(ARG_PARAM1);
         }
         activity = getActivity();
     }
@@ -78,7 +78,7 @@ public class LoansFragment extends Fragment implements View.OnClickListener {
         {
             case R.id.bt_add_new_loan:
                 Intent intent = new Intent(getActivity(),NewLoanActivity.class);
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupUID);
+                intent.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
                 startActivity(intent);
                 break;
         }

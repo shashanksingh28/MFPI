@@ -17,10 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.SyncHelper;
+import org.groupsavings.constants.Constants;
+import org.groupsavings.constants.Intents;
+import org.groupsavings.constants.Tables;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
-import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
@@ -32,14 +34,14 @@ import java.util.HashMap;
 
 public class NewLoanActivity extends Activity implements View.OnClickListener {
 
-    int groupUID;
+    String groupId;
     DatabaseHandler db_handler;
     ArrayList<Member> groupMembers;
     ArrayAdapter<Member> grpMembersAdapter;
     Spinner members_spinner;
     LoanAccount la;
-    int [] alreadyLoanedMembers;
-    int alreadyLoanedCount;
+    //int [] alreadyLoanedMembers;
+    //int alreadyLoanedCount;
 
     //  session management declarations start
     UserSessionManager session;
@@ -78,19 +80,19 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
-            groupUID = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, 0);
-            alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
-            alreadyLoanedCount = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
+            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
+            //alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
+            //alreadyLoanedCount = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
             db_handler = new DatabaseHandler(getApplicationContext());
-            groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupUID);
+            //groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupId);
 
-            for(Member member : (ArrayList<Member>) groupMembers.clone())
+            /*for(Member member : (ArrayList<Member>) groupMembers.clone())
             {
                 for(int i : alreadyLoanedMembers)
                 {
-                    if(i == member.UID) groupMembers.remove(member);
+                    if(i == member.Id) groupMembers.remove(member);
                 }
-            }
+            }*/
             setContentView(R.layout.activity_new_loan);
 
             members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
@@ -148,7 +150,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                 tv_calcEmi.setText(String.valueOf(la.getEMI()));
 
                 TextView tv_calcOutstanding = (TextView) findViewById(R.id.tv_loan_totalOutstanding);
-                tv_calcOutstanding.setText(String.valueOf(la.OutStanding));
+                tv_calcOutstanding.setText(String.valueOf(la.Outstanding));
                 break;
 
             case R.id.bt_create_loan:
@@ -157,10 +159,10 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
-                                la.IsActive = true;
+                                la.Active = true;
                                 // Pass loan account as a JSONObject to the activity that called it
                                 Intent returnLoanAccount = new Intent();
-                                returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
+                                //returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
                                 setResult(RESULT_OK,returnLoanAccount);
                                 //db_handler.addUpdateLoanAccount(la);
                                 finish();
@@ -189,20 +191,20 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     public LoanAccount getLoanDetailsFromView()
     {
         LoanAccount la = new LoanAccount();
-        la.Id = 0;
-        la.memberId = ((Member) members_spinner.getSelectedItem()).UID;
-        la.groupId = groupUID;
+        la.Id = Tables.getTimestampUniqueId();
+        la.MemberId = ((Member) members_spinner.getSelectedItem()).Id;
+        la.GroupId = groupId;
 
         EditText et_amt = (EditText)findViewById(R.id.et_loan_amount);
         la.Principal = Integer.valueOf(et_amt.getText().toString());
 
         EditText et_int = (EditText)findViewById(R.id.et_loan_interetest_rate);
-        la.InterestPerAnnum = Float.valueOf(et_int.getText().toString());
+        la.InterestRate = Float.valueOf(et_int.getText().toString());
 
         EditText et_time = (EditText)findViewById(R.id.et_loan_months);
         la.PeriodInMonths = Integer.valueOf(et_time.getText().toString());
 
-        SimpleDateFormat sdf = new SimpleDateFormat(GroupLandingActivity.DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, la.PeriodInMonths);
 
@@ -210,7 +212,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         la.EndDate = sdf.format(endDate.get(Calendar.DATE));
 
         la.EMI = la.getEMI();
-        la.OutStanding = la.getInitialOutstanding();
+        la.Outstanding = la.getInitialOutstanding();
 
         EditText et_reason = (EditText) findViewById(R.id.et_loan_reason);
         la.Reason = et_reason.getText().toString();

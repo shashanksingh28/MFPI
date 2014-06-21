@@ -8,22 +8,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.domain.Group;
-import org.groupsavings.domain.Member;
 import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
+import org.groupsavings.domain.Group;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddGroupActivity extends Activity implements View.OnClickListener {
@@ -33,11 +28,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     private int mmd_year;
     private TextView tv_mmd;
     DatabaseHandler db_handler;
-    ArrayList<Member> groupMembers;
-    ArrayAdapter<Member> grpMembersAdapter;
-    Spinner president_spinner;
-    Spinner secretary_spinner;
-    Spinner treasurer_spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +36,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_add_group);
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             Calendar c = Calendar.getInstance();
             mmd_year = c.get(Calendar.YEAR)-20;
@@ -61,8 +51,10 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             db_handler = new DatabaseHandler(getApplicationContext());
             Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
             if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
-            groupMembers = db_handler.getAllMembers();
 
+            /* Commenting this part as no group Members exist at the time of group creation */
+            /*
+            groupMembers = db_handler.getGroupMembers();
 
             president_spinner = (Spinner) findViewById(R.id.sp_group_president);
             grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
@@ -75,6 +67,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             treasurer_spinner = (Spinner) findViewById(R.id.sp_group_treasurer);
             grpMembersAdapter = new ArrayAdapter<Member>(this,android.R.layout.simple_spinner_dropdown_item,groupMembers);
             treasurer_spinner.setAdapter(grpMembersAdapter);
+            */
         }
         catch (Exception ex)
         {
@@ -102,22 +95,22 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 return true;
             case R.id.button_save_group:
                 Group group = ViewHelper.fetchGroupDetailsFromView(findViewById(R.id.layout_group_details));
-                if(group.GroupName == null || group.GroupName.equals(""))
+
+                if(group.Name == null || group.Name.equals(""))
                 {
                     Toast.makeText(this,"Please enter a group name.",Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if(group.RecurringSavings == 0)
+                if(group.MonthlyCompulsoryAmount == 0)
                 {
                     Toast.makeText(this,"Please enter a group savings value",Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if(group != null)
-                {
-                    db_handler.addUpdateGroup(group);
-                }
+
+                db_handler.addUpdateGroup(group);
                 Toast.makeText(this,"Group Saved",Toast.LENGTH_SHORT).show();
                 finish();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -131,15 +124,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
-            /*case R.id.button_save_group:
-                Group group = ViewHelper.fetchGroupDetailsFromView(findViewById(R.id.layout_group_details));
-                if(group != null)
-                {
-                    db_handler.addUpdateGroup(group);
-                }
-                Toast.makeText(getApplicationContext(),"Group Saved",Toast.LENGTH_SHORT).show();
-                finish();
-                break;*/
         }
     }
 

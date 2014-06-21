@@ -16,9 +16,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.SyncHelper;
-import org.groupsavings.domain.Group;
+import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
@@ -95,7 +95,9 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     protected void onResume()
     {
         super.onResume();
-        groups = db_handler.getAllGroups();
+        // TODO get FOID
+        String officerId="";
+        groups = db_handler.getAllFOGroups(officerId);
         adapter_grid.clear();
         adapter_grid.addAll(groups);
         adapter_grid.notifyDataSetChanged();
@@ -130,7 +132,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getApplicationContext(), GroupLandingActivity.class);
-        intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP,groups.get(i).UID);
+        intent.putExtra(Intents.INTENT_EXTRA_GROUPID,groups.get(i).Id);
         startActivity(intent);
     }
 
@@ -148,9 +150,11 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
         @Override
         protected String doInBackground(String... strings) {
-            SyncHelper syncHelper = new SyncHelper(getApplicationContext());
+            //SyncHelper syncHelper = new SyncHelper(getApplicationContext());
             try{
-                return syncHelper.synchronize();
+                // Disabling sync so that other people can build
+                return "";
+                //return syncHelper.synchronize();
             }
             catch(Exception ex)
             {

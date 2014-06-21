@@ -1,34 +1,10 @@
 package org.groupsavings.activities;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import org.groupsavings.MeetingLoanAdapter;
-import org.groupsavings.MeetingTransactionsAdapter;
-import org.groupsavings.R;
-import org.groupsavings.SyncHelper;
-import org.groupsavings.domain.Group;
-import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.MeetingTransaction;
-import org.groupsavings.domain.Member;
-import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
-import org.groupsavings.handlers.UserSessionManager;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AddMeetingActivity extends Activity {
 
-    int groupId;
+    /*String groupId;
     Group group;
     DatabaseHandler dbHandler;
     ArrayList<Member> groupMembers;
@@ -98,11 +74,6 @@ public class AddMeetingActivity extends Activity {
             loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
             lv_loanAccounts.setAdapter(loansAdapter);
 
-            /*Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
-            bt_save_meeting.setOnClickListener(this);
-
-            Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
-            bt_add_loan.setOnClickListener(this);*/
         }
         catch (Exception ex)
         {
@@ -206,5 +177,5 @@ public class AddMeetingActivity extends Activity {
         loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);;
         lv_loanAccounts.setAdapter(loansAdapter);
     }
-
+    */
 }

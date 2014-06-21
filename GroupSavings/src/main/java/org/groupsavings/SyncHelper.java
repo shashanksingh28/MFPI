@@ -1,50 +1,17 @@
 package org.groupsavings;
 
-import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.provider.ContactsContract;
-import android.widget.Toast;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
-import org.groupsavings.constants.Columns;
-import org.groupsavings.domain.Group;
-import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.LoanTransaction;
-import org.groupsavings.domain.MeetingDetails;
-import org.groupsavings.domain.Member;
-import org.groupsavings.domain.SavingTransaction;
-import org.groupsavings.domain.SavingsAccount;
-import org.groupsavings.handlers.DatabaseHandler;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-
 // Added for Sync testing
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import org.apache.http.util.EntityUtils;
 
 /**
  * Created by Shashank on 16/3/14.
  */
 public class SyncHelper {
 
+    /* Commenting this so that others can build without sync completed
+     * Those testing sync uncomment and use
+     */
+
+    /*
     public static final String SERVER_URL="http://planindiatest.webatu.com/AndroidSync";
     public DatabaseHandler db_handler;
     private Context context;
@@ -695,5 +662,5 @@ public class SyncHelper {
         }
         return jsonArray;
     }
-
+    */
 }

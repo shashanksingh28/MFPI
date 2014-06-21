@@ -11,7 +11,7 @@ public class LoanAccount {
     public String GroupMeetingId;
     public float Principal;
     public float InterestRate;
-    public float PeriodInMonths;
+    public int PeriodInMonths;
     public float EMI;
     public float Outstanding;
     public String Reason;

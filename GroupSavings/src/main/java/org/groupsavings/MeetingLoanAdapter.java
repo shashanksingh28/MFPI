@@ -1,21 +1,9 @@
 package org.groupsavings;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
-import org.groupsavings.domain.LoanAccount;
-
-import java.util.ArrayList;
-
 /**
  * Created by shashank on 20/4/14.
  */
-public class MeetingLoanAdapter extends ArrayAdapter<LoanAccount> {
+/*public class MeetingLoanAdapter extends ArrayAdapter<LoanAccount> {
 
     Context context;
     ArrayList<LoanAccount> loanAccounts;
@@ -76,4 +64,5 @@ public class MeetingLoanAdapter extends ArrayAdapter<LoanAccount> {
 
         return convert_view;
     }
-}
+
+}*/

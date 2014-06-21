@@ -1,30 +1,10 @@
 package org.groupsavings.activities;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Menu;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import org.groupsavings.MeetingLoanAdapter;
-import org.groupsavings.MeetingTransactionsAdapter;
-import org.groupsavings.R;
-import org.groupsavings.domain.Group;
-import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.MeetingTransaction;
-import org.groupsavings.domain.Member;
-import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
-import org.groupsavings.handlers.UserSessionManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ViewMeetingActivity extends Activity {
-
-    int grpMeetingId;
+/*
+    String grpMeetingId;
     Group group;
     DatabaseHandler dbHandler;
     ArrayList<Member> groupMembers;
@@ -73,7 +53,8 @@ public class ViewMeetingActivity extends Activity {
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
-            grpMeetingId = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_MEETINGID, 0);
+
+            grpMeetingId = getIntent().getStringExtra(Intents.INTENT_EXTRA_MEETINGID);
             dbHandler = new DatabaseHandler(getApplicationContext());
             //group = dbHandler.getGroup(groupId);
             //groupMembers = dbHandler.getAllMembers(groupId);
@@ -88,11 +69,7 @@ public class ViewMeetingActivity extends Activity {
             loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
             lv_loanAccounts.setAdapter(loansAdapter);
 
-            /*Button bt_save_meeting = (Button) findViewById(R.id.button_save_meeting_details);
-            bt_save_meeting.setOnClickListener(this);
 
-            Button bt_add_loan = (Button) findViewById(R.id.bt_add_new_loan);
-            bt_add_loan.setOnClickListener(this);*/
         }
         catch (Exception ex)
         {
@@ -107,5 +84,5 @@ public class ViewMeetingActivity extends Activity {
         getMenuInflater().inflate(R.menu.view_meeting, menu);
         return true;
     }
-
+*/
 }
