@@ -49,6 +49,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
 
             db_handler = new DatabaseHandler(getApplicationContext());
+
             Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
             if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
 
@@ -148,6 +149,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
     private void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day+" of every month");
+        tv_mmd.setText(mmd_day);
+        //+" of every month"
     }
 }

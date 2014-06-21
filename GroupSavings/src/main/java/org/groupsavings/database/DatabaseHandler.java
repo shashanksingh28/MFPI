@@ -82,6 +82,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //------------------------ Groups related functions ----------------------------//
 
+    public void TruncateGroups() {
+        String query = " DELETE FROM TABLE GROUPS";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Tables.GROUPS,null,null);
+    }
     public void addUpdateGroup(Group group) {
         if (group == null) return;
 
@@ -92,7 +97,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (IsNullOrEmpty(group.Id))
         {
+            String id = Tables.getUniqueId(group);
             group.Id = getUniqueId(group);
+            values.put(Columns.GROUP_Id,group.Id);
             // TODO: get field officer Id from security
             values.put(Columns.GROUP_CreatedBy, group.CreatedBy);
             db.insertOrThrow(Tables.GROUPS, null, values);
@@ -120,8 +127,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Group> getAllFOGroups(String fieldOfficerId) {
         ArrayList<Group> groupList = new ArrayList<Group>();
 
-        String selectQuery = "SELECT  * FROM " + Tables.GROUPS +
-                " Where "+Columns.GROUP_Id + "='" + fieldOfficerId+"'";
+        String selectQuery = "SELECT  * FROM " + Tables.GROUPS;// +
+                //" Where "+Columns.GROUP_Id + "='" + fieldOfficerId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

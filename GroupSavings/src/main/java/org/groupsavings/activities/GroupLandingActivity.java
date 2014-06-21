@@ -131,7 +131,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     }
     catch (Exception ex)
     {
-        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
     }
     }
 

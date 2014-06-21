@@ -69,6 +69,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             //user session management ends
 
             db_handler = new DatabaseHandler(getApplicationContext());
+            db_handler.TruncateGroups();
             // Uncomment this once only when there is change in schema and revert back
             // db_handler.createSchema(null);
 

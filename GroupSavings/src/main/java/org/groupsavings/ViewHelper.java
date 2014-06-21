@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.Member;
@@ -227,12 +228,13 @@ public class ViewHelper {
             updatedGroup.Bank = groupBankAccountEditor.getText().toString();
 
         TextView grpMonthlyMeetDate = (TextView) view.findViewById(R.id.tv_group_mmd);
-        if (grpMonthlyMeetDate != null && grpMonthlyMeetDate.getText() != null)
+        if (grpMonthlyMeetDate != null && grpMonthlyMeetDate.getText() != "")
             updatedGroup.MonthlyMeetingDate = Integer.parseInt(grpMonthlyMeetDate.getText().toString());
 
 
-        return updatedGroup;
-    }
+
+    return updatedGroup;
+}
 
     public static void populateGroupDetailsToView(View view_layout,Group groupToPopulate)
     {

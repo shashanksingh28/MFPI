@@ -15,9 +15,14 @@ public class DatabasePutHelper {
 
     void putGroupValues(Group group, ContentValues values) {
         values.put(Columns.GROUP_Name, group.Name);
-        values.put(Columns.GROUP_PresidentId, group.President.Id);
-        values.put(Columns.GROUP_SecretaryId, group.Secretary.Id);
-        values.put(Columns.GROUP_TreasurerId, group.Treasurer.Id);
+
+        if(group.President != null)
+            values.put(Columns.GROUP_PresidentId, group.President.Id);
+        if(group.Secretary != null)
+            values.put(Columns.GROUP_SecretaryId, group.Secretary.Id);
+        if(group.Treasurer != null)
+            values.put(Columns.GROUP_TreasurerId, group.Treasurer.Id);
+
         values.put(Columns.GROUP_FieldOfficerId, group.FieldOfficerId);
         values.put(Columns.GROUP_Bank, group.Bank);
         values.put(Columns.GROUP_ClusterId, group.ClusterId);

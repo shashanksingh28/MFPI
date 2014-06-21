@@ -5,6 +5,9 @@ import android.text.format.Time;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.Member;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * CREATEd by shashank on 14/6/14.
  */
@@ -162,7 +165,8 @@ public class Tables {
     public static String getUniqueId(Group group) {
         Time now = new Time();
         now.setToNow();
-        return group.Name+now;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+        return group.Name + "_" + sdf.format(new Date());
     }
 
     public static String getUniqueId(Member member) {
