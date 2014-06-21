@@ -13,13 +13,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 

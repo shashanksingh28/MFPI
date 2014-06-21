@@ -20,7 +20,7 @@ import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 
 import java.util.ArrayList;

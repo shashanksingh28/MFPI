@@ -20,7 +20,7 @@ import org.groupsavings.activities.AddMeetingActivity;
 import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.activities.ViewMeetingActivity;
 import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 
 import java.util.ArrayList;
 

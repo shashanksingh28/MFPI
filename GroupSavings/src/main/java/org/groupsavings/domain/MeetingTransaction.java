@@ -11,9 +11,9 @@ public class MeetingTransaction {
 
     public LoanTransaction LoanTransaction;
 
-    public int groupId;
+    public String groupId;
 
-    public MeetingTransaction(int groupId, Member member) {
+    public MeetingTransaction(String groupId, Member member) {
         this.groupId = groupId;
         this.GroupMember = member;
         this.SavingTransaction = new SavingTransaction();

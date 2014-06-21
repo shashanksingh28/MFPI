@@ -17,7 +17,7 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 

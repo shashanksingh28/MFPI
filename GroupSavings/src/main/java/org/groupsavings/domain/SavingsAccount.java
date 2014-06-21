@@ -14,7 +14,7 @@ public class SavingsAccount {
     public float TotalSavings;
     public String CreatedDate;
     public String CreatedBy;
-    public String Active;
+    public boolean Active;
 
 
     public float getTotalSavings() {

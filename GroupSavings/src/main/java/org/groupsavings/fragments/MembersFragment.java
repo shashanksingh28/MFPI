@@ -23,7 +23,7 @@ import org.groupsavings.ViewHelper;
 import org.groupsavings.activities.AddMemberActivity;
 import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 
 import java.util.ArrayList;
 

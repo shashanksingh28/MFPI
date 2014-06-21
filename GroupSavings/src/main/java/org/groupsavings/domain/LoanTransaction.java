@@ -12,6 +12,8 @@ public class LoanTransaction
     public float Outstanding;
     public String DateTime;
 
+    LoanAccount LoanAccount;
+
     public void setOutstandingDue(long outstandingDue)
     {
         this.Outstanding = outstandingDue;

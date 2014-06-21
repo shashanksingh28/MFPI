@@ -1,0 +1,64 @@
+package org.groupsavings.database;
+
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import org.groupsavings.constants.Columns;
+import org.groupsavings.domain.*;
+
+/**
+ * Created by shashank on 21/6/14.
+ * Class that will help in insert update statements by putting respective values in query
+ * To be used by SyncHelper to update data from server
+ */
+public class DatabasePutHelper {
+
+    void putGroupValues(Group group, ContentValues values) {
+        values.put(Columns.GROUP_Name, group.Name);
+        values.put(Columns.GROUP_PresidentId, group.President.Id);
+        values.put(Columns.GROUP_SecretaryId, group.Secretary.Id);
+        values.put(Columns.GROUP_TreasurerId, group.Treasurer.Id);
+        values.put(Columns.GROUP_FieldOfficerId, group.FieldOfficerId);
+        values.put(Columns.GROUP_Bank, group.Bank);
+        values.put(Columns.GROUP_ClusterId, group.ClusterId);
+        values.put(Columns.GROUP_CummulativeSavings, group.CummulativeSavings);
+        values.put(Columns.GROUP_OtherIncome, group.OtherIncome);
+        values.put(Columns.GROUP_OutstandingLoans, group.OutstandingLoans);
+        values.put(Columns.GROUP_DateOfFormation, group.DateOfFormation);
+        values.put(Columns.GROUP_NoOfSubgroups, group.NoOfSubgroups);
+        values.put(Columns.GROUP_AddressLine1, group.AddressLine1);
+        values.put(Columns.GROUP_AddressLine2, group.AddressLine2);
+        values.put(Columns.GROUP_City, group.City);
+        values.put(Columns.GROUP_State, group.State);
+        values.put(Columns.GROUP_Country, group.Country);
+        values.put(Columns.GROUP_NoOfSubgroups, group.NoOfSubgroups);
+    }
+
+    void putMemberValues(Member member, ContentValues values) {
+        values.put(Columns.MEMBERS_GroupId, member.GroupId);
+        values.put(Columns.MEMBERS_FirstName, member.FirstName);
+        values.put(Columns.MEMBERS_LastName, member.LastName);
+        values.put(Columns.MEMBERS_GuardianName, member.GuardianName);
+        values.put(Columns.MEMBERS_Gender, member.Gender);
+        values.put(Columns.MEMBERS_DOB, member.DOB);
+        values.put(Columns.MEMBERS_EmailId, member.EmailId);
+        values.put(Columns.MEMBERS_Active, member.Active);
+        values.put(Columns.MEMBERS_ContactNumber, member.ContactNumber);
+        values.put(Columns.MEMBERS_AddressLine1, member.AddressLine1);
+        values.put(Columns.MEMBERS_AddressLine2, member.AddressLine2);
+        values.put(Columns.MEMBERS_Occupation, member.Occupation);
+        values.put(Columns.MEMBERS_AnnualIncome, member.AnnualIncome);
+        values.put(Columns.MEMBERS_EconomicCondition, member.EconomicCondition);
+        values.put(Columns.MEMBERS_Education, member.Education);
+        values.put(Columns.MEMBERS_Disability, member.Disability);
+        values.put(Columns.MEMBERS_NoOfFamilyMembers, member.NoOfFamilyMembers);
+        values.put(Columns.MEMBERS_Nominee, member.Nominee);
+        values.put(Columns.MEMBERS_Passbook, member.Passbook);
+        values.put(Columns.MEMBERS_Insurance, member.Insurance);
+        values.put(Columns.MEMBERS_DOB, member.DOB);
+        values.put(Columns.MEMBERS_ExitDate, member.ExitDate);
+        values.put(Columns.MEMBERS_ExitReason, member.ExitReason);
+    }
+
+
+}

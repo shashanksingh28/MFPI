@@ -17,7 +17,7 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingTransaction;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 import org.json.JSONException;

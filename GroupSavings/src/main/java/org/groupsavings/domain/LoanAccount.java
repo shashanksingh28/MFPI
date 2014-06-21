@@ -16,12 +16,12 @@ public class LoanAccount {
     public float Outstanding;
     public String Reason;
     public String Guarantor;
-    public String IsEmergency;
+    public boolean IsEmergency;
     public String StartDate;
     public String EndDate;
     public String CreatedDate;
     public String CreatedBy;
-    public String Active;
+    public boolean Active;
 
     public float getEMI()
     {

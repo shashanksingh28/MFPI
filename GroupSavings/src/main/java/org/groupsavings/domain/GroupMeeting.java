@@ -1,6 +1,7 @@
 package org.groupsavings.domain;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,10 +13,14 @@ public class GroupMeeting {
     public String Date;
     public String FieldOfficerId;
 
+    ArrayList<SavingTransaction> SavingTransactions;
+    ArrayList<LoanAccount> LoanAccountsCreated;
+    ArrayList<LoanTransaction> LoanTransactions;
+    ArrayList<MeetingDetails> MeetingDetails;
+
+
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        //return sdf.format(date);
         return Date;
     }
 }

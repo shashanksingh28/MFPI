@@ -23,7 +23,7 @@ import android.widget.Toast;
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 
 import java.util.Calendar;
 

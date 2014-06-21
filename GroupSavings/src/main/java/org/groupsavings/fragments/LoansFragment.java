@@ -14,7 +14,7 @@ import org.groupsavings.R;
 import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.activities.NewLoanActivity;
 import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 
 import java.util.ArrayList;
 

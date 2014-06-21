@@ -1,5 +1,10 @@
 package org.groupsavings.constants;
 
+import android.text.format.Time;
+
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.Member;
+
 /**
  * CREATEd by shashank on 14/6/14.
  */
@@ -151,5 +156,22 @@ public class Tables {
             + Columns.FIELDOFFICERS_Name + " TEXT,"
             + Columns.FIELDOFFICERS_PasswordHash + " TEXT"
             + ");";
+
+    //----------------------- Unique Id related functions -------------------------//
+
+    public static String getUniqueId(Group group) {
+        Time now = new Time();
+        now.setToNow();
+        return group.Name+now;
+    }
+
+    public static String getUniqueId(Member member) {
+        return member.FirstName +"_"+ member.GuardianName +"_"+ member.LastName +"_"+ member.GroupId;
+    }
+
+    // Timestamp be used for accounts and meetings
+    public static String getTimestampUniqueId() {
+        return String.valueOf(System.currentTimeMillis());
+    }
 
 }

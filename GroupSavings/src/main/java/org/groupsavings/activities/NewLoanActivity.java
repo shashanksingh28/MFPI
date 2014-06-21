@@ -20,13 +20,12 @@ import org.groupsavings.R;
 import org.groupsavings.SyncHelper;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.DatabaseHandler;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
