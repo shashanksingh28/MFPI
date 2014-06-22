@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +21,12 @@ import org.groupsavings.ViewHelper;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class AddGroupActivity extends Activity implements View.OnClickListener {
 
@@ -36,16 +43,26 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_add_group);
 
+            final Spinner spinnerDay = (Spinner) findViewById(R.id.group_mmd_date);
+
+            List<String> list = new ArrayList<String>();
+            for (int i = 1; i <= 31; ++i) {
+                list.add(String.valueOf(i));
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, list);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDay.setAdapter(adapter);
+
             //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-            Calendar c = Calendar.getInstance();
+            /*Calendar c = Calendar.getInstance();
             mmd_year = c.get(Calendar.YEAR)-20;
             mmd_month = c.get(Calendar.MONTH);
             mmd_day = c.get(Calendar.DAY_OF_MONTH);
 
             ImageButton ib = (ImageButton) findViewById(R.id.imgbtn_pick_mmd);
             ib.setOnClickListener(this);
-            tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);
+            tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);*/
 
 
             db_handler = new DatabaseHandler(getApplicationContext());
@@ -119,13 +136,13 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch(view.getId())
+        /*switch(view.getId())
         {
             case R.id.imgbtn_pick_mmd:
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
-        }
+        }*/
     }
 
 
@@ -149,7 +166,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
 
     private void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day);
-        //+" of every month"
+        tv_mmd.setText(mmd_day+" of every month");
     }
 }
