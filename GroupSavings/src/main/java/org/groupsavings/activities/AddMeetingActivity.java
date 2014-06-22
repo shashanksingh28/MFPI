@@ -27,7 +27,6 @@ import org.groupsavings.domain.SavingsAccount;
 import org.groupsavings.fragments.MeetingDetailsFragment;
 import org.groupsavings.fragments.MeetingLoansFragment;
 import org.groupsavings.fragments.MeetingSavingsFragment;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
@@ -61,12 +60,12 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         try{
             super.onCreate(savedInstanceState);
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             setContentView(R.layout.activity_add_meeting);
 
@@ -153,13 +152,13 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
                                 .setTabListener(this)
                 );
             }
-
         }
         catch (Exception ex)
         {
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
+
 
     // Pre-populate the saving transactions needed for the meeting
     private ArrayList<MeetingSavingsAccTransaction> populateSavingTransactions()

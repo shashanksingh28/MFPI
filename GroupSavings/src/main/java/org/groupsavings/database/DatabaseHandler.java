@@ -210,6 +210,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //------------------------ Members related functions ----------------------------//
 
+    public void TruncateGroupMembers(String groupId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Tables.MEMBERS,null,null);
+        db.delete(Tables.SAVINGACCOUNTS, null,null);
+    }
+
     private void createMemberSavingAccount(Member member, SQLiteDatabase db) {
         ContentValues saving_acc_values = new ContentValues();
         saving_acc_values.put(Columns.SAVINGACCOUNTS_Id, getTimestampUniqueId());
@@ -230,6 +237,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (StringHelper.IsNullOrEmpty(member.Id))
         {
             member.Id = getUniqueId(member);
+            values.put(Columns.MEMBERS_Id, member.Id);
             // TODO: get field officer Id from security
             //values.put(Columns.MEMBERS_CreatedBy,member.CreatedBy);
             db.insertOrThrow(Tables.MEMBERS, null, values);
@@ -253,6 +261,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.close();
     }
+
+
 
     private float getMemberSavings(String memberId, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
@@ -334,9 +344,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + Tables.SAVINGACCOUNTS
                 + " Where " + Columns.SAVINGACCOUNTS_MemberId + "='" + memberId +"'";
 
+        SavingsAccount sa = null;
         Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor.moveToFirst())
+        {
+            sa = fetchHelper.getSavingAccountFromCursor(cursor);
+        }
 
-        return fetchHelper.getSavingAccountFromCursor(cursor);
+        return sa;
     }
 
     public LoanAccount getMemberNonEmergencyActiveLoan(String memberId, SQLiteDatabase db)

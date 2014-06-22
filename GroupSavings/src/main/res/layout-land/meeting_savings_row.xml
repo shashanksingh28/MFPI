@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal"
+android:textSize="14sp">
+
+<TextView
+    android:id="@+id/tv_savingTrans_membername"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp" />
+
+<EditText
+    android:id="@+id/et_savingTrans_compulsorysavings"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:inputType="number"/>
+
+<EditText
+    android:id="@+id/et_savingTrans_optionalsavings"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:inputType="number" />
+
+<TextView
+    android:id="@+id/tv_savingTrans_totalsaving"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp" />
+
+</LinearLayout>

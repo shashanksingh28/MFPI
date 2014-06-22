@@ -23,7 +23,6 @@ import org.groupsavings.constants.Tables;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.Member;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.text.SimpleDateFormat;
@@ -58,7 +57,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         {
             super.onCreate(savedInstanceState);
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 

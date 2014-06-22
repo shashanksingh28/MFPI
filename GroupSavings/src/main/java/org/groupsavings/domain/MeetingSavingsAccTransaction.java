@@ -7,15 +7,15 @@ package org.groupsavings.domain;
  */
 public class MeetingSavingsAccTransaction {
 
-    Group Group;
+    public Group Group;
 
-    Member Member;
+    public Member Member;
 
-    SavingsAccount SavingsAccount;
+    public SavingsAccount SavingsAccount;
 
-    SavingTransaction CompulsorySavingTransaction;
+    public SavingTransaction CompulsorySavingTransaction;
 
-    SavingTransaction OptionalSavingTransaction;
+    public SavingTransaction OptionalSavingTransaction;
 
     public MeetingSavingsAccTransaction(Group group, Member member, SavingsAccount account)
     {
@@ -25,7 +25,14 @@ public class MeetingSavingsAccTransaction {
         this.CompulsorySavingTransaction = new SavingTransaction();
         CompulsorySavingTransaction.Type = "C";
         CompulsorySavingTransaction.Amount = group.MonthlyCompulsoryAmount;
+        CompulsorySavingTransaction.SavingAccount = account;
         this.OptionalSavingTransaction = new SavingTransaction();
         OptionalSavingTransaction.Type = "O";
+        OptionalSavingTransaction.SavingAccount = account;
+    }
+
+    public float getTotalSavings()
+    {
+        return CompulsorySavingTransaction.Amount + OptionalSavingTransaction.Amount;
     }
 }

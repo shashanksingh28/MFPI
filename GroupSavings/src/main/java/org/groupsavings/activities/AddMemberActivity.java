@@ -111,6 +111,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             case R.id.button_save_new_member:
                 Member newMember = getMemberFromView();
                 newMember.GroupId = groupId;
+                newMember.Active = true;
                 String validationString = ValidateMember(newMember);
                 if(validationString.equals("")){
                     db_handler.addUpdateMember(newMember);

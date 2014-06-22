@@ -14,12 +14,11 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.constants.Intents;
+import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.fragments.GroupDetailsFragment;
 import org.groupsavings.fragments.MeetingsFragment;
 import org.groupsavings.fragments.MembersFragment;
-import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
     {
         super.onCreate(savedInstanceState);
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         setContentView(R.layout.activity_group_landing);
         db_handler = new DatabaseHandler(getApplicationContext());
@@ -87,6 +86,7 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
 
         String groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
         group = db_handler.getGroup(groupId);
+
         this.setTitle(group.Name);
         fragment_members = MembersFragment.newInstance(groupId);
         fragment_group_details = GroupDetailsFragment.newInstance(groupId);

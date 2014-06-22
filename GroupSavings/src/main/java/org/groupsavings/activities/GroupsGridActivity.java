@@ -19,7 +19,6 @@ import org.groupsavings.R;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         try{
             super.onCreate(savedInstanceState);
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             setContentView(R.layout.activity_groups_grid);
 
