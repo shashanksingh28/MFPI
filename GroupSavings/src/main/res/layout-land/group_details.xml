@@ -123,19 +123,31 @@
                     android:text="Monthly Meeting Date:"
                     android:textSize="18dp" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_group_mmd"
                     android:layout_width="200dp"
                     android:textSize="18sp"
                     android:layout_height="wrap_content"
-                    android:padding="8dp" />
-
-                <ImageButton
+                    android:padding="8dp" />-->
+                <Spinner
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:padding="8dp"
+                    android:id="@+id/group_mmd_date" />
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:text=" of every month"
+                    android:textSize="18dp" />
+                <!--<ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_action_edit"
                     android:id="@+id/imgbtn_pick_mmd"
-                    android:padding="8dp"/>
+                    android:padding="8dp"/>-->
             </LinearLayout>
 
             <LinearLayout

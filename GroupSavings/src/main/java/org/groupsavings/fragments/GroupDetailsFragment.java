@@ -14,19 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.database.DatabaseHandler;
+import android.app.Activity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.List;
 
 public class GroupDetailsFragment extends Fragment implements View.OnClickListener {
 
@@ -38,6 +41,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     private int mmd_month;
     private int mmd_year;
     private TextView tv_mmd;
+    Activity act;
     DatabaseHandler db_handler;
 
     // Use this static factory method to instantiate
@@ -83,13 +87,25 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         if(saveGroupButton != null){
             saveGroupButton.setOnClickListener(this);
         }
-        ImageButton ib = (ImageButton) getActivity().findViewById(R.id.imgbtn_pick_mmd);
+        act=getActivity();
+        Spinner spinnerDay = (Spinner) act.findViewById(R.id.group_mmd_date);
+
+        List<String> list = new ArrayList<String>();
+        for (int i = 1; i <= 31; ++i) {
+            list.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(act,android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDay.setAdapter(adapter);
+        spinnerDay.setSelection(db_handler.getGroup(groupId).MonthlyMeetingDate);
+
+        /*ImageButton ib = (ImageButton) getActivity().findViewById(R.id.imgbtn_pick_mmd);
         ib.setOnClickListener(this);
-        tv_mmd = (TextView) getActivity().findViewById(R.id.tv_group_mmd);
+        tv_mmd = (TextView) getActivity().findViewById(R.id.tv_group_mmd);*/
+
 
         ViewHelper.populateGroupDetailsToView(getActivity().findViewById(R.id.layout_group_details), group);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
     }
 
     @Override
@@ -117,13 +133,13 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        switch(view.getId())
+        /*switch(view.getId())
         {
             case R.id.imgbtn_pick_mmd:
                 DialogFragment dialogFragment = new StartDatePicker();
                 dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
                 break;
-        }
+        }*/
     }
 
     class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{

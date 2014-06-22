@@ -22,7 +22,8 @@ public class DatabasePutHelper {
             values.put(Columns.GROUP_SecretaryId, group.Secretary.Id);
         if(group.Treasurer != null)
             values.put(Columns.GROUP_TreasurerId, group.Treasurer.Id);
-
+        values.put(Columns.GROUP_MonthlyMeetingDate,group.MonthlyMeetingDate);
+        values.put(Columns.GROUP_MonthlyCompulsoryAmount,group.MonthlyCompulsoryAmount);
         values.put(Columns.GROUP_FieldOfficerId, group.FieldOfficerId);
         values.put(Columns.GROUP_Bank, group.Bank);
         values.put(Columns.GROUP_ClusterId, group.ClusterId);

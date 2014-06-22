@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
     <string name="app_name">Group Savings</string>
     <string name="UserName">User Name</string>
     <string name="action_settings">Settings</string>
