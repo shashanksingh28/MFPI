@@ -32,12 +32,12 @@ public class MeetingSavingsAccTransaction {
         OptionalSavingTransaction.Type = "O";
 
         this.WithdrawOptionalSavingTransaction  = new SavingTransaction();
+        WithdrawOptionalSavingTransaction.Type = "W";
 
         this.SavingsAccount = CompulsorySavingTransaction.SavingAccount = OptionalSavingTransaction.SavingAccount
                 = WithdrawOptionalSavingTransaction.SavingAccount = account;
         CompulsorySavingTransaction.SavingAccountId = OptionalSavingTransaction.SavingAccountId
                 = WithdrawOptionalSavingTransaction.SavingAccountId = account.Id;
-
     }
 
     public float getTotalSavings()
