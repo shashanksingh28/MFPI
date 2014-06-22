@@ -15,6 +15,6 @@ public class SavingTransaction {
     public String DateTime;
 
     // Derived
-    SavingsAccount SavingAccount;
+    public SavingsAccount SavingAccount;
 
 }

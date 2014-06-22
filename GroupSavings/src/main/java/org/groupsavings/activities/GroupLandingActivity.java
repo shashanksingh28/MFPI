@@ -185,8 +185,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return fragment_group_details;
                 case 1:
                     return fragment_members;
-                /*case 2:
-                    return fragment_meetings;*/
+                case 2:
+                    return fragment_meetings;
                 default:
                     return fragment_meetings;
             }
@@ -195,8 +195,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
         @Override
         public int getCount() {
             // Show 3 total pages.
-            //return 3;
-            return 2;
+            return 3;
+            //return 2;
         }
 
         @Override
@@ -207,8 +207,8 @@ public class GroupLandingActivity extends Activity implements ActionBar.TabListe
                     return getString(R.string.title_section1).toUpperCase(l);
                 case 1:
                     return getString(R.string.title_section2).toUpperCase(l);
-                /*case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);*/
+                case 2:
+                    return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
         }
