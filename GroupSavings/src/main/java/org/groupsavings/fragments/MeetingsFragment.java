@@ -17,11 +17,10 @@ import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.activities.AddMeetingActivity;
-import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.activities.ViewMeetingActivity;
 import org.groupsavings.constants.Intents;
-import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.domain.GroupMeeting;
 
 import java.util.ArrayList;
 
@@ -77,9 +76,6 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
             meetingsAdapter = new ArrayAdapter<GroupMeeting>(activity, android.R.layout.simple_list_item_1, meetings);
             lv.setAdapter(meetingsAdapter);
             lv.setOnItemClickListener(this);
-
-            /* Button addNewMeeting = (Button) activity.findViewById(R.id.button_add_meeting);
-            addNewMeeting.setOnClickListener(this);*/
 
         } catch (Exception ex) {
             Toast.makeText(activity, ex.getMessage(), Toast.LENGTH_LONG).show();

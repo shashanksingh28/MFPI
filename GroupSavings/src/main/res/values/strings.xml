@@ -8,10 +8,15 @@
     <string name="title_activity_groups_grid">Saving Groups</string>
     <string name="title_activity_add_group">AddGroup</string>
     <string name="title_activity_group_landing">Manage Group</string>
+
     <string name="title_section1">Group Details</string>
     <string name="title_section2">Member Details</string>
     <string name="title_section3">Meeting Details</string>
-    <string name="title_section4">Loan Details</string>
+
+    <string name="title_fragment_meeting_savings">Saving Transactions</string>
+    <string name="title_fragment_meeting_loans">Loans</string>
+    <string name="title_fragment_meeting_details">Saving Transactions</string>
+
     <string name="title_activity_login">Field Officer Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="save">Save</string>

@@ -1,8 +1,6 @@
 package org.groupsavings.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by shashank on 30/3/14.
@@ -13,11 +11,23 @@ public class GroupMeeting {
     public String Date;
     public String FieldOfficerId;
 
-    ArrayList<SavingTransaction> SavingTransactions;
-    ArrayList<LoanAccount> LoanAccountsCreated;
-    ArrayList<LoanTransaction> LoanTransactions;
-    ArrayList<MeetingDetails> MeetingDetails;
+    // Used in MeetingSavingsFragment
+    public ArrayList<MeetingSavingsAccTransaction> SavingTransactions;
 
+    // Used in MeetingLoansFragment
+    public ArrayList<MeetingLoanAccTransactions> LoanTransactions;
+    public ArrayList<LoanAccount> LoansCreated;
+
+    // Used in MeetingDetailsFragment
+    public ArrayList<MeetingDetails> OtherDetails;
+
+    public GroupMeeting()
+    {
+        SavingTransactions = new ArrayList<MeetingSavingsAccTransaction>();
+        LoanTransactions = new ArrayList<MeetingLoanAccTransactions>();
+        LoansCreated = new ArrayList<LoanAccount>();
+        OtherDetails = new ArrayList<MeetingDetails>();
+    }
 
     @Override
     public String toString() {

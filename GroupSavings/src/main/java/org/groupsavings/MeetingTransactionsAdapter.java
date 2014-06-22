@@ -4,13 +4,13 @@ package org.groupsavings;
  * Created by shashank on 31/3/14.
  */
 /*
-public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction> {
+public class MeetingTransactionsAdapter extends ArrayAdapter<MemberMeetingTransactions> {
 
     Context context;
-    ArrayList<MeetingTransaction> transactions;
+    ArrayList<MemberMeetingTransactions> transactions;
     boolean readonly;
 
-    public MeetingTransactionsAdapter(Context context, int textViewResourceId, ArrayList<MeetingTransaction> objects, boolean readonly) {
+    public MeetingTransactionsAdapter(Context context, int textViewResourceId, ArrayList<MemberMeetingTransactions> objects, boolean readonly) {
         super(context, textViewResourceId, objects);
         this.context = context;
         transactions = objects;
@@ -20,7 +20,7 @@ public class MeetingTransactionsAdapter extends ArrayAdapter<MeetingTransaction>
     @Override
     public View getView(int i, View convert_view, ViewGroup viewGroup) {
 
-        final MeetingTransaction transaction = transactions.get(i);
+        final MemberMeetingTransactions transaction = transactions.get(i);
 
         try {
             LayoutInflater inflater = (LayoutInflater) context

@@ -16,7 +16,7 @@ public class ViewMeetingActivity extends Activity {
 
 
     //Meeting Transactions and its adapter
-    ArrayList<MeetingTransaction> transactions;
+    ArrayList<MemberMeetingTransactions> transactions;
     MeetingTransactionsAdapter transactionsAdapter;
 
     //Loan Accounts and its adapter
