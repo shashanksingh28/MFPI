@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.domain.MeetingSavingsAccTransaction;
@@ -106,6 +107,34 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
                             float curr =  Float.valueOf(et_optionalSavings.getText().toString());
                             if(prev != curr) {
                                 transaction.OptionalSavingTransaction.Amount = curr;
+                                notifyDataSetChanged();
+                            }
+                        }
+                    }});
+            }
+
+            final EditText et_optionalWithdrawal = (EditText) convert_view.findViewById(R.id.et_savingTrans_optionalWithdrawal);
+            et_optionalWithdrawal.setText(String.valueOf(transaction.WithdrawOptionalSavingTransaction.Amount));
+            if(readonly)
+            {
+                et_optionalWithdrawal.setFocusable(false);
+            }
+            else
+            {
+                et_optionalWithdrawal.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    public void onFocusChange(View v, boolean hasFocus) {
+                    if(!hasFocus)
+                        {
+                            // A kind of workaround since this is being called more than once weirdly
+                            float prev = transaction.WithdrawOptionalSavingTransaction.Amount;
+                            float curr =  Float.valueOf(et_optionalWithdrawal.getText().toString());
+                            if(prev != curr) {
+                                if(curr >= transaction.SavingsAccount.OptionalSavings)
+                                {
+                                    Toast.makeText(context,"Not enough optional savings",Toast.LENGTH_LONG).show();
+                                    curr = transaction.SavingsAccount.OptionalSavings;
+                                }
+                                transaction.WithdrawOptionalSavingTransaction.Amount = curr;
                                 notifyDataSetChanged();
                             }
                         }

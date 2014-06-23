@@ -104,19 +104,7 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
 
             // TODO meeting details part
             // groupMeeting.OtherDetails =
-            // meetingDetailsFragment = new MeetingDetailsFragment();
-
-            /*groupMembers = dbHandler.getAllMembers(groupId);
-            transactions = populateMeetingTransactions(group, groupMembers);
-
-            ListView lv_transactions = (ListView) findViewById(R.id.listview_meeting_transactions);
-            transactionsAdapter = new MeetingTransactionsAdapter(this, android.R.layout.simple_list_item_1, transactions,false);
-            lv_transactions.setAdapter(transactionsAdapter);
-
-            loanAccounts = new ArrayList<LoanAccount>();
-            lv_loanAccounts = (ListView) findViewById(R.id.lv_meeting_loans);
-            loansAdapter = new MeetingLoanAdapter(this, android.R.layout.simple_list_item_1, loanAccounts);
-            lv_loanAccounts.setAdapter(loansAdapter);*/
+            meetingDetailsFragment = new MeetingDetailsFragment();
 
             final ActionBar actionBar = getActionBar();
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

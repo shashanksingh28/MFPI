@@ -17,18 +17,27 @@ public class MeetingSavingsAccTransaction {
 
     public SavingTransaction OptionalSavingTransaction;
 
+    public SavingTransaction WithdrawOptionalSavingTransaction;
+
     public MeetingSavingsAccTransaction(Group group, Member member, SavingsAccount account)
     {
         this.Group = group;
         this.Member = member;
-        this.SavingsAccount = account;
+
         this.CompulsorySavingTransaction = new SavingTransaction();
         CompulsorySavingTransaction.Type = "C";
         CompulsorySavingTransaction.Amount = group.MonthlyCompulsoryAmount;
-        CompulsorySavingTransaction.SavingAccount = account;
+
         this.OptionalSavingTransaction = new SavingTransaction();
         OptionalSavingTransaction.Type = "O";
-        OptionalSavingTransaction.SavingAccount = account;
+
+        this.WithdrawOptionalSavingTransaction  = new SavingTransaction();
+        WithdrawOptionalSavingTransaction.Type = "W";
+
+        this.SavingsAccount = CompulsorySavingTransaction.SavingAccount = OptionalSavingTransaction.SavingAccount
+                = WithdrawOptionalSavingTransaction.SavingAccount = account;
+        CompulsorySavingTransaction.SavingAccountId = OptionalSavingTransaction.SavingAccountId
+                = WithdrawOptionalSavingTransaction.SavingAccountId = account.Id;
     }
 
     public float getTotalSavings()
