@@ -12,7 +12,9 @@ import org.groupsavings.constants.Tables;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
 
 import java.text.SimpleDateFormat;
@@ -421,6 +423,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return Id;
     }
+
+
+// Added for Saving Accounts and Saving Transactions
+    public void addUpdateMeetingDetails(GroupMeeting grpMeeting) {
+        if (grpMeeting == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putGroupMeetingValues(grpMeeting, values);
+
+        if (StringHelper.IsNullOrEmpty(grpMeeting.Id))
+        {
+            grpMeeting.Id = getUniqueId(grpMeeting);
+            values.put(Columns.GROUPMEETING_Id,grpMeeting.Id);
+            // TODO: get field officer Id from security
+            db.insertOrThrow(Tables.GROUPMEETINGS, null, values);
+
+            addUpdateSavingTransactions(grpMeeting.SavingTransactions,grpMeeting.Id);
+
+        }
+        db.close();
+    }
+
+    public void addUpdateSavingTransactions(ArrayList<MeetingSavingsAccTransaction> meetingSavingsAccTransactions, String grpMeetingId) {
+        if (meetingSavingsAccTransactions == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        for(MeetingSavingsAccTransaction msat : meetingSavingsAccTransactions)
+        {
+            SavingTransaction st = new SavingTransaction();
+            st.GroupId = msat.Group.Id;
+            st.Amount = msat.CompulsorySavingTransaction.Amount + msat.OptionalSavingTransaction.Amount;
+            st.SavingAccountId = msat.SavingsAccount.Id;
+            st.MeetingId = grpMeetingId;
+
+            putHelper.putSavingTransactionValues(st,values);
+            db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+
+            SavingsAccount sa = new SavingsAccount();
+            sa.CompulsorySavings = msat.CompulsorySavingTransaction.Amount;
+            sa.Active = msat.SavingsAccount.Active;
+            sa.GroupId = msat.Group.Id;
+            sa.MemberId = msat.Member.Id;
+            sa.OptionalSavings = msat.OptionalSavingTransaction.Amount;
+            sa.Id = getUniqueId(sa);
+            sa.InterestAccumulated = msat.SavingsAccount.InterestAccumulated;
+            putHelper.putSavingAccountValues(sa, values);
+            db.insertOrThrow(Tables.SAVINGACCOUNTS, null, values);
+        }
+
+        db.close();
+    }
+
+
+
 
     /*public ArrayList<MemberMeetingTransactions> getMeetingTransactions(int grpMeetingId) {
         SQLiteDatabase db = this.getReadableDatabase();

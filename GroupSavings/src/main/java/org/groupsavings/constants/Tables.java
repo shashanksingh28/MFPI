@@ -3,7 +3,9 @@ package org.groupsavings.constants;
 import android.text.format.Time;
 
 import org.groupsavings.domain.Group;
+import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingsAccount;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -171,6 +173,14 @@ public class Tables {
 
     public static String getUniqueId(Member member) {
         return member.FirstName +"_"+ member.GuardianName +"_"+ member.LastName +"_"+ member.GroupId;
+    }
+
+    public static String getUniqueId(GroupMeeting groupMeeting) {
+        return "Hello";
+    }
+
+    public static String getUniqueId(SavingsAccount savingsAccount) {
+        return "Hello";
     }
 
     // Timestamp be used for accounts and meetings

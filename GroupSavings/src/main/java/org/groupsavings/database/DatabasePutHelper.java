@@ -66,4 +66,32 @@ public class DatabasePutHelper {
     }
 
 
+    void putSavingTransactionValues(SavingTransaction savingTransaction,ContentValues values)
+    {
+        values.put(Columns.SAVINGACCTRANSACTIONS_GroupId,savingTransaction.GroupId);
+        values.put(Columns.SAVINGACCTRANSACTIONS_Amount, savingTransaction.Amount);
+        //values.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance, savingTransaction.CurrentBalance);
+        //values.put(Columns.SAVINGACCTRANSACTIONS_DateTime,savingTransaction.DateTime);
+        values.put(Columns.SAVINGACCTRANSACTIONS_MeetingId, savingTransaction.MeetingId);
+        values.put(Columns.SAVINGACCTRANSACTIONS_SavingAccountId, savingTransaction.SavingAccountId);
+    }
+
+    void putSavingAccountValues(SavingsAccount savingsAccount, ContentValues values)
+    {
+        values.put(Columns.SAVINGACCOUNTS_CompulsorySavings, savingsAccount.GroupId);
+        values.put(Columns.SAVINGACCOUNTS_GroupId,savingsAccount.GroupId);
+        values.put(Columns.SAVINGACCOUNTS_Id, savingsAccount.Id);
+        values.put(Columns.SAVINGACCOUNTS_OptionalSavings, savingsAccount.OptionalSavings);
+        values.put(Columns.SAVINGACCOUNTS_MemberId, savingsAccount.MemberId);
+    }
+
+    void putGroupMeetingValues(GroupMeeting groupMeeting, ContentValues values)
+    {
+        values.put(Columns.GROUPMEETING_Id,groupMeeting.Id);
+        values.put(Columns.GROUPMEETING_Date,groupMeeting.Date);
+        values.put(Columns.GROUPMEETING_FieldOfficerId,groupMeeting.FieldOfficerId);
+        values.put(Columns.GROUPMEETING_GroupId,groupMeeting.GroupId);
+    }
+
+
 }
