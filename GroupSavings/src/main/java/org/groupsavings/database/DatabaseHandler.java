@@ -87,6 +87,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    // Use this only if needed for testing
+    public void execQuery(String query)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+    }
+
     //------------------------ Groups related functions ----------------------------//
 
     // For debugging purposes
@@ -212,12 +219,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //------------------------ Members related functions ----------------------------//
 
-    public void TruncateGroupMembers(String groupId) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Tables.MEMBERS,null,null);
-        db.delete(Tables.SAVINGACCOUNTS, null,null);
-    }
 
     private void createMemberSavingAccount(Member member, SQLiteDatabase db) {
         ContentValues saving_acc_values = new ContentValues();
@@ -451,7 +452,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (meetingSavingsAccTransactions == null) return;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues transactionValues = new ContentValues();
 
         for(MeetingSavingsAccTransaction msat : meetingSavingsAccTransactions)
         {
@@ -466,8 +467,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 st.Amount = msat.CompulsorySavingTransaction.Amount;
                 st.Type = msat.CompulsorySavingTransaction.Type;
 
-                putHelper.putSavingTransactionValues(st,values);
-                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+                putHelper.putSavingTransactionValues(st, transactionValues);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONS, null, transactionValues);
             }
 
             if(msat.OptionalSavingTransaction.Amount!=0)
@@ -475,8 +476,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 st.Amount = msat.OptionalSavingTransaction.Amount;
                 st.Type = msat.OptionalSavingTransaction.Type;
 
-                putHelper.putSavingTransactionValues(st,values);
-                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+                putHelper.putSavingTransactionValues(st, transactionValues);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONS, null, transactionValues);
             }
 
             if(msat.WithdrawOptionalSavingTransaction.Amount!=0)
@@ -484,17 +485,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 st.Amount = msat.WithdrawOptionalSavingTransaction.Amount;
                 st.Type = msat.WithdrawOptionalSavingTransaction.Type;
 
-                putHelper.putSavingTransactionValues(st,values);
-                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+                putHelper.putSavingTransactionValues(st, transactionValues);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONS, null, transactionValues);
             }
 
-            SavingsAccount sa = new SavingsAccount();
+            SavingsAccount sa = msat.SavingsAccount;
+            ContentValues accountValues = new ContentValues();
+            accountValues.put(Columns.SAVINGACCOUNTS_OptionalSavings, sa.OptionalSavings );
+            accountValues.put(Columns.SAVINGACCOUNTS_CompulsorySavings, sa.CompulsorySavings );
+            accountValues.put(Columns.SAVINGACCOUNTS_CurrentBalance, sa.getTotalSavings());
 
-                values.put(Columns.SAVINGACCOUNTS_OptionalSavings, sa.OptionalSavings );
-                values.put(Columns.SAVINGACCOUNTS_CompulsorySavings, sa.CompulsorySavings );
 
-
-            db.update(Tables.SAVINGACCOUNTS, values, Columns.SAVINGACCOUNTS_Id + " ='" + sa.Id+"'", null);
+            db.update(Tables.SAVINGACCOUNTS, accountValues, Columns.SAVINGACCOUNTS_Id + " ='" + sa.Id + "'", null);
         }
 
         db.close();

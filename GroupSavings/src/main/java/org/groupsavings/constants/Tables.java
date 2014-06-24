@@ -109,12 +109,12 @@ public class Tables {
             + Columns.SAVINGACCOUNTS_Active + " BOOLEAN DEFAULT 1"
             + ");";
 
-    public static final String SAVINGACCTRANSACTIONSS = "SAVINGACCTRANSACTIONSs";
+    public static final String SAVINGACCTRANSACTIONS = "SavingAccTransactions";
 
-    public static final String CREATE_TABLE_SAVINGACCTRANSACTIONS = "CREATE TABLE " + SAVINGACCTRANSACTIONSS
+    public static final String CREATE_TABLE_SAVINGACCTRANSACTIONS = "CREATE TABLE " + SAVINGACCTRANSACTIONS
             + " (" + Columns.SAVINGACCTRANSACTIONS_GroupId + " TEXT,"
             + Columns.SAVINGACCTRANSACTIONS_MeetingId + " TEXT,"
-            + Columns.SAVINGACCTRANSACTIONS_SavingAccountId + "TEXT,"
+            + Columns.SAVINGACCTRANSACTIONS_SavingAccountId + " TEXT,"
             + Columns.SAVINGACCTRANSACTIONS_Type + " TEXT,"
             + Columns.SAVINGACCTRANSACTIONS_Amount + " INTEGER,"
             + Columns.SAVINGACCTRANSACTIONS_CurrentBalance + " INTEGER,"

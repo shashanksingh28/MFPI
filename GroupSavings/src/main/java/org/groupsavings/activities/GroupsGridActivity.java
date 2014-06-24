@@ -69,8 +69,10 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
             db_handler = new DatabaseHandler(getApplicationContext());
 
-            // Uncomment this once only when there is change in schema and revert back
-            // db_handler.createSchema(null);
+            // Changes needed to fix table
+            //db_handler.execQuery("DROP TABLE " + Tables.SAVINGACCTRANSACTIONS);
+            // change the name to proper name and then execute other one
+            //db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
 
             groups = new ArrayList<Group>();
             Button addGroupButton =(Button) findViewById(R.id.button_add_group);

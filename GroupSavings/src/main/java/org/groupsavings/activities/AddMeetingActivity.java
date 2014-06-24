@@ -29,7 +29,9 @@ import org.groupsavings.fragments.MeetingLoansFragment;
 import org.groupsavings.fragments.MeetingSavingsFragment;
 import org.groupsavings.handlers.UserSessionManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -96,6 +98,10 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             groupMembers = dbHandler.getActiveGroupMembers(groupId);
 
             groupMeeting = new GroupMeeting();
+            groupMeeting.GroupId = groupId;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
+            groupMeeting.Date = sdf.format(new Date());
+
             groupMeeting.SavingTransactions = populateSavingTransactions();
             savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions);
 
@@ -193,26 +199,27 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        /*
+
         switch (item.getItemId()) {
             case R.id.button_save_meeting_details:
-                dbHandler.saveMeetingDetails(groupId, transactions, loanAccounts);
+                UpdateAccounts(groupMeeting);
+                dbHandler.addUpdateMeetingDetails(groupMeeting);
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
-            case R.id.bt_add_new_loan:
+            /*case R.id.bt_add_new_loan:
                 Intent intent = new Intent(this,NewLoanActivity.class);
                 int [] alreadyLoaned = new int[loanAccounts.size()];
                 for(int i = 0; i<loanAccounts.size(); i++)
                 {
                     alreadyLoaned[i]=loanAccounts.get(i).memberId;
                 }
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_GROUP, groupId);
+                intent.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
                 intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS,alreadyLoaned);
                 intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,loanAccounts.size());
                 startActivityForResult(intent, REQUEST_GET_NEW_LOANACCOUNT);
-                break;
-        }*/
+                break;*/
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -303,6 +310,23 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             }
             return null;
         }
+    }
+
+    private void UpdateAccounts(GroupMeeting groupMeeting)
+    {
+        if(groupMeeting == null) return;
+
+        for (MeetingSavingsAccTransaction savingTrans : groupMeeting.SavingTransactions)
+        {
+            savingTrans.SavingsAccount.CompulsorySavings+=savingTrans.CompulsorySavingTransaction.Amount;
+            savingTrans.CompulsorySavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+            savingTrans.SavingsAccount.OptionalSavings+=savingTrans.OptionalSavingTransaction.Amount;
+            savingTrans.OptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+            savingTrans.SavingsAccount.OptionalSavings-=savingTrans.WithdrawOptionalSavingTransaction.Amount;
+            savingTrans.WithdrawOptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+        }
+
+        // Add code here to update loan account as per emi given
     }
 
 }
