@@ -441,13 +441,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             // TODO: get field officer Id from security
             db.insertOrThrow(Tables.GROUPMEETINGS, null, values);
 
-            addUpdateSavingTransactions(grpMeeting.SavingTransactions,grpMeeting.Id);
+            addUpdateSavingTransactions(grpMeeting.SavingTransactions,grpMeeting.Id, grpMeeting.Date);
 
         }
         db.close();
     }
 
-    public void addUpdateSavingTransactions(ArrayList<MeetingSavingsAccTransaction> meetingSavingsAccTransactions, String grpMeetingId) {
+    public void addUpdateSavingTransactions(ArrayList<MeetingSavingsAccTransaction> meetingSavingsAccTransactions, String grpMeetingId, String grpMeetingDate) {
         if (meetingSavingsAccTransactions == null) return;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -457,23 +457,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             SavingTransaction st = new SavingTransaction();
             st.GroupId = msat.Group.Id;
-            st.Amount = msat.CompulsorySavingTransaction.Amount + msat.OptionalSavingTransaction.Amount;
             st.SavingAccountId = msat.SavingsAccount.Id;
             st.MeetingId = grpMeetingId;
+            st.DateTime = grpMeetingDate;
 
-            putHelper.putSavingTransactionValues(st,values);
-            db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+            if(msat.CompulsorySavingTransaction.Amount!=0)
+            {
+                st.Amount = msat.CompulsorySavingTransaction.Amount;
+                st.Type = msat.CompulsorySavingTransaction.Type;
+
+                putHelper.putSavingTransactionValues(st,values);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+            }
+
+            if(msat.OptionalSavingTransaction.Amount!=0)
+            {
+                st.Amount = msat.OptionalSavingTransaction.Amount;
+                st.Type = msat.OptionalSavingTransaction.Type;
+
+                putHelper.putSavingTransactionValues(st,values);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+            }
+
+            if(msat.WithdrawOptionalSavingTransaction.Amount!=0)
+            {
+                st.Amount = msat.WithdrawOptionalSavingTransaction.Amount;
+                st.Type = msat.WithdrawOptionalSavingTransaction.Type;
+
+                putHelper.putSavingTransactionValues(st,values);
+                db.insertOrThrow(Tables.SAVINGACCTRANSACTIONSS, null, values);
+            }
 
             SavingsAccount sa = new SavingsAccount();
-            sa.CompulsorySavings = msat.CompulsorySavingTransaction.Amount;
-            sa.Active = msat.SavingsAccount.Active;
-            sa.GroupId = msat.Group.Id;
-            sa.MemberId = msat.Member.Id;
-            sa.OptionalSavings = msat.OptionalSavingTransaction.Amount;
-            sa.Id = getUniqueId(sa);
-            sa.InterestAccumulated = msat.SavingsAccount.InterestAccumulated;
-            putHelper.putSavingAccountValues(sa, values);
-            db.insertOrThrow(Tables.SAVINGACCOUNTS, null, values);
+
+                values.put(Columns.SAVINGACCOUNTS_OptionalSavings, sa.OptionalSavings );
+                values.put(Columns.SAVINGACCOUNTS_CompulsorySavings, sa.CompulsorySavings );
+
+
+            db.update(Tables.SAVINGACCOUNTS, values, Columns.SAVINGACCOUNTS_Id + " ='" + sa.Id+"'", null);
         }
 
         db.close();

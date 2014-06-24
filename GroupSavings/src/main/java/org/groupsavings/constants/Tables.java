@@ -176,11 +176,11 @@ public class Tables {
     }
 
     public static String getUniqueId(GroupMeeting groupMeeting) {
-        return "Hello";
+        return getTimestampUniqueId();
     }
 
     public static String getUniqueId(SavingsAccount savingsAccount) {
-        return "Hello";
+        return getTimestampUniqueId();
     }
 
     // Timestamp be used for accounts and meetings
