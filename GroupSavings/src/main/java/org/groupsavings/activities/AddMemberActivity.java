@@ -47,7 +47,6 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             super.onCreate(savedInstanceState);
 
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
             groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
             setContentView(R.layout.activity_add_member);
             //user session management starts
