@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
@@ -152,11 +153,11 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
         @Override
         protected String doInBackground(String... strings) {
-            //SyncHelper syncHelper = new SyncHelper(getApplicationContext());
+            SyncHelper syncHelper = new SyncHelper(getApplicationContext());
             try{
                 // Disabling sync so that other people can build
-                return "";
-                //return syncHelper.synchronize();
+                //return "";
+                return syncHelper.synchronize();
             }
             catch(Exception ex)
             {

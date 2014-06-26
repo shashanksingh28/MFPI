@@ -2,6 +2,59 @@ package org.groupsavings;
 
 // Added for Sync testing
 
+import org.groupsavings.constants.Columns;
+import org.groupsavings.constants.Tables;
+import org.groupsavings.database.DatabaseFetchHelper;
+import org.groupsavings.database.DatabaseHandler;
+
+import android.app.Application;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.ContactsContract;
+import android.widget.Toast;
+
+// Added for Sync testing
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.LoanTransaction;
+import org.groupsavings.domain.MeetingDetails;
+import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingTransaction;
+import org.groupsavings.domain.SavingsAccount;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import static org.apache.http.util.EntityUtils.*;
+
+
+
 /**
  * Created by Shashank on 16/3/14.
  */
@@ -11,10 +64,11 @@ public class SyncHelper {
      * Those testing sync uncomment and use
      */
 
-    /*
-    public static final String SERVER_URL="http://planindiatest.webatu.com/AndroidSync";
+
+    public static final String SERVER_URL="http://planindiatest.webatu.com/Version2/AndroidSync";
     public DatabaseHandler db_handler;
     private Context context;
+    public DatabaseFetchHelper db_fetch;
 
     public SyncHelper(Context context) {
         this.context = context;
@@ -45,16 +99,19 @@ public class SyncHelper {
             String responseEntity;
 
             // Groups Data Sync
-            JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllGroups());
+            JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllFOGroups(""));
             s = new StringEntity(allGroupsJSON.toString());
             s.setContentEncoding(http_JSON_header);
             HttpPost httppost = new HttpPost(SERVER_URL+"/SaveGroups.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
+            //String responseEn = EntityUtils.toString(response.getEntity());
+            // final JSONArray jArray=new JSONArray(responseEn);
             SyncOutGroups(EntityUtils.toString(response.getEntity()));
 
 
-            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers());
+/*
+            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getGroupMembers());
             s = new StringEntity(allmembersJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
@@ -63,7 +120,7 @@ public class SyncHelper {
             SyncOutMembers(EntityUtils.toString(response.getEntity()));
 
 
-            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler.getAllSavingAccounts());
+            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler);
             s = new StringEntity(allsavingsJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SavingAccount.php");
@@ -110,7 +167,7 @@ public class SyncHelper {
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
             SyncOutGroupMeetings(EntityUtils.toString(response.getEntity()));
-
+*/
         }
         catch (Exception e) {
             //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -131,20 +188,20 @@ public class SyncHelper {
                 Group g = new Group();
                 g.Id 						=	   j.getString("Id");
                 g.Name 					    =      j.getString("Name");
-                g.President 				=      j.getString("President");
-                g.Secretary 				=      j.getString("Secretary");
-                g.Treasurer 				=      j.getString("Treasurer");
+                g.President.Id 				=      j.getString("President");
+                g.Secretary.Id 				=      j.getString("Secretary");
+                g.Treasurer.Id 				=      j.getString("Treasurer");
                 g.FieldOfficerId 			=      j.getString("FieldOfficerId");
-                g.Active 					=      j.getString("Active");
-                g.MonthlyMeetingDate 		=      j.getString("MonthlyMeetingDate");
-                g.MonthlyCompulsoryAmount 	=      j.getString("MonthlyCompulsoryAmount");
+                g.Active 					=      j.getBoolean("Active");
+                g.MonthlyMeetingDate 		=      j.getInt("MonthlyMeetingDate");
+                g.MonthlyCompulsoryAmount 	=      j.getLong("MonthlyCompulsoryAmount");
                 g.Bank 					    =      j.getString("Bank");
                 g.ClusterId 				=      j.getLong("ClusterId");
                 g.CummulativeSavings 		=      j.getLong("CummulativeSavings");
                 g.OtherIncome 				=      j.getLong("OtherIncome");
                 g.OutstandingLoans 		    =      j.getLong("OutstandingLoans");
                 g.DateOfFormation 			=      j.getString("DateOfFormation");
-                g.NoOfSubgroups 			=      j.getString("NoOfSubgroups");
+                g.NoOfSubgroups 			=      j.getInt("NoOfSubgroups");
                 g.AddressLine1 		    	=      j.getString("AddressLine1");
                 g.AddressLine2 			    =      j.getString("AddressLine2");
                 g.City 					    =      j.getString("City");
@@ -163,7 +220,7 @@ public class SyncHelper {
             //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
+/*
     public void SyncOutMembers(String responseEntity)
     {
         try
@@ -182,18 +239,18 @@ public class SyncHelper {
                 m.Gender                =      j.getString("Gender");
                 m.DOB                   =      j.getString("DOB");
                 m.EmailId               =      j.getString("EmailId");
-                m.Active                =      j.getString("Active");
+                m.Active                =      j.getBoolean("Active");
                 m.ContactNumber         =      j.getString("ContactNumber");
                 m.AddressLine1          =      j.getString("AddressLine1");
                 m.AddressLine2          =      j.getString("AddressLine2");
-                m.State                 =      j.getString("State");
+                //m.State                 =      j.getString("State");
                 m.Occupation            =      j.getString("Occupation");
                 m.AnnualIncome          =      j.getLong("AnnualIncome");
                 m.Education             =      j.getString("Education");
-                m.Disability            =      j.getString("Disability");
-                m.NoOfFamilyMembers     =      j.getString("NoOfFamilyMembers");
+                m.Disability            =      j.getBoolean("Disability");
+                m.NoOfFamilyMembers     =      j.getInt("NoOfFamilyMembers");
                 m.Nominee               =      j.getString("Nominee");
-                m.Insurance             =      j.getString("Insurance");
+                m.Insurance             =      j.getBoolean("Insurance");
                 m.ExitDate              =      j.getString("ExitDate");
                 m.ExitReason            =      j.getString("ExitReason");
                 m.CreatedDate           =      j.getString("CreatedDate");
@@ -203,7 +260,8 @@ public class SyncHelper {
                 m.Passbook              =      j.getString("Passbook");
                 m.EconomicCondition     =      j.getString("EconomicCondition");
 
-                db_handler.addUpdateMember(m);
+
+                db.insertOrThrow(Tables.MEMBERS, null, m);
             }
         }
         catch (Exception e) {
@@ -229,9 +287,9 @@ public class SyncHelper {
                 sa.TotalSavings = 				j.getLong("TotalSavings");
                 sa.CreatedDate = 				j.getString("CreatedDate");
                 sa.CreatedBy = 			    	j.getString("CreatedBy");
-                sa.Active = 					j.getString("Active");
+                sa.Active = 					j.getBoolean("Active");
 
-                db_handler;
+
             }
         }
         catch (Exception e) {
@@ -368,7 +426,7 @@ public class SyncHelper {
             //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
+*/
     // Name Value pairs for All Groups
     public JSONObject getJsonGroup(Group group)
     {
@@ -388,7 +446,7 @@ public class SyncHelper {
             collectJSON.put(Columns.GROUP_CummulativeSavings,group.CummulativeSavings);
             collectJSON.put(Columns.GROUP_OtherIncome,group.OtherIncome);
             collectJSON.put(Columns.GROUP_OutstandingLoans,group.OutstandingLoans);
-            collectJSON.put(Columns.GROUP_DateOfFormation,group.CreatedDate)
+            collectJSON.put(Columns.GROUP_DateOfFormation,group.CreatedDate);
             collectJSON.put(Columns.GROUP_NoOfSubgroups,group.NoOfSubgroups);
             collectJSON.put(Columns.GROUP_AddressLine1,group.AddressLine1);
             collectJSON.put(Columns.GROUP_AddressLine2,group.AddressLine2);
@@ -409,11 +467,12 @@ public class SyncHelper {
         return collectJSON;
     }
 
+    /*
     // Name Value pairs for All Members
     public JSONObject getJsonMember(Member member) {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(Columns.MEMBER_ID , member.Id);
+            collectJSON.put(Columns.MEMBER , member.Id);
             collectJSON.put(Columns.MEMBER_GroupID , member.GroupId);
             collectJSON.put(Columns.MEMBER_FirstName , member.FirstName);
             collectJSON.put(Columns.MEMBER_LastName , member.LastName);
@@ -584,7 +643,7 @@ public class SyncHelper {
 
         return la;
     }
-
+*/
 
 // Coverts data into JSON Array for all tables
     // All Groups
@@ -596,7 +655,7 @@ public class SyncHelper {
         }
         return jsonArray;
     }
-
+/*
     // All Members
     public JSONArray GetAllMembersJSON(ArrayList<Member> members) {
         JSONArray jsonArray = new JSONArray();
@@ -662,5 +721,5 @@ public class SyncHelper {
         }
         return jsonArray;
     }
-    */
+*/
 }
