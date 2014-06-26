@@ -30,9 +30,9 @@ public class ViewHelper {
 
         TextView memberIdText = (TextView) view.findViewById(R.id.layout_member_uid);
         if (memberIdText != null) {
-            memberIdText.setText(String.valueOf(memberToPopulate.Id));
+            memberIdText.setText(memberToPopulate.Id);
         }
-
+//here
         TextView firstNameEditor = (TextView) view.findViewById(R.id.tv_member_firstname);
         firstNameEditor.setText(memberToPopulate.FirstName);
 
