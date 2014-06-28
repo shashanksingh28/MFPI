@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.Member;
@@ -107,7 +106,7 @@ public class ViewHelper {
 
     }
 
-    public static Member fetchMemberDetailsFromView(View viewLayout)
+    public static Member fetchMemberDetailsFromView(View viewLayout, Member memberToUpdate)
     {
         if (viewLayout == null) return null;
 
@@ -115,64 +114,65 @@ public class ViewHelper {
 
         if (view == null) return null;
 
-        Member updatedMember = new Member();
+        if(memberToUpdate == null) memberToUpdate = new Member();
 
         TextView memberIdText = (TextView) view.findViewById(R.id.layout_member_uid);
         if (memberIdText != null && memberIdText.getText() != null)
         {
             String uid_string = memberIdText.getText().toString();
-            if (uid_string != null && !uid_string.isEmpty())
-                updatedMember.Id = uid_string;
+            if (uid_string != null && !uid_string.isEmpty()){
+                memberToUpdate.Id = uid_string;
+            }
         }
-
 
         EditText firstNameEditor = (EditText) view.findViewById(R.id.edit_member_firstname);
         if (firstNameEditor != null && firstNameEditor.getText() != null)
-            updatedMember.FirstName = firstNameEditor.getText().toString();
+            memberToUpdate.FirstName = firstNameEditor.getText().toString();
 
         EditText lastNameEditor = (EditText) view.findViewById(R.id.edit_member_lastname);
         if (lastNameEditor != null && lastNameEditor.getText() != null)
-            updatedMember.LastName = lastNameEditor.getText().toString();
+            memberToUpdate.LastName = lastNameEditor.getText().toString();
 
         EditText contactEditor = (EditText) view.findViewById(R.id.edit_member_contact);
         if (contactEditor != null && contactEditor.getText() != null)
-            updatedMember.ContactNumber = contactEditor.getText().toString();
+            memberToUpdate.ContactNumber = contactEditor.getText().toString();
 
         EditText add1Editor = (EditText) view.findViewById(R.id.et_member_addressline1);
         if (add1Editor.getText() != null)
-            updatedMember.AddressLine1 = add1Editor.getText().toString();
+            memberToUpdate.AddressLine1 = add1Editor.getText().toString();
 
         EditText add2Editor = (EditText) view.findViewById(R.id.et_member_addressline2);
         if (add2Editor.getText() != null)
-            updatedMember.AddressLine2 = add2Editor.getText().toString();
+            memberToUpdate.AddressLine2 = add2Editor.getText().toString();
 
         EditText passBookEditor = (EditText) view.findViewById(R.id.edit_pass_book_no);
         if (passBookEditor.getText() != null)
-            updatedMember.Passbook = passBookEditor.getText().toString();
+            memberToUpdate.Passbook = passBookEditor.getText().toString();
 
         EditText guardianNameEditor = (EditText) view.findViewById(R.id.edit_guardian_name);
         if (guardianNameEditor.getText() != null)
-            updatedMember.GuardianName = guardianNameEditor.getText().toString();
+            memberToUpdate.GuardianName = guardianNameEditor.getText().toString();
 
         EditText economicConditionEditor = (EditText) view.findViewById(R.id.edit_economic_condition);
         if (economicConditionEditor.getText() != null)
-            updatedMember.EconomicCondition = economicConditionEditor.getText().toString();
+            memberToUpdate.EconomicCondition = economicConditionEditor.getText().toString();
 
         EditText educationEditor = (EditText) view.findViewById(R.id.edit_education_qualification);
         if (educationEditor.getText() != null)
-            updatedMember.Education = educationEditor.getText().toString();
+            memberToUpdate.Education = educationEditor.getText().toString();
 
         EditText occupationEditor = (EditText) view.findViewById(R.id.edit_member_occupation);
         if (occupationEditor.getText() != null)
-            updatedMember.Occupation = occupationEditor.getText().toString();
+            memberToUpdate.Occupation = occupationEditor.getText().toString();
 
         EditText noOfFamilyMembersEditor = (EditText) view.findViewById(R.id.edit_count_family_members);
         if (noOfFamilyMembersEditor.getText() != null) {
             String noffamilymembers = noOfFamilyMembersEditor.getText().toString();
             if (noffamilymembers != null && !noffamilymembers.isEmpty())
-                updatedMember.NoOfFamilyMembers = Integer.parseInt(noffamilymembers);
+                memberToUpdate.NoOfFamilyMembers = Integer.parseInt(noffamilymembers);
         }
-        return updatedMember;
+
+        return memberToUpdate;
     }
 
     public static Group fetchGroupDetailsFromView(View view_Layout) {

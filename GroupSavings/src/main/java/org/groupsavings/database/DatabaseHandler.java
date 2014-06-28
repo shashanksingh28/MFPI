@@ -265,7 +265,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Member getMember(String Id, SQLiteDatabase db)
+    {
+        if (db == null) db = this.getWritableDatabase();
 
+        String selectQuery = "SELECT * FROM "+ Tables.MEMBERS + " WHERE "
+                        + Columns.MEMBERS_Id + "='" + Id + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+        Member member = null;
+        if(cursor.moveToFirst())
+        {
+            member = fetchHelper.getMemberFromCursor(cursor);
+        }
+
+        return member;
+    }
 
     private float getMemberSavings(String memberId, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
