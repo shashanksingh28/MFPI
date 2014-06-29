@@ -32,14 +32,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.groupsavings.domain.Group;
-import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.LoanTransaction;
-import org.groupsavings.domain.MeetingDetails;
-import org.groupsavings.domain.Member;
-import org.groupsavings.domain.SavingTransaction;
-import org.groupsavings.domain.SavingsAccount;
+
+import org.groupsavings.domain.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
