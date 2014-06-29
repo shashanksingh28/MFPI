@@ -11,6 +11,8 @@ import android.widget.Toast;
 import org.groupsavings.R;
 import org.groupsavings.handlers.UserSessionManager;
 
+import java.sql.SQLException;
+
 public class LoginActivity extends Activity {
 
     EditText txtUsername, txtPassword;
@@ -105,8 +107,21 @@ public class LoginActivity extends Activity {
  * replace static values with db check
  * If username = FieldOfficers.Id and password = FieldOfficers.PasswordHash
  *  return true
-********/
 
+
+ SELECT EXISTS (
+ SELECT * FROM login_details WHERE username = ? AND password = ?
+ )
+
+            try {
+                if (username != null && password!=null) {
+                    String sql = "Select * from FieldOfficers Where Id='" + username + "' and PasswordHash='" + password + "'";
+                    executeQuery(sql);
+                }
+            } catch (SQLException err) {
+                Toast.makeText(getApplicationContext(),err.getMessage(),Toast.LENGTH_LONG).show();
+            }
+ ********/
         }
         return false;
     }
