@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import org.groupsavings.StringHelper;
 import org.groupsavings.constants.Columns;
@@ -17,6 +18,7 @@ import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,8 +31,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "GroupSavings";
     DatabaseFetchHelper fetchHelper;
     DatabasePutHelper putHelper;
-
-
 
     private static class Patch {
         public void apply(SQLiteDatabase db) {}
@@ -95,6 +95,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public int checkIfExists(String sql) {
+
+        String query = "Select Exists ( " + sql + ")";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
+    //Use only after database entries are available (user registration and sync in from server)
+    //otherwise will cause the app to crash.
+    public String getId(String name) {
+
+        String query = "Select Id from FieldOfficers Where UserName='" + name + "'";
+
+        try{
+        if(checkIfExists(query) == 1) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+        return name;
+    }
+
+
     // Use this only if data is corrupt and needs to be re-run
     public void recreateSchema()
     {
@@ -106,9 +139,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(table,whereClause,null);
     }
-
-
-    //------------------------ Groups related functions ----------------------------//
 
     public void addUpdateGroup(Group group) {
         if (group == null) return;
@@ -225,6 +255,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //------------------------ Members related functions ----------------------------//
+
 
     private void createMemberSavingAccount(Member member, SQLiteDatabase db) {
         ContentValues saving_acc_values = new ContentValues();
@@ -403,6 +434,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return fetchHelper.getLoanAccountFromCursor(cursor);
     }
 
+
     //-------------------------- Meeting related functions ----------------------------//
 
     public ArrayList<GroupMeeting> getAllGroupMeetings(String groupId, SQLiteDatabase db) {
@@ -415,7 +447,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                groupMeetings.add(fetchHelper.getBasicGroupMeetingFromCursor(cursor));
+                groupMeetings.add(fetchHelper.getGroupMeetingFromCursor(cursor));
             } while (cursor.moveToNext());
         }
 

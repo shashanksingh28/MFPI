@@ -2,21 +2,32 @@ package org.groupsavings.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.MCrypt;
 import org.groupsavings.handlers.UserSessionManager;
 
+import java.sql.SQLException;
+
 public class LoginActivity extends Activity {
+
+
+    private boolean backPressedToExitOnce = false;
+//    private Toast toast = null;
 
     EditText txtUsername, txtPassword;
 
     // User Session Manager Class
     UserSessionManager session;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,21 +104,66 @@ public class LoginActivity extends Activity {
 
     public boolean checkLogin(String username, String password)
     {
-        if(username.trim().length() > 0 && password.trim().length() > 0) {
-            // For testing purpose username, password is checked with static data
-            // username = admin
-            // password = admin
-            if (username.equals("admin") && password.equals("admin")) {
-                return true;
-            }
-/********
- * Action:
- * replace static values with db check
- * If username = FieldOfficers.Id and password = FieldOfficers.PasswordHash
- *  return true
-********/
+        try {
+            if(username.trim().length() > 0 && password.trim().length() > 0) {
+                if (
+                        (username.equals("admin") && password.equals("admin"))
+                        || (username.equals("testuser1") && password.equals("testuser1"))
+                        || (username.equals("testuser2") && password.equals("testuser2"))
+                   ) { //dummy values for demo/static functionality check - corresponding updates to be pushed from server to database
+                    Toast.makeText(getApplicationContext(),"Logging in..",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
 
+                String encrypted = null;
+                encrypted = MCrypt.bytesToHex((new MCrypt()).encrypt(password));
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                try {
+                    if (username != null && password!=null) {
+                        String sql = "Select * from FieldOfficers Where UserName='" + username + "' and PasswordHash='" + encrypted + "'";
+                        if(db.checkIfExists(sql) != 0){
+                            return true;
+                        }
+                    }
+                } catch (Exception err) {
+                    Toast.makeText(getApplicationContext(),err.getMessage(),Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
+
+    private static long back_pressed;
+    private Toast toast;
+    @Override
+    public void onBackPressed()
+    {
+
+
+        if (back_pressed + 2000 > System.currentTimeMillis())
+        {
+
+            // need to cancel the toast here
+            toast.cancel();
+
+            // code for exit
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        }
+        else
+        {
+            // ask user to press back button one more time to close app
+            toast=  Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        back_pressed = System.currentTimeMillis();
+    }
+
 }

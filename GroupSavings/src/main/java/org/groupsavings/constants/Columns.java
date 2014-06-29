@@ -129,5 +129,6 @@ public class Columns {
     //-------------------- Field Officers Table ------------------//
     public static final String FIELDOFFICERS_Id = "Id";
     public static final String FIELDOFFICERS_Name = "Name";
+    public static final String FIELDOFFICERS_UserName = "UserName";
     public static final String FIELDOFFICERS_PasswordHash = "PasswordHash";
 }

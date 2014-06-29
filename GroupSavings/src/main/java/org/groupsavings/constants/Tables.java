@@ -159,6 +159,7 @@ public class Tables {
     public static final String CREATE_TABLE_FIELDOFFICERS = "CREATE TABLE " + FIELDOFFICERS
             + " (" + Columns.FIELDOFFICERS_Id + " INTEGER,"
             + Columns.FIELDOFFICERS_Name + " TEXT,"
+            + Columns.FIELDOFFICERS_UserName + " TEXT UNIQUE,"
             + Columns.FIELDOFFICERS_PasswordHash + " TEXT"
             + ");";
 
