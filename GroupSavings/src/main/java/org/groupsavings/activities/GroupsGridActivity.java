@@ -16,8 +16,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+
 import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Intents;
+import org.groupsavings.constants.Tables;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.UserSessionManager;
@@ -71,7 +73,16 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             db_handler = new DatabaseHandler(getApplicationContext());
 
             // Changes needed to fix table
-            //db_handler.execQuery("DROP TABLE " + Tables.SAVINGACCTRANSACTIONS);
+            //db_handler.
+            //db_handler.delete(Tables.SAVINGACCOUNTS,null);
+            //db_handler.delete(Tables.MEMBERS, null);
+            /*db_handler.execQuery(Tables.CREATE_TABLE_MEMBERS);
+            db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCOUNTS);
+            db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
+            db_handler.execQuery(Tables.CREATE_TABLE_LOANACCOUNTS);
+            db_handler.execQuery(Tables.CREATE_TABLE_LOANACCTRANSACTIONS);
+            db_handler.execQuery(Tables.CREATE_TABLE_GROUPMEETINGS);*/
+
             // change the name to proper name and then execute other one
             //db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
 

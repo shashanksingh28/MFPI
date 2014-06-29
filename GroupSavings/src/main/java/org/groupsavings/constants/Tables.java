@@ -145,7 +145,7 @@ public class Tables {
 
     public static final String LOANACCTRANSACTIONS = "LoanAccTransactions";
 
-    public static final String CREATE_TABLE_LOANTRANSACTIONS = "CREATE TABLE " + LOANACCTRANSACTIONS
+    public static final String CREATE_TABLE_LOANACCTRANSACTIONS = "CREATE TABLE " + LOANACCTRANSACTIONS
             + " (" + Columns.LOANACCTRANSACTIONS_GroupId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_MeetingId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_LoanAccountId + " TEXT,"

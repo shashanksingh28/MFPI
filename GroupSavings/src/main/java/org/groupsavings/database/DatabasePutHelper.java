@@ -70,8 +70,9 @@ public class DatabasePutHelper {
     void putSavingTransactionValues(SavingTransaction savingTransaction,ContentValues values)
     {
         values.put(Columns.SAVINGACCTRANSACTIONS_GroupId,savingTransaction.GroupId);
+        values.put(Columns.SAVINGACCTRANSACTIONS_Type, savingTransaction.Type);
         values.put(Columns.SAVINGACCTRANSACTIONS_Amount, savingTransaction.Amount);
-        //values.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance, savingTransaction.CurrentBalance);
+        values.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance, savingTransaction.CurrentBalance);
         values.put(Columns.SAVINGACCTRANSACTIONS_DateTime,savingTransaction.DateTime);
         values.put(Columns.SAVINGACCTRANSACTIONS_MeetingId, savingTransaction.MeetingId);
         values.put(Columns.SAVINGACCTRANSACTIONS_SavingAccountId, savingTransaction.SavingAccountId);

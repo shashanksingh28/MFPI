@@ -17,10 +17,10 @@ import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingTransaction;
 import org.groupsavings.domain.SavingsAccount;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static org.groupsavings.constants.Tables.LOANACCOUNTS;
 import static org.groupsavings.constants.Tables.getTimestampUniqueId;
 import static org.groupsavings.constants.Tables.getUniqueId;
 
@@ -29,6 +29,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "GroupSavings";
     DatabaseFetchHelper fetchHelper;
     DatabasePutHelper putHelper;
+
+
 
     private static class Patch {
         public void apply(SQLiteDatabase db) {}
@@ -47,7 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     db.execSQL(Tables.CREATE_TABLE_SAVINGACCOUNTS);
                     db.execSQL(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
                     db.execSQL(Tables.CREATE_TABLE_LOANACCOUNTS);
-                    db.execSQL(Tables.CREATE_TABLE_LOANTRANSACTIONS);
+                    db.execSQL(Tables.CREATE_TABLE_LOANACCTRANSACTIONS);
                 }
 
                 public void revert(SQLiteDatabase db) {
@@ -88,20 +90,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Use this only if needed for testing
-    public void execQuery(String query)
-    {
+    public void execQuery(String query) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
     }
 
-    //------------------------ Groups related functions ----------------------------//
+    // Use this only if data is corrupt and needs to be re-run
+    public void recreateSchema()
+    {
 
-    // For debugging purposes
-    public void TruncateGroups() {
-        String query = " DELETE FROM TABLE GROUPS";
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Tables.GROUPS,null,null);
     }
+
+    public void delete(String table, String whereClause)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table,whereClause,null);
+    }
+
+
+    //------------------------ Groups related functions ----------------------------//
 
     public void addUpdateGroup(Group group) {
         if (group == null) return;
@@ -219,7 +226,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //------------------------ Members related functions ----------------------------//
 
-
     private void createMemberSavingAccount(Member member, SQLiteDatabase db) {
         ContentValues saving_acc_values = new ContentValues();
         saving_acc_values.put(Columns.SAVINGACCOUNTS_Id, getTimestampUniqueId());
@@ -265,8 +271,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Member getMember(String Id, SQLiteDatabase db)
-    {
+    public Member getMember(String Id, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
 
         String selectQuery = "SELECT * FROM "+ Tables.MEMBERS + " WHERE "
@@ -372,8 +377,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return sa;
     }
 
-    public LoanAccount getMemberNonEmergencyActiveLoan(String memberId, SQLiteDatabase db)
-    {
+    public LoanAccount getMemberNonEmergencyActiveLoan(String memberId, SQLiteDatabase db) {
         if (db == null) { db = this.getWritableDatabase(); }
 
         String selectQuery = "SELECT * FROM " + Tables.LOANACCOUNTS
@@ -386,8 +390,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return fetchHelper.getLoanAccountFromCursor(cursor);
     }
 
-    public LoanAccount getMemberEmergencyActiveLoan(String memberId, SQLiteDatabase db)
-    {
+    public LoanAccount getMemberEmergencyActiveLoan(String memberId, SQLiteDatabase db) {
         if (db == null) { db = this.getWritableDatabase(); }
 
         String selectQuery = "SELECT * FROM " + Tables.LOANACCOUNTS
@@ -399,7 +402,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return fetchHelper.getLoanAccountFromCursor(cursor);
     }
-
 
     //-------------------------- Meeting related functions ----------------------------//
 
@@ -413,35 +415,98 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                groupMeetings.add(fetchHelper.getGroupMeetingFromCursor(cursor));
+                groupMeetings.add(fetchHelper.getBasicGroupMeetingFromCursor(cursor));
             } while (cursor.moveToNext());
         }
 
         return groupMeetings;
     }
 
-    // Function that will create a meeting record and return meeting id
-    private String createMeeting(String groupId, Date date, SQLiteDatabase db) {
-        if (db == null) db = this.getWritableDatabase();
+    public GroupMeeting getGroupMeeting(Group group, String meetingId, SQLiteDatabase db)
+    {
+        if (db == null) { db = this.getWritableDatabase(); }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-        String dateTime = sdf.format(date);
+        GroupMeeting meeting = null;
 
-        ContentValues meetingValues = new ContentValues();
-        String Id = getTimestampUniqueId();
-        meetingValues.put(Columns.GROUPMEETING_Id, Id);
-        meetingValues.put(Columns.GROUPMEETING_GroupId, groupId);
-        meetingValues.put(Columns.GROUPMEETING_Date, dateTime);
-        //TODO fetch FOID from session
-        //meetingValues.put(Columns.GROUPMEETING_FieldOfficerId,"");
+        String selectFromMeeting = "SELECT * FROM "+Tables.GROUPMEETINGS
+                + " Where " + Columns.GROUPMEETING_Id + "='" + meetingId +"'";
 
-        db.insertOrThrow(Tables.GROUPMEETINGS, null, meetingValues);
+        Cursor cursor = db.rawQuery(selectFromMeeting,null);
+        if(cursor.moveToFirst())
+        {
+            meeting = fetchHelper.getBasicGroupMeetingFromCursor(cursor);
+            meeting.SavingTransactions = getMeetingSavingTransactions(group,meeting,db);
+        }
 
-        return Id;
+        return meeting;
     }
 
+    private ArrayList<MeetingSavingsAccTransaction> getMeetingSavingTransactions(Group group, GroupMeeting meeting, SQLiteDatabase db)
+    {
+        if (db == null) { db = this.getWritableDatabase(); }
 
-// Added for Saving Accounts and Saving Transactions
+        ArrayList<MeetingSavingsAccTransaction> transactions = new ArrayList<MeetingSavingsAccTransaction>();
+
+        String getMeetingMembers = " SELECT DISTINCT SA."+Columns.SAVINGACCOUNTS_MemberId
+                + " FROM " + Tables.SAVINGACCTRANSACTIONS
+                + " INNER JOIN "+ Tables.SAVINGACCOUNTS + " AS SA ON "
+                    + Columns.SAVINGACCTRANSACTIONS_SavingAccountId + "=SA." + Columns.SAVINGACCOUNTS_Id
+                + " WHERE " + Columns.SAVINGACCTRANSACTIONS_MeetingId + "='"+meeting.Id+"'";
+
+        ArrayList<Member> meetingMembers = new ArrayList<Member>();
+
+        Cursor membersCursor = db.rawQuery(getMeetingMembers,null);
+        if (membersCursor.moveToFirst()) {
+            do {
+                meetingMembers.add(getMember(membersCursor.getString(0),db));
+            } while (membersCursor.moveToNext());
+        }
+
+        for(Member member : meetingMembers)
+        {
+            SavingsAccount savingsAccount = getMemberSavingAccount(member.Id,db);
+            MeetingSavingsAccTransaction transaction = new MeetingSavingsAccTransaction(group, member, savingsAccount);
+
+            String compulsaryQuery = "Select "+Columns.SAVINGACCTRANSACTIONS_Amount+ " FROM "+Tables.SAVINGACCTRANSACTIONS
+                    + " WHERE " + Columns.SAVINGACCTRANSACTIONS_MeetingId +"='" +meeting.Id +"'"
+                    + " AND " + Columns.SAVINGACCTRANSACTIONS_SavingAccountId +"='" +savingsAccount.Id+"'"
+                    + " AND "+Columns.SAVINGACCTRANSACTIONS_Type + "='C'";
+
+            Cursor cursor = db.rawQuery(compulsaryQuery, null);
+            if(cursor.moveToFirst())
+            {
+                transaction.CompulsorySavingTransaction.Amount = cursor.getFloat(0);
+            }
+
+            String optionalQuery = "Select "+Columns.SAVINGACCTRANSACTIONS_Amount+ " FROM "+Tables.SAVINGACCTRANSACTIONS
+                    + " WHERE " + Columns.SAVINGACCTRANSACTIONS_MeetingId +"='" +meeting.Id +"'"
+                    + " AND " + Columns.SAVINGACCTRANSACTIONS_SavingAccountId +"='" +savingsAccount.Id+"'"
+                    + " AND "+Columns.SAVINGACCTRANSACTIONS_Type + "='O'";
+
+            cursor = db.rawQuery(optionalQuery, null);
+            if(cursor.moveToFirst())
+            {
+                transaction.OptionalSavingTransaction.Amount = cursor.getFloat(0);
+            }
+
+            String withdrawQuery = "Select "+Columns.SAVINGACCTRANSACTIONS_Amount+ " FROM "+Tables.SAVINGACCTRANSACTIONS
+                    + " WHERE " + Columns.SAVINGACCTRANSACTIONS_MeetingId +"='" +meeting.Id +"'"
+                    + " AND " + Columns.SAVINGACCTRANSACTIONS_SavingAccountId +"='" +savingsAccount.Id+"'"
+                    + " AND "+Columns.SAVINGACCTRANSACTIONS_Type + "='W'";
+
+            cursor = db.rawQuery(withdrawQuery, null);
+            if(cursor.moveToFirst())
+            {
+                transaction.WithdrawOptionalSavingTransaction.Amount = cursor.getFloat(0);
+            }
+
+            transactions.add(transaction);
+        }
+
+        return transactions;
+    }
+
+    // Added for Saving Accounts and Saving Transactions
     public void addUpdateMeetingDetails(GroupMeeting grpMeeting) {
         if (grpMeeting == null) return;
 
@@ -453,8 +518,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (StringHelper.IsNullOrEmpty(grpMeeting.Id))
         {
             grpMeeting.Id = getUniqueId(grpMeeting);
+
             values.put(Columns.GROUPMEETING_Id,grpMeeting.Id);
+            values.put(Columns.GROUPMEETING_GroupId, grpMeeting.GroupId);
+            values.put(Columns.GROUPMEETING_Date, grpMeeting.Date);
             // TODO: get field officer Id from security
+            // values.put(Columns.GROUPMEETING_FieldOfficerId, grpMeeting.FieldOfficerId);
             db.insertOrThrow(Tables.GROUPMEETINGS, null, values);
 
             addUpdateSavingTransactions(grpMeeting.SavingTransactions,grpMeeting.Id, grpMeeting.Date);
@@ -517,8 +586,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<Member> getAllMembersWithNoActiveLoan(String groupId, boolean isEmergency) {
 
+        ArrayList<Member> members = new ArrayList<Member>();
 
+        String notInQuery = "( SELECT " + Columns.LOANACCOUNTS_MemberId + " FROM "+ Tables.LOANACCOUNTS
+                + " Where " + Columns.LOANACCOUNTS_GroupId + "='" + groupId + "'"
+                + " AND " + Columns.LOANACCOUNTS_Active + "=1";
+
+        if(isEmergency)
+        {
+            notInQuery += " AND " + Columns.LOANACCOUNTS_IsEmergency +"=1";
+        }
+
+        notInQuery +=")";
+
+        String selectMemberQuery = " SELECT " + Columns.MEMBERS_Id + " FROM " + Tables.MEMBERS
+                + " Where " + Columns.MEMBERS_GroupId + "='" + groupId + "'"
+                + " AND " + Columns.MEMBERS_Id + " NOT IN " + notInQuery;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectMemberQuery, null);
+
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                members.add(getMember(cursor.getString(0),db));
+            }while(cursor.moveToNext());
+        }
+
+        return members;
+    }
 
     /*public ArrayList<MemberMeetingTransactions> getMeetingTransactions(int grpMeetingId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -668,7 +767,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }/*
 
     //-------------------------- Transaction related functions ---------------//
-    /*
+
     public LoanAccount getMemberActiveLoanAccount(int memberId) {
         String selectQuery = "SELECT * FROM " + TABLE_LOANSACCOUNT +
                 " WHERE "+Columns.LOANACCOUNT_MemberId+"="+memberId +

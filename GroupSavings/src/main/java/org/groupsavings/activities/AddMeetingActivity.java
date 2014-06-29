@@ -2,9 +2,11 @@ package org.groupsavings.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -106,7 +108,8 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions);
 
             groupMeeting.LoanTransactions = populateLoanTransactions();
-            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions);
+
+            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions, groupMeeting.LoansCreated);
 
             // TODO meeting details part
             // groupMeeting.OtherDetails =
@@ -207,7 +210,27 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
-            /*case R.id.bt_add_new_loan:
+            case R.id.bt_add_new_loan:
+                Toast.makeText(this,"Called",Toast.LENGTH_LONG).show();
+
+                final String [] loanTypes = {"Normal","Emergency"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Select type of Loan")
+                        .setItems(loanTypes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // The 'which' argument contains the index position
+                                // of the selected item
+                                if(which > 0)
+                                    CallNewLoanActivity(true);
+                                else
+                                    CallNewLoanActivity(false);
+                            }
+                        });
+                builder.show();
+
+
+                /*
                 Intent intent = new Intent(this,NewLoanActivity.class);
                 int [] alreadyLoaned = new int[loanAccounts.size()];
                 for(int i = 0; i<loanAccounts.size(); i++)
@@ -221,6 +244,47 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
                 break;*/
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void CallNewLoanActivity(boolean isEmergency) {
+
+        ArrayList<LoanAccount> normalLoans = new ArrayList<LoanAccount>();
+        ArrayList<LoanAccount> emergencyLoans = new ArrayList<LoanAccount>();
+
+        for(LoanAccount account : groupMeeting.LoansCreated)
+        {
+            if(account.IsEmergency)
+                emergencyLoans.add(account);
+            else
+                normalLoans.add(account);
+        }
+
+        ArrayList<String> alreadyLoaned = new ArrayList<String>();
+
+        if(isEmergency)
+        {
+            for(LoanAccount loan : emergencyLoans)
+            {
+                alreadyLoaned.add(loan.MemberId);
+            }
+        }
+        else
+        {
+            for(LoanAccount loan : normalLoans)
+            {
+                alreadyLoaned.add(loan.MemberId);
+            }
+        }
+
+        Intent intent = new Intent(this,NewLoanActivity.class);
+        intent.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
+        intent.putExtra(Intents.INTENT_EXTRA_LOAN_ISEMERGENCY, isEmergency);
+        String [] loanedMemberIds = new String[alreadyLoaned.size()];
+        alreadyLoaned.toArray(loanedMemberIds);
+        intent.putExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS, loanedMemberIds);
+        intent.putExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_COUNT, alreadyLoaned.size());
+
+        startActivityForResult(intent, REQUEST_GET_NEW_LOANACCOUNT);
     }
 
     @Override

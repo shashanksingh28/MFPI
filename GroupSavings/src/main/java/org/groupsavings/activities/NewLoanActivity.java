@@ -39,8 +39,10 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     ArrayAdapter<Member> grpMembersAdapter;
     Spinner members_spinner;
     LoanAccount la;
-    //int [] alreadyLoanedMembers;
-    //int alreadyLoanedCount;
+
+    boolean isEmergency;
+    String [] alreadyLoanedMembers;
+    int alreadyLoanedCount;
 
     //  session management declarations start
     UserSessionManager session;
@@ -80,18 +82,21 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             //user session management ends
 
             groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
-            //alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
-            //alreadyLoanedCount = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
+            isEmergency = getIntent().getBooleanExtra(Intents.INTENT_EXTRA_LOAN_ISEMERGENCY,false);
+            alreadyLoanedMembers = getIntent().getStringArrayExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
+            alreadyLoanedCount = getIntent().getIntExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
             db_handler = new DatabaseHandler(getApplicationContext());
-            //groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupId);
 
-            /*for(Member member : (ArrayList<Member>) groupMembers.clone())
+            groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupId,isEmergency);
+
+            for(Member member : (ArrayList<Member>) groupMembers.clone())
             {
-                for(int i : alreadyLoanedMembers)
+                for(String i : alreadyLoanedMembers)
                 {
-                    if(i == member.Id) groupMembers.remove(member);
+                    if(i.equals(member.Id)) groupMembers.remove(member);
                 }
-            }*/
+            }
+
             setContentView(R.layout.activity_new_loan);
 
             members_spinner = (Spinner) findViewById(R.id.sp_loan_members);

@@ -55,7 +55,7 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
         try {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convert_view = inflater.inflate(R.layout.meeting_savings_row, viewGroup, false);
+            convert_view = inflater.inflate(R.layout.meeting_savingtransaction_row, viewGroup, false);
 
             TextView tv_memberName = (TextView) convert_view.findViewById(R.id.tv_savingTrans_membername);
             tv_memberName.setText(transaction.Member.toString());

@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.groupsavings.constants.Columns;
 import org.groupsavings.constants.Tables;
-import org.groupsavings.domain.*;
-
-import java.text.SimpleDateFormat;
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingsAccount;
 
 /**
  * Created by shashank on 21/6/14.
@@ -50,7 +52,7 @@ public class DatabaseFetchHelper {
         return group;
     }
 
-    GroupMeeting getGroupMeetingFromCursor(Cursor cursor) {
+    GroupMeeting getBasicGroupMeetingFromCursor(Cursor cursor) {
         GroupMeeting groupMeeting = new GroupMeeting();
         groupMeeting.Id = cursor.getString(0);
         groupMeeting.GroupId = cursor.getString(1);
@@ -88,8 +90,8 @@ public class DatabaseFetchHelper {
         member.GuardianName = cursor.getString(4);
         member.Gender = cursor.getString(5);
         member.DOB = cursor.getString(6);
-        member.Active = cursor.getInt(7) == 1;
-        member.EmailId = cursor.getString(8);
+        member.EmailId = cursor.getString(7);
+        member.Active = cursor.getInt(8) == 1;
         member.ContactNumber = cursor.getString(9);
         member.AddressLine1 = cursor.getString(10);
         member.AddressLine2 = cursor.getString(11);

@@ -102,6 +102,7 @@ public class MeetingsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity(), ViewMeetingActivity.class);
+        intent.putExtra(Intents.INTENT_EXTRA_GROUPID,groupId);
         intent.putExtra(Intents.INTENT_EXTRA_MEETINGID,meetings.get(i).Id);
         startActivity(intent);
     }
