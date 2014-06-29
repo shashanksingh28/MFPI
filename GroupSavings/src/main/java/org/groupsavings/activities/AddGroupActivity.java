@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +24,8 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class AddGroupActivity extends Activity implements View.OnClickListener {
 
@@ -50,7 +45,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
         try
         {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_add_group);
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 
@@ -61,7 +55,8 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             }
 
             HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
+            String name = user.get(UserSessionManager.KEY_USERNAME);
+            //String UserId = db_handler.getId(name);
             Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -71,6 +66,8 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 }
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
+
+            setContentView(R.layout.activity_add_group);
 
             final Spinner spinnerDay = (Spinner) findViewById(R.id.group_mmd_date);
 
@@ -197,4 +194,35 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
         tv_mmd.setVisibility(View.VISIBLE);
         tv_mmd.setText(mmd_day+" of every month");
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // TODO get FOID
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_USERNAME);
+        //String UserId = db_handler.getId(name);
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
+    }
+
+
 }

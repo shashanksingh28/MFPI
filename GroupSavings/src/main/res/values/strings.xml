@@ -4,6 +4,7 @@
     <string name="app_name">Group Savings</string>
     <string name="UserName">User Name</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Log Out</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_groups_grid">Saving Groups</string>
     <string name="title_activity_add_group">AddGroup</string>

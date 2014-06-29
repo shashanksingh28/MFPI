@@ -57,7 +57,6 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         {
             super.onCreate(savedInstanceState);
 
-            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 
@@ -68,7 +67,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             }
 
             HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
+            String name = user.get(UserSessionManager.KEY_USERNAME);
             Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -78,6 +77,8 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                 }
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
+
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
             //alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
@@ -217,6 +218,34 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         la.Reason = et_reason.getText().toString();
 
         return la;
+    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // TODO get FOID
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_USERNAME);
+        //String UserId = db_handler.getId(name);
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
     }
 
 }

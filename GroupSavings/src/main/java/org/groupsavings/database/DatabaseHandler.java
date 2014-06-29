@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import org.groupsavings.StringHelper;
 import org.groupsavings.constants.Columns;
@@ -93,6 +94,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
     }
+
+    public int checkIfExists(String sql) {
+
+        String query = "Select Exists ( " + sql + ")";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
+
+    //Use only after database entries are available (user registration and sync in from server)
+    //otherwise will cause the app to crash.
+    public String getId(String name) {
+
+        String query = "Select Id from FieldOfficers Where UserName='" + name + "'";
+
+        try{
+        if(checkIfExists(query) == 1) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+        return name;
+    }
+
 
     //------------------------ Groups related functions ----------------------------//
 
