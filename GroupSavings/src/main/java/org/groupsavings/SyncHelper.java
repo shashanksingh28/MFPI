@@ -626,7 +626,8 @@ public class SyncHelper {
         LoanAccount la = new LoanAccount();
         la.Id = jsonLA.getString(Columns.LOANACCOUNTS_Id);
         la.GroupId = jsonLA.getString(Columns.LOANACCOUNTS_GroupId);
-        la.GroupMeetingId = jsonLA.getString(Columns.LOANACCOUNTS_GroupMeetingId);
+        // Commented this as meeting is still not saved when this func is called
+        // la.GroupMeetingId = jsonLA.getString(Columns.LOANACCOUNTS_GroupMeetingId);
         la.MemberId = jsonLA.getString(Columns.LOANACCOUNTS_MemberId);
         la.Principal = (float) jsonLA.getDouble(Columns.LOANACCOUNTS_PrincipalAmount);
         la.InterestRate = (float) jsonLA.getDouble(Columns.LOANACCOUNTS_InterestRate);

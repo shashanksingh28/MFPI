@@ -150,7 +150,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (StringHelper.IsNullOrEmpty(group.Id))
         {
-            String id = Tables.getUniqueId(group);
             group.Id = getUniqueId(group);
             values.put(Columns.GROUP_Id,group.Id);
             // TODO: get field officer Id from security
@@ -447,7 +446,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                groupMeetings.add(fetchHelper.getGroupMeetingFromCursor(cursor));
+                groupMeetings.add(fetchHelper.getBasicGroupMeetingFromCursor(cursor));
             } while (cursor.moveToNext());
         }
 
@@ -558,16 +557,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             // values.put(Columns.GROUPMEETING_FieldOfficerId, grpMeeting.FieldOfficerId);
             db.insertOrThrow(Tables.GROUPMEETINGS, null, values);
 
-            addUpdateSavingTransactions(grpMeeting.SavingTransactions,grpMeeting.Id, grpMeeting.Date);
+            addUpdateSavingTransactions(grpMeeting.SavingTransactions, grpMeeting, db);
+
 
         }
         db.close();
     }
 
-    public void addUpdateSavingTransactions(ArrayList<MeetingSavingsAccTransaction> meetingSavingsAccTransactions, String grpMeetingId, String grpMeetingDate) {
+    private void addUpdateSavingTransactions(ArrayList<MeetingSavingsAccTransaction> meetingSavingsAccTransactions, GroupMeeting meeting, SQLiteDatabase db) {
         if (meetingSavingsAccTransactions == null) return;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        if(db == null) db = this.getWritableDatabase();
         ContentValues transactionValues = new ContentValues();
 
         for(MeetingSavingsAccTransaction msat : meetingSavingsAccTransactions)
@@ -575,8 +575,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             SavingTransaction st = new SavingTransaction();
             st.GroupId = msat.Group.Id;
             st.SavingAccountId = msat.SavingsAccount.Id;
-            st.MeetingId = grpMeetingId;
-            st.DateTime = grpMeetingDate;
+            st.MeetingId = meeting.Id;
+            st.DateTime = meeting.Date;
 
             if(msat.CompulsorySavingTransaction.Amount!=0)
             {
@@ -611,11 +611,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             accountValues.put(Columns.SAVINGACCOUNTS_CompulsorySavings, sa.CompulsorySavings );
             accountValues.put(Columns.SAVINGACCOUNTS_CurrentBalance, sa.getTotalSavings());
 
-
             db.update(Tables.SAVINGACCOUNTS, accountValues, Columns.SAVINGACCOUNTS_Id + " ='" + sa.Id + "'", null);
         }
 
-        db.close();
+    }
+
+    public void addUpdateLoanAccounts(ArrayList<LoanAccount> loanAccounts, GroupMeeting meeting, SQLiteDatabase db)
+    {
+        if(db == null) db = this.getWritableDatabase();
+
+        for (LoanAccount loanAccount: loanAccounts)
+        {
+            loanAccount.GroupMeetingId = meeting.Id;
+            ContentValues loanValues = new ContentValues();
+            putHelper.putLoanAccountValues(loanAccount, loanValues);
+            // Todo insert or update logic here
+            db.insertOrThrow(Tables.LOANACCOUNTS, null, loanValues);
+        }
     }
 
     public ArrayList<Member> getAllMembersWithNoActiveLoan(String groupId, boolean isEmergency) {

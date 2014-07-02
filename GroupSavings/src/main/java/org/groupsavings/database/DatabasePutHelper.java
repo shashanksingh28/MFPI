@@ -95,5 +95,26 @@ public class DatabasePutHelper {
         values.put(Columns.GROUPMEETING_GroupId,groupMeeting.GroupId);
     }
 
+    void putLoanAccountValues(LoanAccount la, ContentValues values)
+    {
+        values.put(Columns.LOANACCOUNTS_Id, la.Id);
+        values.put(Columns.LOANACCOUNTS_MemberId, la.MemberId);
+        values.put(Columns.LOANACCOUNTS_GroupId, la.GroupId);
+        values.put(Columns.LOANACCOUNTS_GroupMeetingId, la.GroupMeetingId);
+        values.put(Columns.LOANACCOUNTS_PrincipalAmount, la.Principal);
+        values.put(Columns.LOANACCOUNTS_InterestRate, la.InterestRate);
+        values.put(Columns.LOANACCOUNTS_PeriodInMonths, la.PeriodInMonths);
+        values.put(Columns.LOANACCOUNTS_EMI, la.EMI);
+        values.put(Columns.LOANACCOUNTS_Outstanding, la.Outstanding);
+        values.put(Columns.LOANACCOUNTS_Reason, la.Reason);
+        values.put(Columns.LOANACCOUNTS_GUARANTOR, la.Guarantor);
+        values.put(Columns.LOANACCOUNTS_IsEmergency, la.IsEmergency);
+        values.put(Columns.LOANACCOUNTS_StartDate, la.StartDate);
+        values.put(Columns.LOANACCOUNTS_EndDate, la.EndDate);
+        values.put(Columns.LOANACCOUNTS_CreatedDate, la.CreatedDate);
+        values.put(Columns.LOANACCOUNTS_CreatedBy, la.CreatedBy);
+        values.put(Columns.LOANACCOUNTS_Active, la.Active);
+    }
+
 
 }

@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
 import org.groupsavings.activities.NewLoanActivity;
+import org.groupsavings.adapters.MeetingLoanAdapter;
+import org.groupsavings.adapters.MeetingSavingsAccTransactionAdapter;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.MeetingLoanAccTransactions;
@@ -53,35 +56,17 @@ public class MeetingLoansFragment extends Fragment {
     public void onStart()
     {
         super.onStart();
+        try
+        {
+            ListView lv_newLoans = (ListView) getActivity().findViewById(R.id.lv_meeting_newLoans);
 
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        switch (item.getItemId()) {
-
-            case R.id.bt_add_new_loan:
-
-                Toast.makeText(getActivity(),"Clicked",Toast.LENGTH_LONG).show();
-                /*Intent intent = new Intent(getActivity(),NewLoanActivity.class);
-
-                for(int i = 0; i<loanAccounts.size(); i++)
-                {
-                    alreadyLoaned[i]=loanAccounts.get(i).memberId;
-                }
-                intent.putExtra(Intents.INTENT_EXTRA_GROUPID, getActivity());
-                //intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS,alreadyLoaned);
-                //intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,loanAccounts.size());
-                startActivityForResult(intent, REQUEST_GET_NEW_LOANACCOUNT);
-                break;*/
+            MeetingLoanAdapter newloansAdapter =
+                    new MeetingLoanAdapter(getActivity(),android.R.layout.simple_list_item_1,NewLoans,false);
+            lv_newLoans.setAdapter(newloansAdapter);
         }
-        return super.onOptionsItemSelected(item);
+        catch(Exception ex)
+        {
+            Toast.makeText(getActivity(),ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
-
-
 }

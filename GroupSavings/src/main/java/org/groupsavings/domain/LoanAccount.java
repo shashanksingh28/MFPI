@@ -23,6 +23,9 @@ public class LoanAccount {
     public String CreatedBy;
     public boolean Active;
 
+    // Used in UI
+    public Member Member;
+
     public float getEMI()
     {
         float simpleInterest = (Principal * InterestRate * PeriodInMonths / 1200);

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
@@ -30,6 +31,8 @@ import org.groupsavings.fragments.MeetingDetailsFragment;
 import org.groupsavings.fragments.MeetingLoansFragment;
 import org.groupsavings.fragments.MeetingSavingsFragment;
 import org.groupsavings.handlers.UserSessionManager;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -289,7 +292,7 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        /*
+
         if (requestCode == REQUEST_GET_NEW_LOANACCOUNT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -302,20 +305,19 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
                     // Put Member object in place of member id
                     for(Member member : groupMembers)
                     {
-                        if(member.UID == la.memberId)
+                        if(member.Id.equals(la.MemberId))
                         {
-                            la.GroupMember = member;
-                            la.memberId = member.UID;
+                            la.Member = member;
                             break;
                         }
                     }
-                    loanAccounts.add(la);
-                    RefreshView();
+                    groupMeeting.LoansCreated.add(la);
+                    //RefreshView();
                 } catch (JSONException e) {
                     Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        }*/
+        }
     }
 
     @Override

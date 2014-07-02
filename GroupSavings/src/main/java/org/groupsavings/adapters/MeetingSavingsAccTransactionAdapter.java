@@ -52,7 +52,8 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
 
         final MeetingSavingsAccTransaction transaction = SavingTransactions.get(i);
 
-        try {
+        try
+        {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convert_view = inflater.inflate(R.layout.meeting_savingtransaction_row, viewGroup, false);
@@ -100,7 +101,7 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
             {
                 et_optionalSavings.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus)
+                         if(!hasFocus)
                         {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.OptionalSavingTransaction.Amount;

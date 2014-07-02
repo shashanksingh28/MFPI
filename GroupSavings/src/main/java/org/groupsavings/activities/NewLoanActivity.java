@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Constants;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.constants.Tables;
@@ -167,7 +168,8 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                                 la.Active = true;
                                 // Pass loan account as a JSONObject to the activity that called it
                                 Intent returnLoanAccount = new Intent();
-                                //returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
+
+                                returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
                                 setResult(RESULT_OK,returnLoanAccount);
                                 //db_handler.addUpdateLoanAccount(la);
                                 finish();
