@@ -1,11 +1,13 @@
 package org.groupsavings.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by shashank on 22/6/14.
  * Class that encapsulates different types of Saving Acc related transactions
  * that a member can do on a meeting. Each row in UI corresponds to one such object
  */
-public class MeetingSavingsAccTransaction {
+public class MeetingSavingsAccTransaction implements Serializable {
 
     public Group Group;
 

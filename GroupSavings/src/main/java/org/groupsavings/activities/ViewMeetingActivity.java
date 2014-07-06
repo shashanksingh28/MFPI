@@ -18,7 +18,7 @@ import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.MeetingLoanAccTransactions;
+import org.groupsavings.domain.MeetingLoanAccTransaction;
 import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingsAccount;
@@ -58,12 +58,8 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
         try{
             super.onCreate(savedInstanceState);
-
-            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
             setContentView(R.layout.activity_add_meeting);
 
@@ -95,8 +91,8 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
             group = dbHandler.getGroup(groupId);
             groupMeeting = dbHandler.getGroupMeeting(group,meetingId,null);
 
-            savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions);
-            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions,groupMeeting.LoansCreated);
+            savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions, true);
+            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions, groupMeeting.LoansCreated, true);
 
             // TODO meeting details part
             // groupMeeting.OtherDetails =
@@ -143,39 +139,6 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
         }
     }
 
-    // Pre-populate the saving transactions needed for the meeting
-    private ArrayList<MeetingSavingsAccTransaction> populateSavingTransactions()
-    {
-        ArrayList<MeetingSavingsAccTransaction> transactions = new ArrayList<MeetingSavingsAccTransaction>();
-
-        for (Member member : groupMembers)
-        {
-            SavingsAccount memberSavingsAccount = dbHandler.getMemberSavingAccount(member.Id, null);
-            MeetingSavingsAccTransaction savingTransaction = new MeetingSavingsAccTransaction(group, member, memberSavingsAccount);
-
-            transactions.add(savingTransaction);
-        }
-        return transactions;
-    }
-
-    // Pre-populate the loan transactions needed for the meeting
-    private ArrayList<MeetingLoanAccTransactions> populateLoanTransactions()
-    {
-        ArrayList<MeetingLoanAccTransactions> transactions = new ArrayList<MeetingLoanAccTransactions>();
-        for (Member member : groupMembers)
-        {
-            LoanAccount nonEmergencyLoan = dbHandler.getMemberNonEmergencyActiveLoan(member.Id,null);
-            LoanAccount emergencyLoan = dbHandler.getMemberEmergencyActiveLoan(member.Id, null);
-
-            if(nonEmergencyLoan != null || emergencyLoan != null)
-            {
-                MeetingLoanAccTransactions transaction = new MeetingLoanAccTransactions(group, member, nonEmergencyLoan, emergencyLoan);
-                transactions.add(transaction);
-            }
-        }
-        return transactions;
-    }
-
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
@@ -183,11 +146,12 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
         TAB_POSITION=tab.getPosition();
         mViewPager.setCurrentItem(tab.getPosition());
     }
+
     @Override
     protected void onResume()
     {
         super.onResume();
-        // TODO get FOID
+
         //user session management starts
         session = new UserSessionManager(getApplicationContext());
 

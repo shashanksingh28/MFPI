@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddGroupActivity extends Activity implements View.OnClickListener {
+public class AddGroupActivity extends Activity {
 
     private int mmd_day;
     private int mmd_month;
@@ -90,11 +90,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             ib.setOnClickListener(this);
             tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);*/
 
-
             db_handler = new DatabaseHandler(getApplicationContext());
-
-            Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
-            if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
 
             /* Commenting this part as no group Members exist at the time of group creation */
             /*
@@ -150,6 +146,9 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(this,"Please enter a group savings value",Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                HashMap<String, String> user = session.getUserDetails();
+                group.CreatedBy = user.get(UserSessionManager.KEY_USERNAME);
+                group.FieldOfficerId = group.CreatedBy;
 
                 db_handler.addUpdateGroup(group);
                 Toast.makeText(this,"Group Saved",Toast.LENGTH_SHORT).show();
@@ -158,41 +157,6 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        /*switch(view.getId())
-        {
-            case R.id.imgbtn_pick_mmd:
-                DialogFragment dialogFragment = new StartDatePicker();
-                dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
-                break;
-        }*/
-    }
-
-
-    class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // TODO Auto-generated method stub
-            // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(AddGroupActivity.this, this, mmd_year, mmd_month, mmd_day);
-            return dialog;
-        }
-
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            mmd_year  = year;
-            mmd_month = monthOfYear;
-            mmd_day = dayOfMonth;
-            updateMMDDisplay();
-        }
-    }
-
-    private void updateMMDDisplay() {
-        tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day+" of every month");
     }
 
     @Override

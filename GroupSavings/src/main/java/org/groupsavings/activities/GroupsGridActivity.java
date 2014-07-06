@@ -59,9 +59,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             HashMap<String, String> user = session.getUserDetails();
             String name = user.get(UserSessionManager.KEY_USERNAME);
 
-            // not working yet. check db handler for details
-            // String UserId = db_handler.getId(name);
-
             Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -72,23 +69,8 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
-
             setContentView(R.layout.activity_groups_grid);
             db_handler = new DatabaseHandler(getApplicationContext());
-
-            // Changes needed to fix table
-            //db_handler.
-            //db_handler.delete(Tables.SAVINGACCOUNTS,null);
-            //db_handler.delete(Tables.MEMBERS, null);
-            /*db_handler.execQuery(Tables.CREATE_TABLE_MEMBERS);
-            db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCOUNTS);
-            db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
-            db_handler.execQuery(Tables.CREATE_TABLE_LOANACCOUNTS);
-            db_handler.execQuery(Tables.CREATE_TABLE_LOANACCTRANSACTIONS);
-            db_handler.execQuery(Tables.CREATE_TABLE_GROUPMEETINGS);*/
-
-            // change the name to proper name and then execute other one
-            //db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
 
             groups = new ArrayList<Group>();
             Button addGroupButton =(Button) findViewById(R.id.button_add_group);
@@ -113,7 +95,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     protected void onResume()
     {
         super.onResume();
-        // TODO get FOID
+
         //user session management starts
         session = new UserSessionManager(getApplicationContext());
 
@@ -123,11 +105,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             startActivity(i);
         }
 
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(UserSessionManager.KEY_USERNAME);
-        //String UserId = db_handler.getId(name);
-
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -137,9 +114,10 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
         }, 1800000);// session timeout of 30 minutes
         //user session management ends
 
-
-        String officerId="";
-        groups = db_handler.getAllFOGroups(officerId);
+        HashMap<String, String> user = session.getUserDetails();
+        groups = db_handler.getAllFOGroups(user.get(UserSessionManager.KEY_USERNAME));
+        //groups = db_handler.getAllGroups();
+        //Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
         adapter_grid.clear();
         adapter_grid.addAll(groups);
         adapter_grid.notifyDataSetChanged();

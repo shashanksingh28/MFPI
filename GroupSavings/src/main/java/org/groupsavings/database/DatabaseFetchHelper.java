@@ -8,6 +8,7 @@ import org.groupsavings.constants.Tables;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.LoanTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingsAccount;
 
@@ -155,5 +156,22 @@ public class DatabaseFetchHelper {
             la.Active = cursor.getInt(16) == 1;
         }
         return la;
+    }
+
+    LoanTransaction getLoanTransactionFromCursor(Cursor cursor)
+    {
+        LoanTransaction lt = null;
+
+        if(cursor.moveToFirst())
+        {
+            lt = new LoanTransaction();
+            lt.GroupId = cursor.getString(0);
+            lt.MeetingId = cursor.getString(1);
+            lt.LoanAccountId = cursor.getString(2);
+            lt.Repayment = cursor.getFloat(3);
+            lt.Outstanding = cursor.getFloat(4);
+            lt.DateTime = cursor.getString(5);
+        }
+        return lt;
     }
 }

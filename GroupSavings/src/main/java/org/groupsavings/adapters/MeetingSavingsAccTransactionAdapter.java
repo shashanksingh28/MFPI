@@ -35,7 +35,10 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
     @Override
     public int getCount()
     {
-        return SavingTransactions.size();
+        if (SavingTransactions!=null)
+            return SavingTransactions.size();
+        else
+            return 0;
     }
     @Override
     public long getItemId(int position) {

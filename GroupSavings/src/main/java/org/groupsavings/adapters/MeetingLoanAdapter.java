@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.groupsavings.R;
@@ -72,6 +73,10 @@ public class MeetingLoanAdapter  extends ArrayAdapter<LoanAccount> {
 
             TextView tv_emi = (TextView) convert_view.findViewById(R.id.tv_meeting_loan_emi);
             tv_emi.setText(String.valueOf(la.EMI));
+
+            CheckBox ck_loan_isEmergency = (CheckBox) convert_view.findViewById(R.id.ck_meeting_loan_isEmergency);
+            ck_loan_isEmergency.setChecked(la.IsEmergency);
+            ck_loan_isEmergency.setEnabled(false);
 
         } catch (Exception ex) {
             Log.d("ERROR", ex.getMessage());

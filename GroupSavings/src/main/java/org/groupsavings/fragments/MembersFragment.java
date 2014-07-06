@@ -26,8 +26,10 @@ import org.groupsavings.activities.AddMemberActivity;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Member;
+import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MembersFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -160,6 +162,10 @@ public class MembersFragment extends Fragment implements AdapterView.OnItemClick
                     Toast.makeText(getActivity(),"Please choose a member to update",Toast.LENGTH_SHORT).show();
                     break;
                 }
+                UserSessionManager session = new UserSessionManager(getActivity());
+                HashMap<String, String> user = session.getUserDetails();
+                updatedMember.ModifiedBy = user.get(UserSessionManager.KEY_USERNAME);
+
                 dbHandler.addUpdateMember(updatedMember);
                 HideKeypad();
                 Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();

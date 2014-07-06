@@ -66,7 +66,6 @@ public class DatabasePutHelper {
         values.put(Columns.MEMBERS_ExitReason, member.ExitReason);
     }
 
-
     void putSavingTransactionValues(SavingTransaction savingTransaction,ContentValues values)
     {
         values.put(Columns.SAVINGACCTRANSACTIONS_GroupId,savingTransaction.GroupId);
@@ -76,6 +75,17 @@ public class DatabasePutHelper {
         values.put(Columns.SAVINGACCTRANSACTIONS_DateTime,savingTransaction.DateTime);
         values.put(Columns.SAVINGACCTRANSACTIONS_MeetingId, savingTransaction.MeetingId);
         values.put(Columns.SAVINGACCTRANSACTIONS_SavingAccountId, savingTransaction.SavingAccountId);
+    }
+
+    void putLoanTransactionValues(LoanTransaction loanTransaction,ContentValues values)
+    {
+        values.put(Columns.LOANACCTRANSACTIONS_GroupId,loanTransaction.GroupId);
+        values.put(Columns.LOANACCTRANSACTIONS_MeetingId, loanTransaction.MeetingId);
+        values.put(Columns.LOANACCTRANSACTIONS_LoanAccountId, loanTransaction.LoanAccountId);
+        values.put(Columns.LOANACCTRANSACTIONS_Repayment, loanTransaction.Repayment);
+        values.put(Columns.LOANACCTRANSACTIONS_CurrentOutstanding,loanTransaction.getUpdatedOutstanding());
+        values.put(Columns.LOANACCTRANSACTIONS_DateTime,loanTransaction.DateTime);
+
     }
 
     void putSavingAccountValues(SavingsAccount savingsAccount, ContentValues values)

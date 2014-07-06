@@ -28,10 +28,10 @@ import java.util.HashMap;
 
 public class AddMemberActivity extends Activity implements View.OnClickListener {
 
-    private int dob_day;
-    private int dob_month;
-    private int dob_year;
-    private TextView tv_dob;
+    private static int dob_day;
+    private static int dob_month;
+    private static int dob_year;
+    private static TextView tv_dob;
     DatabaseHandler db_handler;
     private String groupId;
 
@@ -138,12 +138,12 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
     }
 
-    class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // TODO Auto-generated method stub
             // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(AddMemberActivity.this, this, dob_year, dob_month, dob_day);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, dob_year, dob_month, dob_day);
             return dialog;
         }
 
@@ -156,7 +156,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private void updateDOBDisplay() {
+    private static void updateDOBDisplay() {
         tv_dob.setVisibility(View.VISIBLE);
         tv_dob.setText(dob_day+"/"+(dob_month+1)+"/"+dob_year);
     }
