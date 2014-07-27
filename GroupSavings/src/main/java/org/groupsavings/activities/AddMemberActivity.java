@@ -20,7 +20,6 @@ import org.groupsavings.R;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.Member;
 import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.Calendar;
@@ -67,7 +66,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
             groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
             setContentView(R.layout.activity_add_member);
 

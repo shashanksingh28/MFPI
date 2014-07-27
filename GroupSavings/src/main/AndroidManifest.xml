@@ -65,10 +65,10 @@
             android:label="@string/title_activity_view_meeting"
             android:screenOrientation="landscape" >
         </activity>
-        <activity
+        <!--<activity
             android:name="org.groupsavings.activities.CrashActivity"
             android:label="@string/title_activity_crash" >
-        </activity>
+        </activity>-->
     </application>
 
 </manifest>

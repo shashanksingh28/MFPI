@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class CrashActivity extends Activity {
             }
         }, 1800000);// session timeout of 30 minutes
         //user session management ends
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         setContentView(R.layout.activity_crash);
 

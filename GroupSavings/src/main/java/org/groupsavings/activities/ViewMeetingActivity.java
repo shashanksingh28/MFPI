@@ -17,18 +17,13 @@ import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
-import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.MeetingLoanAccTransaction;
-import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
-import org.groupsavings.domain.SavingsAccount;
 import org.groupsavings.fragments.MeetingDetailsFragment;
 import org.groupsavings.fragments.MeetingLoansFragment;
 import org.groupsavings.fragments.MeetingSavingsFragment;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class ViewMeetingActivity extends Activity implements ActionBar.TabListener{
@@ -51,9 +46,8 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
     //  session management declarations start
     UserSessionManager session;
     private Handler handler = new Handler();
-//  session management declarations end
+    //  session management declarations end
 
-    public final int REQUEST_GET_NEW_LOANACCOUNT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +66,6 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
                 startActivity(i);
             }
 
-            HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_USERNAME);
-            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -161,11 +152,6 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
             startActivity(i);
         }
 
-        HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(UserSessionManager.KEY_USERNAME);
-        //String UserId = db_handler.getId(name);
-
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

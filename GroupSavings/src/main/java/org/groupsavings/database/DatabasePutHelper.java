@@ -83,7 +83,7 @@ public class DatabasePutHelper {
         values.put(Columns.LOANACCTRANSACTIONS_MeetingId, loanTransaction.MeetingId);
         values.put(Columns.LOANACCTRANSACTIONS_LoanAccountId, loanTransaction.LoanAccountId);
         values.put(Columns.LOANACCTRANSACTIONS_Repayment, loanTransaction.Repayment);
-        values.put(Columns.LOANACCTRANSACTIONS_CurrentOutstanding,loanTransaction.getUpdatedOutstanding());
+        values.put(Columns.LOANACCTRANSACTIONS_CurrentOutstanding,loanTransaction.Outstanding);
         values.put(Columns.LOANACCTRANSACTIONS_DateTime,loanTransaction.DateTime);
 
     }

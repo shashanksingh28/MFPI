@@ -205,7 +205,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 groupList.add(fetchHelper.getGroupDetailsFromCursor(cursor,db));
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return groupList;
     }
 
@@ -344,7 +344,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             member = fetchHelper.getMemberFromCursor(cursor);
         }
-
+        cursor.close();
         return member;
     }
 
@@ -359,7 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             savings = cursor.getInt(0);
         }
-
+        cursor.close();
         return savings;
     }
 
@@ -375,7 +375,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             outstanding = cursor.getInt(0);
         }
-
+        cursor.close();
         return outstanding;
     }
 
@@ -396,7 +396,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 membersList.add(member);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return membersList;
     }
 
@@ -418,7 +418,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 membersList.add(member);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return membersList;
     }
 
@@ -434,7 +434,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             sa = fetchHelper.getSavingAccountFromCursor(cursor);
         }
-
+        cursor.close();
         return sa;
     }
 
@@ -447,8 +447,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Columns.LOANACCOUNTS_Active + "=1";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return fetchHelper.getLoanAccountFromCursor(cursor);
+        LoanAccount la = null;
+        if(cursor.moveToFirst()) {
+            la = fetchHelper.getLoanAccountFromCursor(cursor);
+        }
+        cursor.close();
+        return la;
     }
 
     public LoanAccount getMemberEmergencyActiveLoan(String memberId, SQLiteDatabase db) {
@@ -460,8 +464,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Columns.LOANACCOUNTS_Active + "=1";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return fetchHelper.getLoanAccountFromCursor(cursor);
+        LoanAccount la = null;
+        if(cursor.moveToFirst())
+        {
+            la = fetchHelper.getLoanAccountFromCursor(cursor);
+        }
+        cursor.close();
+        return la;
     }
 
     //-------------------------- Meeting related functions ----------------------------//
@@ -479,7 +488,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 groupMeetings.add(fetchHelper.getBasicGroupMeetingFromCursor(cursor));
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return groupMeetings;
     }
 
@@ -496,10 +505,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst())
         {
             meeting = fetchHelper.getBasicGroupMeetingFromCursor(cursor);
-            meeting.SavingTransactions = getMeetingSavingTransactions(group,meeting,db);
-            meeting.LoanTransactions = getMeetingLoanTransactions(group,meeting,db);
-            meeting.LoansCreated = getMeetingLoansCreated(group, meeting, db);
         }
+        cursor.close();
+
+        if(meeting == null) return meeting;
+
+        meeting.SavingTransactions = getMeetingSavingTransactions(group,meeting,db);
+        meeting.LoanTransactions = getMeetingLoanTransactions(group,meeting,db);
+        meeting.LoansCreated = getMeetingLoansCreated(meeting, db);
 
         return meeting;
     }
@@ -524,6 +537,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 meetingMembers.add(getMember(membersCursor.getString(0),db));
             } while (membersCursor.moveToNext());
         }
+        membersCursor.close();
 
         for(Member member : meetingMembers)
         {
@@ -564,6 +578,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
 
             transactions.add(transaction);
+
+            cursor.close();
         }
 
         return transactions;
@@ -595,11 +611,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             }while (loanTransCursor.moveToNext());
         }
+        loanTransCursor.close();
 
         return transactions;
     }
 
-    private ArrayList<LoanAccount> getMeetingLoansCreated(Group group, GroupMeeting groupMeeting, SQLiteDatabase db)
+    private ArrayList<LoanAccount> getMeetingLoansCreated(GroupMeeting groupMeeting, SQLiteDatabase db)
     {
         if (db == null) { db = this.getWritableDatabase(); }
 
@@ -612,11 +629,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (loanAccountsCursor.moveToFirst()) {
             do {
                 LoanAccount la = fetchHelper.getLoanAccountFromCursor(loanAccountsCursor);
-                la.Member = getMember(la.MemberId, db);
                 loanAccounts.add(la);
             } while (loanAccountsCursor.moveToNext());
         }
+        loanAccountsCursor.close();
 
+        // Because multiple cursors shouldnt be open at a time, doing this here
+        for(LoanAccount la : loanAccounts)
+        {
+            la.Member = getMember(la.MemberId, db);
+        }
         return loanAccounts;
     }
 
@@ -713,7 +735,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             lt.MeetingId = meeting.Id;
             lt.GroupId =meeting.GroupId;
 
-
             lt.LoanAccountId = mlat.LoanAccount.Id;
             lt.Repayment = mlat.LoanAccTransaction.Repayment;
             lt.Outstanding = mlat.LoanAccTransaction.getUpdatedOutstanding();
@@ -726,7 +747,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             // Update Loan Account
             ContentValues loanAccUpdate = new ContentValues();
-            loanAccUpdate.put(Columns.LOANACCOUNTS_Outstanding, lt.getUpdatedOutstanding());
+            loanAccUpdate.put(Columns.LOANACCOUNTS_Outstanding, lt.Outstanding);
+            // If outstanding is less or equal to 0, close the account
+            if( lt.Outstanding <= 0 )
+            {
+                loanAccUpdate.put(Columns.LOANACCOUNTS_Active, false);
+            }
+
             loanAccUpdate.put(Columns.LOANACCOUNTS_ModifiedDate, String.valueOf(new Date()));
             loanAccUpdate.put(Columns.LOANACCOUNTS_ModifiedBy, meeting.FieldOfficerId);
             db.update(Tables.LOANACCOUNTS, loanAccUpdate,Columns.LOANACCOUNTS_Id+"='"+lt.LoanAccountId+"'",null);
@@ -741,7 +768,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         for (LoanAccount loanAccount: loanAccounts)
         {
             loanAccount.GroupMeetingId = meeting.Id;
+
             ContentValues loanValues = new ContentValues();
+
             putHelper.putLoanAccountValues(loanAccount, loanValues);
             // Todo insert or update logic here
             db.insertOrThrow(Tables.LOANACCOUNTS, null, loanValues);
@@ -778,7 +807,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 members.add(getMember(cursor.getString(0),db));
             }while(cursor.moveToNext());
         }
-
+        cursor.close();
         return members;
     }
 
@@ -795,7 +824,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             la = fetchHelper.getLoanAccountFromCursor(cursor);
         }
-
+        cursor.close();
         return la;
     }
 

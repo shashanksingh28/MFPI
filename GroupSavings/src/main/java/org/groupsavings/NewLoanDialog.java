@@ -26,7 +26,7 @@ public class NewLoanDialog extends Dialog {
 
     Context context;
     public LoanAccount newLoanAccount;
-    Spinner members_spinner;
+    public Spinner members_spinner;
 
     ArrayList<Member> groupMembers;
     ArrayAdapter<Member> grpMembersAdapter;

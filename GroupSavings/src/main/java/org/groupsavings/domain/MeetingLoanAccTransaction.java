@@ -23,6 +23,7 @@ public class MeetingLoanAccTransaction implements Serializable {
         LoanAccTransaction.LoanAccountId = loanAccount.Id;
         LoanAccTransaction.GroupId = loanAccount.GroupId;
         LoanAccTransaction.Repayment = loanAccount.EMI;
+        LoanAccTransaction.Outstanding = loanAccount.Outstanding - LoanAccTransaction.Repayment;
     }
 
     public float getOutstanding()

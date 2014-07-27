@@ -102,7 +102,7 @@ public class MeetingLoanAccTransactionAdapter extends ArrayAdapter<MeetingLoanAc
             if(!readonly)
                 tv_loanOutStanding.setText(String.valueOf(transaction.LoanAccTransaction.getUpdatedOutstanding()));
             else
-                tv_loanOutStanding.setText(String.valueOf(transaction.LoanAccTransaction.Outstanding));
+                tv_loanOutStanding.setText(String.valueOf(transaction.LoanAccTransaction.getAsIsOutstanding()));
 
             CheckBox ck_isEmergency = (CheckBox) convert_view.findViewById(R.id.ck_loanTrans_isEmergency);
             ck_isEmergency.setChecked(transaction.LoanAccount.IsEmergency);

@@ -15,15 +15,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
-import org.groupsavings.activities.GroupLandingActivity;
 import org.groupsavings.domain.Group;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.handlers.UserSessionManager;
@@ -115,13 +112,16 @@ public class GroupDetailsFragment extends Fragment {
 
         switch(item.getItemId()){
             case R.id.button_save_group_details:
-                Group group = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
-                if(group != null)
+                Group updatedGroup = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
+                if(updatedGroup != null)
                 {
                     UserSessionManager session = new UserSessionManager(getActivity());
                     HashMap<String, String> user = session.getUserDetails();
-                    group.ModifiedBy = user.get(UserSessionManager.KEY_USERNAME);
-                    db_handler.addUpdateGroup(group);
+                    updatedGroup.ModifiedBy = user.get(UserSessionManager.KEY_USERNAME);
+                    updatedGroup.FieldOfficerId = group.FieldOfficerId;
+                    updatedGroup.CreatedBy = group.CreatedBy;
+                    updatedGroup.CreatedDate = group.CreatedDate;
+                    db_handler.addUpdateGroup(updatedGroup);
                 }
                 HideKeypad();
                 Toast.makeText(getActivity(), "Group Saved", Toast.LENGTH_SHORT).show();

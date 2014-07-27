@@ -133,45 +133,41 @@ public class DatabaseFetchHelper {
     }
 
     LoanAccount getLoanAccountFromCursor(Cursor cursor){
-        LoanAccount la = null;
+        LoanAccount la;
+        la = new LoanAccount();
+        la.Id = cursor.getString(0);
+        la.MemberId = cursor.getString(1);
+        la.GroupId = cursor.getString(2);
+        la.GroupMeetingId = cursor.getString(3);
+        la.Principal = cursor.getLong(4);
+        la.InterestRate = cursor.getFloat(5);
+        la.PeriodInMonths = cursor.getInt(6);
+        la.EMI = cursor.getLong(7);
+        la.Outstanding = cursor.getLong(8);
+        la.Reason = cursor.getString(9);
+        la.Guarantor = cursor.getString(10);
+        la.IsEmergency = cursor.getInt(11) == 1;
+        la.StartDate = cursor.getString(12);
+        la.EndDate = cursor.getString(13);
+        la.CreatedDate = cursor.getString(14);
+        la.CreatedBy = cursor.getString(15);
+        la.Active = cursor.getInt(16) == 1;
 
-        if(cursor.moveToFirst()){
-            la = new LoanAccount();
-            la.Id = cursor.getString(0);
-            la.MemberId = cursor.getString(1);
-            la.GroupId = cursor.getString(2);
-            la.GroupMeetingId = cursor.getString(3);
-            la.Principal = cursor.getLong(4);
-            la.InterestRate = cursor.getFloat(5);
-            la.PeriodInMonths = cursor.getInt(6);
-            la.EMI = cursor.getLong(7);
-            la.Outstanding = cursor.getLong(8);
-            la.Reason = cursor.getString(9);
-            la.Guarantor = cursor.getString(10);
-            la.IsEmergency = cursor.getInt(11) == 1;
-            la.StartDate = cursor.getString(12);
-            la.EndDate = cursor.getString(13);
-            la.CreatedDate = cursor.getString(14);
-            la.CreatedBy = cursor.getString(15);
-            la.Active = cursor.getInt(16) == 1;
-        }
         return la;
     }
 
     LoanTransaction getLoanTransactionFromCursor(Cursor cursor)
     {
-        LoanTransaction lt = null;
+        LoanTransaction lt;
 
-        if(cursor.moveToFirst())
-        {
-            lt = new LoanTransaction();
-            lt.GroupId = cursor.getString(0);
-            lt.MeetingId = cursor.getString(1);
-            lt.LoanAccountId = cursor.getString(2);
-            lt.Repayment = cursor.getFloat(3);
-            lt.Outstanding = cursor.getFloat(4);
-            lt.DateTime = cursor.getString(5);
-        }
+        lt = new LoanTransaction();
+        lt.GroupId = cursor.getString(0);
+        lt.MeetingId = cursor.getString(1);
+        lt.LoanAccountId = cursor.getString(2);
+        lt.Repayment = cursor.getFloat(3);
+        lt.Outstanding = cursor.getFloat(4);
+        lt.DateTime = cursor.getString(5);
+
         return lt;
     }
 }

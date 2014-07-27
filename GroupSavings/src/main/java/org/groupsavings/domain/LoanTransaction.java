@@ -14,8 +14,6 @@ public class LoanTransaction implements Serializable
     public float Outstanding;
     public String DateTime;
 
-    LoanAccount LoanAccount;
-
     public void setOutstandingDue(float outstandingDue)
     {
         this.Outstanding = outstandingDue;
