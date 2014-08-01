@@ -9,6 +9,7 @@ their operations.
 Banking on Change is a Barclays initiative in collaboration with Plan and Care organizations, 
 aimed at improving the quality of lives of under-privileged people by improving access to basic financial services. 
 One of their centers in India works in Delhi to help run all-women Self-Help Groups (SHGs) in Mongolpuri area in Delhi (similar to Micro-Finance organizations).
+
 Current Scenario:
 •	Manual Record keeping and aggregation
 •	Data digitized at a very high level for reporting  via Excel
