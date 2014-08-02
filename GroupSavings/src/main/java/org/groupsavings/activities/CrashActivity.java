@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.groupsavings.R;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.HashMap;
@@ -26,9 +25,6 @@ public class CrashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
-        setContentView(R.layout.activity_crash);
         //user session management starts
         session = new UserSessionManager(getApplicationContext());
 
@@ -39,7 +35,7 @@ public class CrashActivity extends Activity {
         }
 
         HashMap<String, String> user = session.getUserDetails();
-        String name = user.get(UserSessionManager.KEY_NAME);
+        String name = user.get(UserSessionManager.KEY_USERNAME);
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
         handler.postDelayed(new Runnable() {
             @Override
@@ -49,6 +45,9 @@ public class CrashActivity extends Activity {
             }
         }, 1800000);// session timeout of 30 minutes
         //user session management ends
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        setContentView(R.layout.activity_crash);
 
     }
 

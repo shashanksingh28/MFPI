@@ -35,7 +35,10 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
     @Override
     public int getCount()
     {
-        return SavingTransactions.size();
+        if (SavingTransactions!=null)
+            return SavingTransactions.size();
+        else
+            return 0;
     }
     @Override
     public long getItemId(int position) {
@@ -52,10 +55,11 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
 
         final MeetingSavingsAccTransaction transaction = SavingTransactions.get(i);
 
-        try {
+        try
+        {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convert_view = inflater.inflate(R.layout.meeting_savings_row, viewGroup, false);
+            convert_view = inflater.inflate(R.layout.meeting_savingtransaction_row, viewGroup, false);
 
             TextView tv_memberName = (TextView) convert_view.findViewById(R.id.tv_savingTrans_membername);
             tv_memberName.setText(transaction.Member.toString());
@@ -100,7 +104,7 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
             {
                 et_optionalSavings.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if(!hasFocus)
+                         if(!hasFocus)
                         {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.OptionalSavingTransaction.Amount;

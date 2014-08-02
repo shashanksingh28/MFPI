@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Constants;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.constants.Tables;
@@ -39,8 +40,10 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
     ArrayAdapter<Member> grpMembersAdapter;
     Spinner members_spinner;
     LoanAccount la;
-    //int [] alreadyLoanedMembers;
-    //int alreadyLoanedCount;
+
+    boolean isEmergency;
+    String [] alreadyLoanedMembers;
+    int alreadyLoanedCount;
 
     //  session management declarations start
     UserSessionManager session;
@@ -57,7 +60,6 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         {
             super.onCreate(savedInstanceState);
 
-            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 
@@ -68,7 +70,7 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             }
 
             HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
+            String name = user.get(UserSessionManager.KEY_USERNAME);
             Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -79,19 +81,24 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
-            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
-            //alreadyLoanedMembers = getIntent().getIntArrayExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
-            //alreadyLoanedCount = getIntent().getIntExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
-            db_handler = new DatabaseHandler(getApplicationContext());
-            //groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupId);
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-            /*for(Member member : (ArrayList<Member>) groupMembers.clone())
+            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
+            isEmergency = getIntent().getBooleanExtra(Intents.INTENT_EXTRA_LOAN_ISEMERGENCY,false);
+            alreadyLoanedMembers = getIntent().getStringArrayExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS);
+            alreadyLoanedCount = getIntent().getIntExtra(Intents.INTENT_EXTRA_ALREADY_LOANED_COUNT,0);
+            db_handler = new DatabaseHandler(getApplicationContext());
+
+            groupMembers = db_handler.getAllMembersWithNoActiveLoan(groupId,isEmergency);
+
+            for(Member member : (ArrayList<Member>) groupMembers.clone())
             {
-                for(int i : alreadyLoanedMembers)
+                for(String i : alreadyLoanedMembers)
                 {
-                    if(i == member.Id) groupMembers.remove(member);
+                    if(i.equals(member.Id)) groupMembers.remove(member);
                 }
-            }*/
+            }
+
             setContentView(R.layout.activity_new_loan);
 
             members_spinner = (Spinner) findViewById(R.id.sp_loan_members);
@@ -161,7 +168,8 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
                                 la.Active = true;
                                 // Pass loan account as a JSONObject to the activity that called it
                                 Intent returnLoanAccount = new Intent();
-                                //returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
+
+                                returnLoanAccount.putExtra(INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON, SyncHelper.getJsonLoanAcc(la).toString());
                                 setResult(RESULT_OK,returnLoanAccount);
                                 //db_handler.addUpdateLoanAccount(la);
                                 finish();
@@ -217,6 +225,34 @@ public class NewLoanActivity extends Activity implements View.OnClickListener {
         la.Reason = et_reason.getText().toString();
 
         return la;
+    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // TODO get FOID
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_USERNAME);
+        //String UserId = db_handler.getId(name);
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
     }
 
 }

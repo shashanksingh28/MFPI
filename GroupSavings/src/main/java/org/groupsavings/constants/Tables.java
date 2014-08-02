@@ -106,7 +106,9 @@ public class Tables {
             + Columns.SAVINGACCOUNTS_CurrentBalance + " INTEGER,"
             + Columns.SAVINGACCOUNTS_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + Columns.SAVINGACCOUNTS_CreatedBy + " TEXT,"
-            + Columns.SAVINGACCOUNTS_Active + " BOOLEAN DEFAULT 1"
+            + Columns.SAVINGACCOUNTS_Active + " BOOLEAN DEFAULT 1,"
+            + Columns.SAVINGACCOUNTS_ModifiedDate + " TIMESTAMP,"
+            + Columns.SAVINGACCOUNTS_ModifiedBy + " TEXT"
             + ");";
 
     public static final String SAVINGACCTRANSACTIONS = "SavingAccTransactions";
@@ -140,12 +142,14 @@ public class Tables {
             + Columns.LOANACCOUNTS_EndDate + " TEXT,"
             + Columns.LOANACCOUNTS_CreatedDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             + Columns.LOANACCOUNTS_CreatedBy + " TEXT,"
-            + Columns.LOANACCOUNTS_Active + " BOOLEAN DEFAULT 1"
+            + Columns.LOANACCOUNTS_Active + " BOOLEAN DEFAULT 1,"
+            + Columns.LOANACCOUNTS_ModifiedDate +" TIMESTAMP,"
+            + Columns.LOANACCOUNTS_ModifiedBy +" TEXT"
             + ");";
 
     public static final String LOANACCTRANSACTIONS = "LoanAccTransactions";
 
-    public static final String CREATE_TABLE_LOANTRANSACTIONS = "CREATE TABLE " + LOANACCTRANSACTIONS
+    public static final String CREATE_TABLE_LOANACCTRANSACTIONS = "CREATE TABLE " + LOANACCTRANSACTIONS
             + " (" + Columns.LOANACCTRANSACTIONS_GroupId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_MeetingId + " TEXT,"
             + Columns.LOANACCTRANSACTIONS_LoanAccountId + " TEXT,"
@@ -159,6 +163,7 @@ public class Tables {
     public static final String CREATE_TABLE_FIELDOFFICERS = "CREATE TABLE " + FIELDOFFICERS
             + " (" + Columns.FIELDOFFICERS_Id + " INTEGER,"
             + Columns.FIELDOFFICERS_Name + " TEXT,"
+            + Columns.FIELDOFFICERS_UserName + " TEXT UNIQUE,"
             + Columns.FIELDOFFICERS_PasswordHash + " TEXT"
             + ");";
 

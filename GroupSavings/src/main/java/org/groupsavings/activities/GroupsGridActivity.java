@@ -16,8 +16,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
+
 import org.groupsavings.SyncHelper;
 import org.groupsavings.constants.Intents;
+import org.groupsavings.constants.Tables;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.handlers.UserSessionManager;
@@ -45,8 +47,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
 
             //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-            setContentView(R.layout.activity_groups_grid);
-
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 
@@ -57,8 +57,9 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             }
 
             HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
-            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+            String name = user.get(UserSessionManager.KEY_USERNAME);
+
+            //Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -68,12 +69,8 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
+            setContentView(R.layout.activity_groups_grid);
             db_handler = new DatabaseHandler(getApplicationContext());
-
-            // Changes needed to fix table
-            //db_handler.execQuery("DROP TABLE " + Tables.SAVINGACCTRANSACTIONS);
-            // change the name to proper name and then execute other one
-            //db_handler.execQuery(Tables.CREATE_TABLE_SAVINGACCTRANSACTIONS);
 
             groups = new ArrayList<Group>();
             Button addGroupButton =(Button) findViewById(R.id.button_add_group);
@@ -98,9 +95,29 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
     protected void onResume()
     {
         super.onResume();
-        // TODO get FOID
-        String officerId="";
-        groups = db_handler.getAllFOGroups(officerId);
+
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
+
+        HashMap<String, String> user = session.getUserDetails();
+        groups = db_handler.getAllFOGroups(user.get(UserSessionManager.KEY_USERNAME));
+        //groups = db_handler.getAllGroups();
+        //Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
         adapter_grid.clear();
         adapter_grid.addAll(groups);
         adapter_grid.notifyDataSetChanged();
@@ -127,6 +144,9 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             case R.id.button_syc:
                 PushDataAsync asyncTask = new PushDataAsync();
                 asyncTask.execute();
+                return true;
+            case R.id.action_logout:
+                session.logoutUser();
                 return true;
         }
         return super.onOptionsItemSelected(item);

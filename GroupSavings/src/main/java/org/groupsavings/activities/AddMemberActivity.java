@@ -20,7 +20,6 @@ import org.groupsavings.R;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.domain.Member;
 import org.groupsavings.database.DatabaseHandler;
-import org.groupsavings.handlers.ExceptionHandler;
 import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.Calendar;
@@ -28,10 +27,10 @@ import java.util.HashMap;
 
 public class AddMemberActivity extends Activity implements View.OnClickListener {
 
-    private int dob_day;
-    private int dob_month;
-    private int dob_year;
-    private TextView tv_dob;
+    private static int dob_day;
+    private static int dob_month;
+    private static int dob_year;
+    private static TextView tv_dob;
     DatabaseHandler db_handler;
     private String groupId;
 
@@ -46,9 +45,6 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         {
             super.onCreate(savedInstanceState);
 
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
-            setContentView(R.layout.activity_add_member);
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
 
@@ -59,7 +55,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
             }
 
             HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
+            String name = user.get(UserSessionManager.KEY_USERNAME);
             Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -69,6 +65,10 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
                 }
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
+
+            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+            groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
+            setContentView(R.layout.activity_add_member);
 
             db_handler = new DatabaseHandler(getApplicationContext());
             Calendar c = Calendar.getInstance();
@@ -137,12 +137,12 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
     }
 
-    class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // TODO Auto-generated method stub
             // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(AddMemberActivity.this, this, dob_year, dob_month, dob_day);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, dob_year, dob_month, dob_day);
             return dialog;
         }
 
@@ -155,7 +155,7 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private void updateDOBDisplay() {
+    private static void updateDOBDisplay() {
         tv_dob.setVisibility(View.VISIBLE);
         tv_dob.setText(dob_day+"/"+(dob_month+1)+"/"+dob_year);
     }
@@ -218,4 +218,33 @@ public class AddMemberActivity extends Activity implements View.OnClickListener 
 
         return "";
     }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // TODO get FOID
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_USERNAME);
+        //String UserId = db_handler.getId(name);
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
+    }
+
 }

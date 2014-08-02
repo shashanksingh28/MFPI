@@ -28,7 +28,7 @@ public class UserSessionManager {
 
     // All Shared Preferences Keys
     private static final String IS_USER_LOGIN = "IsUserLoggedIn";
-    public static final String KEY_NAME = "name";
+    public static final String KEY_USERNAME = "UserName";
 
     public UserSessionManager(Context context){
         this._context = context;
@@ -39,7 +39,7 @@ public class UserSessionManager {
     //Create login session
     public void createUserLoginSession(String name){
         editor.putBoolean(IS_USER_LOGIN, true);        // Storing login value as TRUE
-        editor.putString(KEY_NAME, name);        // Storing name in pref
+        editor.putString(KEY_USERNAME, name);        // Storing name in pref
         editor.commit();        // commit changes
     }
 
@@ -75,7 +75,7 @@ public class UserSessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
 
         // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+        user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
 
         // return user
         return user;

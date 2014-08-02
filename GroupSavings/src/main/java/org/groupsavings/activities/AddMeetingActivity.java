@@ -2,25 +2,31 @@ package org.groupsavings.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import org.groupsavings.NewLoanDialog;
 import org.groupsavings.R;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
-import org.groupsavings.domain.MeetingLoanAccTransactions;
+import org.groupsavings.domain.MeetingLoanAccTransaction;
 import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingsAccount;
@@ -35,15 +41,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-
-public class AddMeetingActivity extends Activity implements ActionBar.TabListener{
+public class AddMeetingActivity extends Activity implements ActionBar.TabListener, View.OnClickListener{
 
     String groupId;
     Group group;
     DatabaseHandler dbHandler;
     ArrayList<Member> groupMembers;
     // Main object to be populated and reused in fragments
-    GroupMeeting groupMeeting;
+    public GroupMeeting groupMeeting;
+    NewLoanDialog newLoanDialog;
 
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
@@ -57,19 +63,11 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
     private Handler handler = new Handler();
 //  session management declarations end
 
-    public final int REQUEST_GET_NEW_LOANACCOUNT = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
         try{
             super.onCreate(savedInstanceState);
-
-            //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
-            setContentView(R.layout.activity_add_meeting);
 
             //user session management starts
             session = new UserSessionManager(getApplicationContext());
@@ -80,9 +78,6 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
                 startActivity(i);
             }
 
-            HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_NAME);
-            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -92,6 +87,7 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             }, 1800000);// session timeout of 30 minutes
             //user session management ends
 
+            setContentView(R.layout.activity_add_meeting);
             groupId = getIntent().getStringExtra(Intents.INTENT_EXTRA_GROUPID);
             dbHandler = new DatabaseHandler(getApplicationContext());
             group = dbHandler.getGroup(groupId);
@@ -99,17 +95,15 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
 
             groupMeeting = new GroupMeeting();
             groupMeeting.GroupId = groupId;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy, hh:mm aaa");
             groupMeeting.Date = sdf.format(new Date());
 
             groupMeeting.SavingTransactions = populateSavingTransactions();
-            savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions);
+            savingsFragment =new MeetingSavingsFragment(groupMeeting.SavingTransactions, false);
 
             groupMeeting.LoanTransactions = populateLoanTransactions();
-            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions);
+            loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions,groupMeeting.LoansCreated, false);
 
-            // TODO meeting details part
-            // groupMeeting.OtherDetails =
             meetingDetailsFragment = new MeetingDetailsFragment();
 
             final ActionBar actionBar = getActionBar();
@@ -153,6 +147,29 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
         }
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
+
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
+    }
 
     // Pre-populate the saving transactions needed for the meeting
     private ArrayList<MeetingSavingsAccTransaction> populateSavingTransactions()
@@ -170,19 +187,30 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
     }
 
     // Pre-populate the loan transactions needed for the meeting
-    private ArrayList<MeetingLoanAccTransactions> populateLoanTransactions()
+    private ArrayList<MeetingLoanAccTransaction> populateLoanTransactions()
     {
-        ArrayList<MeetingLoanAccTransactions> transactions = new ArrayList<MeetingLoanAccTransactions>();
+        ArrayList<MeetingLoanAccTransaction> transactions = new ArrayList<MeetingLoanAccTransaction>();
         for (Member member : groupMembers)
         {
             LoanAccount nonEmergencyLoan = dbHandler.getMemberNonEmergencyActiveLoan(member.Id,null);
             LoanAccount emergencyLoan = dbHandler.getMemberEmergencyActiveLoan(member.Id, null);
 
-            if(nonEmergencyLoan != null || emergencyLoan != null)
+            if(nonEmergencyLoan != null )
             {
-                MeetingLoanAccTransactions transaction = new MeetingLoanAccTransactions(group, member, nonEmergencyLoan, emergencyLoan);
+                MeetingLoanAccTransaction transaction = new MeetingLoanAccTransaction(group, member, nonEmergencyLoan);
+                transaction.LoanAccount = nonEmergencyLoan;
+                transaction.LoanAccTransaction.setOutstandingDue(transaction.LoanAccount.Outstanding);
                 transactions.add(transaction);
             }
+
+            if(emergencyLoan != null)
+            {
+                MeetingLoanAccTransaction transaction = new MeetingLoanAccTransaction(group, member, emergencyLoan);
+                transaction.LoanAccount = emergencyLoan;
+                transaction.LoanAccTransaction.setOutstandingDue(transaction.LoanAccount.Outstanding);
+                transactions.add(transaction);
+            }
+
         }
         return transactions;
     }
@@ -196,64 +224,197 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
         switch (item.getItemId()) {
             case R.id.button_save_meeting_details:
                 UpdateAccounts(groupMeeting);
-                dbHandler.addUpdateMeetingDetails(groupMeeting);
+                UserSessionManager session = new UserSessionManager(getApplicationContext());
+                HashMap<String, String> user = session.getUserDetails();
+                groupMeeting.FieldOfficerId = user.get(UserSessionManager.KEY_USERNAME);
+
+                dbHandler.addUpdateGroupMeeting(groupMeeting);
                 Toast.makeText(this, "Meeting Details Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
-            /*case R.id.bt_add_new_loan:
-                Intent intent = new Intent(this,NewLoanActivity.class);
-                int [] alreadyLoaned = new int[loanAccounts.size()];
-                for(int i = 0; i<loanAccounts.size(); i++)
-                {
-                    alreadyLoaned[i]=loanAccounts.get(i).memberId;
-                }
-                intent.putExtra(Intents.INTENT_EXTRA_GROUPID, groupId);
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_MEMBER_IDS,alreadyLoaned);
-                intent.putExtra(GroupLandingActivity.INTENT_EXTRA_ALREADY_LOANED_COUNT,loanAccounts.size());
-                startActivityForResult(intent, REQUEST_GET_NEW_LOANACCOUNT);
-                break;*/
+            case R.id.bt_add_new_loan:
+
+                final String [] loanTypes = {"Normal","Emergency"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Select type of Loan")
+                        .setItems(loanTypes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // The 'which' argument contains the index position
+                                // of the selected item
+                                if(which > 0)
+                                    CallNewLoanActivity(true);
+                                else
+                                    CallNewLoanActivity(false);
+                            }
+                        });
+
+                builder.show();
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        /*
-        if (requestCode == REQUEST_GET_NEW_LOANACCOUNT) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-                try {
-                    // Get the new loan object fetched via JSON
-                    JSONObject jo = new JSONObject(data.getStringExtra(NewLoanActivity.INTENT_EXTRA_RETURN_LOAN_ACCOUNT_JSON));
-                    LoanAccount la = SyncHelper.getLoanAccFromJson(jo);
-                    // Put Member object in place of member id
-                    for(Member member : groupMembers)
-                    {
-                        if(member.UID == la.memberId)
-                        {
-                            la.GroupMember = member;
-                            la.memberId = member.UID;
-                            break;
-                        }
-                    }
-                    loanAccounts.add(la);
-                    RefreshView();
-                } catch (JSONException e) {
-                    Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+    public void CallNewLoanActivity(boolean isEmergency) {
+
+        ArrayList<LoanAccount> normalLoans = new ArrayList<LoanAccount>();
+        ArrayList<LoanAccount> emergencyLoans = new ArrayList<LoanAccount>();
+
+        for(LoanAccount account : groupMeeting.LoansCreated)
+        {
+            if(account.IsEmergency)
+                emergencyLoans.add(account);
+            else
+                normalLoans.add(account);
+        }
+
+        ArrayList<String> alreadyLoaned = new ArrayList<String>();
+
+        if(isEmergency)
+        {
+            for(LoanAccount loan : emergencyLoans)
+            {
+                alreadyLoaned.add(loan.MemberId);
             }
-        }*/
+        }
+        else
+        {
+            for(LoanAccount loan : normalLoans)
+            {
+                alreadyLoaned.add(loan.MemberId);
+            }
+        }
+
+        ArrayList<Member> potentialLoanMembers = (ArrayList<Member>) groupMembers.clone();
+
+        for(Member member : groupMembers)
+        {
+            for(String i : alreadyLoaned)
+            {
+                if(i.equals(member.Id)) potentialLoanMembers.remove(member);
+            }
+
+            for(MeetingLoanAccTransaction loanTransaction : groupMeeting.LoanTransactions)
+            {
+                if((loanTransaction.Member.Id).equals(member.Id) && loanTransaction.LoanAccount.IsEmergency == isEmergency)
+                    potentialLoanMembers.remove(member);
+            }
+        }
+
+        newLoanDialog = new NewLoanDialog(this,group,potentialLoanMembers,isEmergency);
+        final LayoutInflater factory = getLayoutInflater();
+        final View newLoanDialogView = factory.inflate(R.layout.activity_new_loan, null);
+        if(isEmergency)
+            newLoanDialog.setTitle("Create new Emergency Loan");
+        else
+            newLoanDialog.setTitle("Create new Loan");
+
+        newLoanDialog.Initialize(newLoanDialogView);
+
+        Button calcEmi = (Button) newLoanDialogView.findViewById(R.id.bt_calulate_emi);
+        calcEmi.setOnClickListener(this);
+
+        Button createLoan = (Button) newLoanDialogView.findViewById(R.id.bt_create_loan);
+        createLoan.setOnClickListener(this);
+        newLoanDialog.show();
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.bt_calulate_emi:
+                try{
+                    newLoanDialog.newLoanAccount = newLoanDialog.getLoanDetailsFromView();
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(this, "Please check if all numbers are valid", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                newLoanDialog.populateDetails();
+                break;
+
+            case R.id.bt_create_loan:
+                try
+                {
+                    if(newLoanDialog.members_spinner.getCount() == 0)
+                    {
+                        Toast.makeText(this,"No member selected", Toast.LENGTH_SHORT);
+                    }
+
+                    if(newLoanDialog.newLoanAccount == null)
+                        newLoanDialog.newLoanAccount = newLoanDialog.getLoanDetailsFromView();
+
+                    newLoanDialog.dismiss();
+
+                    final LoanAccount newLoan = newLoanDialog.newLoanAccount;
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which)
+                            {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    newLoan.Active = true;
+                                    for (Member member : groupMembers)
+                                    {
+                                        if(newLoan.MemberId.equals(member.Id)){
+                                            newLoan.Member = member;
+                                            break;
+                                        }
+                                    }
+                                    HashMap<String, String> user = session.getUserDetails();
+                                    newLoan.CreatedBy = user.get(UserSessionManager.KEY_USERNAME);
+
+                                    loansFragment.newloansAdapter.add(newLoan);
+                                    //groupMeeting.LoansCreated.add(newLoan);
+
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                    builder.setMessage("Are you sure? EMI for "+newLoan.PeriodInMonths + " months will be "+newLoan.getEMI()).setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG);
+                }
+
+        }
+
+    }
+
+    // Function that does math checks
+    private void UpdateAccounts(GroupMeeting groupMeeting)
+    {
+        if(groupMeeting == null) return;
+
+        for (MeetingSavingsAccTransaction savingTrans : groupMeeting.SavingTransactions)
+        {
+            savingTrans.SavingsAccount.CompulsorySavings+=savingTrans.CompulsorySavingTransaction.Amount;
+            savingTrans.CompulsorySavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+            savingTrans.SavingsAccount.OptionalSavings+=savingTrans.OptionalSavingTransaction.Amount;
+            savingTrans.OptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+            savingTrans.SavingsAccount.OptionalSavings-=savingTrans.WithdrawOptionalSavingTransaction.Amount;
+            savingTrans.WithdrawOptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
+        }
+
+    }
+
+    //-------------------------------------------------------------------------------------//
+    //--------------- Do not change code below this. Related to ViewPager -----------------//
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -310,23 +471,6 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             }
             return null;
         }
-    }
-
-    private void UpdateAccounts(GroupMeeting groupMeeting)
-    {
-        if(groupMeeting == null) return;
-
-        for (MeetingSavingsAccTransaction savingTrans : groupMeeting.SavingTransactions)
-        {
-            savingTrans.SavingsAccount.CompulsorySavings+=savingTrans.CompulsorySavingTransaction.Amount;
-            savingTrans.CompulsorySavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
-            savingTrans.SavingsAccount.OptionalSavings+=savingTrans.OptionalSavingTransaction.Amount;
-            savingTrans.OptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
-            savingTrans.SavingsAccount.OptionalSavings-=savingTrans.WithdrawOptionalSavingTransaction.Amount;
-            savingTrans.WithdrawOptionalSavingTransaction.CurrentBalance = savingTrans.SavingsAccount.getTotalSavings();
-        }
-
-        // Add code here to update loan account as per emi given
     }
 
 }

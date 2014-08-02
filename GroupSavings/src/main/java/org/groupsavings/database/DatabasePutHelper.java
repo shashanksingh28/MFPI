@@ -66,15 +66,26 @@ public class DatabasePutHelper {
         values.put(Columns.MEMBERS_ExitReason, member.ExitReason);
     }
 
-
     void putSavingTransactionValues(SavingTransaction savingTransaction,ContentValues values)
     {
         values.put(Columns.SAVINGACCTRANSACTIONS_GroupId,savingTransaction.GroupId);
+        values.put(Columns.SAVINGACCTRANSACTIONS_Type, savingTransaction.Type);
         values.put(Columns.SAVINGACCTRANSACTIONS_Amount, savingTransaction.Amount);
-        //values.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance, savingTransaction.CurrentBalance);
+        values.put(Columns.SAVINGACCTRANSACTIONS_CurrentBalance, savingTransaction.CurrentBalance);
         values.put(Columns.SAVINGACCTRANSACTIONS_DateTime,savingTransaction.DateTime);
         values.put(Columns.SAVINGACCTRANSACTIONS_MeetingId, savingTransaction.MeetingId);
         values.put(Columns.SAVINGACCTRANSACTIONS_SavingAccountId, savingTransaction.SavingAccountId);
+    }
+
+    void putLoanTransactionValues(LoanTransaction loanTransaction,ContentValues values)
+    {
+        values.put(Columns.LOANACCTRANSACTIONS_GroupId,loanTransaction.GroupId);
+        values.put(Columns.LOANACCTRANSACTIONS_MeetingId, loanTransaction.MeetingId);
+        values.put(Columns.LOANACCTRANSACTIONS_LoanAccountId, loanTransaction.LoanAccountId);
+        values.put(Columns.LOANACCTRANSACTIONS_Repayment, loanTransaction.Repayment);
+        values.put(Columns.LOANACCTRANSACTIONS_CurrentOutstanding,loanTransaction.Outstanding);
+        values.put(Columns.LOANACCTRANSACTIONS_DateTime,loanTransaction.DateTime);
+
     }
 
     void putSavingAccountValues(SavingsAccount savingsAccount, ContentValues values)
@@ -92,6 +103,27 @@ public class DatabasePutHelper {
         values.put(Columns.GROUPMEETING_Date,groupMeeting.Date);
         values.put(Columns.GROUPMEETING_FieldOfficerId,groupMeeting.FieldOfficerId);
         values.put(Columns.GROUPMEETING_GroupId,groupMeeting.GroupId);
+    }
+
+    void putLoanAccountValues(LoanAccount la, ContentValues values)
+    {
+        values.put(Columns.LOANACCOUNTS_Id, la.Id);
+        values.put(Columns.LOANACCOUNTS_MemberId, la.MemberId);
+        values.put(Columns.LOANACCOUNTS_GroupId, la.GroupId);
+        values.put(Columns.LOANACCOUNTS_GroupMeetingId, la.GroupMeetingId);
+        values.put(Columns.LOANACCOUNTS_PrincipalAmount, la.Principal);
+        values.put(Columns.LOANACCOUNTS_InterestRate, la.InterestRate);
+        values.put(Columns.LOANACCOUNTS_PeriodInMonths, la.PeriodInMonths);
+        values.put(Columns.LOANACCOUNTS_EMI, la.EMI);
+        values.put(Columns.LOANACCOUNTS_Outstanding, la.Outstanding);
+        values.put(Columns.LOANACCOUNTS_Reason, la.Reason);
+        values.put(Columns.LOANACCOUNTS_GUARANTOR, la.Guarantor);
+        values.put(Columns.LOANACCOUNTS_IsEmergency, la.IsEmergency);
+        values.put(Columns.LOANACCOUNTS_StartDate, la.StartDate);
+        values.put(Columns.LOANACCOUNTS_EndDate, la.EndDate);
+        values.put(Columns.LOANACCOUNTS_CreatedDate, la.CreatedDate);
+        values.put(Columns.LOANACCOUNTS_CreatedBy, la.CreatedBy);
+        values.put(Columns.LOANACCOUNTS_Active, la.Active);
     }
 
 

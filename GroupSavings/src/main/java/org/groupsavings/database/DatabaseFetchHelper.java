@@ -5,9 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.groupsavings.constants.Columns;
 import org.groupsavings.constants.Tables;
-import org.groupsavings.domain.*;
-
-import java.text.SimpleDateFormat;
+import org.groupsavings.domain.Group;
+import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.LoanTransaction;
+import org.groupsavings.domain.Member;
+import org.groupsavings.domain.SavingsAccount;
 
 /**
  * Created by shashank on 21/6/14.
@@ -50,7 +53,7 @@ public class DatabaseFetchHelper {
         return group;
     }
 
-    GroupMeeting getGroupMeetingFromCursor(Cursor cursor) {
+    GroupMeeting getBasicGroupMeetingFromCursor(Cursor cursor) {
         GroupMeeting groupMeeting = new GroupMeeting();
         groupMeeting.Id = cursor.getString(0);
         groupMeeting.GroupId = cursor.getString(1);
@@ -88,8 +91,8 @@ public class DatabaseFetchHelper {
         member.GuardianName = cursor.getString(4);
         member.Gender = cursor.getString(5);
         member.DOB = cursor.getString(6);
-        member.Active = cursor.getInt(7) == 1;
-        member.EmailId = cursor.getString(8);
+        member.EmailId = cursor.getString(7);
+        member.Active = cursor.getInt(8) == 1;
         member.ContactNumber = cursor.getString(9);
         member.AddressLine1 = cursor.getString(10);
         member.AddressLine2 = cursor.getString(11);
@@ -130,28 +133,41 @@ public class DatabaseFetchHelper {
     }
 
     LoanAccount getLoanAccountFromCursor(Cursor cursor){
-        LoanAccount la = null;
+        LoanAccount la;
+        la = new LoanAccount();
+        la.Id = cursor.getString(0);
+        la.MemberId = cursor.getString(1);
+        la.GroupId = cursor.getString(2);
+        la.GroupMeetingId = cursor.getString(3);
+        la.Principal = cursor.getLong(4);
+        la.InterestRate = cursor.getFloat(5);
+        la.PeriodInMonths = cursor.getInt(6);
+        la.EMI = cursor.getLong(7);
+        la.Outstanding = cursor.getLong(8);
+        la.Reason = cursor.getString(9);
+        la.Guarantor = cursor.getString(10);
+        la.IsEmergency = cursor.getInt(11) == 1;
+        la.StartDate = cursor.getString(12);
+        la.EndDate = cursor.getString(13);
+        la.CreatedDate = cursor.getString(14);
+        la.CreatedBy = cursor.getString(15);
+        la.Active = cursor.getInt(16) == 1;
 
-        if(cursor.moveToFirst()){
-            la = new LoanAccount();
-            la.Id = cursor.getString(0);
-            la.MemberId = cursor.getString(1);
-            la.GroupId = cursor.getString(2);
-            la.GroupMeetingId = cursor.getString(3);
-            la.Principal = cursor.getLong(4);
-            la.InterestRate = cursor.getFloat(5);
-            la.PeriodInMonths = cursor.getInt(6);
-            la.EMI = cursor.getLong(7);
-            la.Outstanding = cursor.getLong(8);
-            la.Reason = cursor.getString(9);
-            la.Guarantor = cursor.getString(10);
-            la.IsEmergency = cursor.getInt(11) == 1;
-            la.StartDate = cursor.getString(12);
-            la.EndDate = cursor.getString(13);
-            la.CreatedDate = cursor.getString(14);
-            la.CreatedBy = cursor.getString(15);
-            la.Active = cursor.getInt(16) == 1;
-        }
         return la;
+    }
+
+    LoanTransaction getLoanTransactionFromCursor(Cursor cursor)
+    {
+        LoanTransaction lt;
+
+        lt = new LoanTransaction();
+        lt.GroupId = cursor.getString(0);
+        lt.MeetingId = cursor.getString(1);
+        lt.LoanAccountId = cursor.getString(2);
+        lt.Repayment = cursor.getFloat(3);
+        lt.Outstanding = cursor.getFloat(4);
+        lt.DateTime = cursor.getString(5);
+
+        return lt;
     }
 }

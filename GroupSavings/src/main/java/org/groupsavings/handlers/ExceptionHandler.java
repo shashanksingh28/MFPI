@@ -13,7 +13,7 @@ import android.os.Build;
 
 import org.groupsavings.activities.CrashActivity;
 
-public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
+/*public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
 
     private final Activity myContext;
     private final String LINE_SEPARATOR = "\n";
@@ -65,3 +65,4 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         System.exit(10);
     }
 }
+*/

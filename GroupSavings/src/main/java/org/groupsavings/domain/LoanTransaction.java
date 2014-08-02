@@ -1,9 +1,11 @@
 package org.groupsavings.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by shashank on 30/3/14.
  */
-public class LoanTransaction
+public class LoanTransaction implements Serializable
 {
     public String GroupId;
     public String MeetingId;
@@ -12,9 +14,7 @@ public class LoanTransaction
     public float Outstanding;
     public String DateTime;
 
-    LoanAccount LoanAccount;
-
-    public void setOutstandingDue(long outstandingDue)
+    public void setOutstandingDue(float outstandingDue)
     {
         this.Outstanding = outstandingDue;
     }

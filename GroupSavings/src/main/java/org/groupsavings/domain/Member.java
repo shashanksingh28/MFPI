@@ -1,9 +1,11 @@
 package org.groupsavings.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by shashank on 1/3/14.
  */
-public class Member {
+public class Member implements Serializable{
 
     public String Id;
     public String GroupId;

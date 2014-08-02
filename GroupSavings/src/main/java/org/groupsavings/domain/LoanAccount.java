@@ -1,9 +1,11 @@
 package org.groupsavings.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by shashank on 19/4/14.
  */
-public class LoanAccount {
+public class LoanAccount implements Serializable {
 
     public String Id;
     public String MemberId;
@@ -22,6 +24,9 @@ public class LoanAccount {
     public String CreatedDate;
     public String CreatedBy;
     public boolean Active;
+
+    // Used in UI
+    public Member Member;
 
     public float getEMI()
     {

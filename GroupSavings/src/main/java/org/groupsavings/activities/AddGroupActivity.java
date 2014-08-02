@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,15 +21,13 @@ import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
+import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-
-public class AddGroupActivity extends Activity implements View.OnClickListener {
+public class AddGroupActivity extends Activity {
 
     private int mmd_day;
     private int mmd_month;
@@ -36,11 +35,38 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     private TextView tv_mmd;
     DatabaseHandler db_handler;
 
+    //  session management declarations start
+    UserSessionManager session;
+    private Handler handler = new Handler();
+    //  session management declarations end
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try
         {
             super.onCreate(savedInstanceState);
+            //user session management starts
+            session = new UserSessionManager(getApplicationContext());
+
+            if(!session.isUserLoggedIn()) {
+                //redirect to login activity
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+
+            HashMap<String, String> user = session.getUserDetails();
+            String name = user.get(UserSessionManager.KEY_USERNAME);
+            //String UserId = db_handler.getId(name);
+            Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }, 1800000);// session timeout of 30 minutes
+            //user session management ends
+
             setContentView(R.layout.activity_add_group);
 
             final Spinner spinnerDay = (Spinner) findViewById(R.id.group_mmd_date);
@@ -64,11 +90,7 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
             ib.setOnClickListener(this);
             tv_mmd = (TextView) findViewById(R.id.tv_group_mmd);*/
 
-
             db_handler = new DatabaseHandler(getApplicationContext());
-
-            Button saveGroupButton = (Button) findViewById(R.id.button_save_group);
-            if(saveGroupButton != null) saveGroupButton.setOnClickListener(this);
 
             /* Commenting this part as no group Members exist at the time of group creation */
             /*
@@ -124,6 +146,9 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(this,"Please enter a group savings value",Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                HashMap<String, String> user = session.getUserDetails();
+                group.CreatedBy = user.get(UserSessionManager.KEY_USERNAME);
+                group.FieldOfficerId = group.CreatedBy;
 
                 db_handler.addUpdateGroup(group);
                 Toast.makeText(this,"Group Saved",Toast.LENGTH_SHORT).show();
@@ -135,37 +160,33 @@ public class AddGroupActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        /*switch(view.getId())
-        {
-            case R.id.imgbtn_pick_mmd:
-                DialogFragment dialogFragment = new StartDatePicker();
-                dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
-                break;
-        }*/
-    }
+    protected void onResume()
+    {
+        super.onResume();
+        // TODO get FOID
+        //user session management starts
+        session = new UserSessionManager(getApplicationContext());
 
-
-    class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // TODO Auto-generated method stub
-            // Use the current date as the default date in the picker
-            DatePickerDialog dialog = new DatePickerDialog(AddGroupActivity.this, this, mmd_year, mmd_month, mmd_day);
-            return dialog;
+        if(!session.isUserLoggedIn()) {
+            //redirect to login activity
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
         }
 
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            mmd_year  = year;
-            mmd_month = monthOfYear;
-            mmd_day = dayOfMonth;
-            updateMMDDisplay();
-        }
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(UserSessionManager.KEY_USERNAME);
+        //String UserId = db_handler.getId(name);
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        }, 1800000);// session timeout of 30 minutes
+        //user session management ends
     }
 
-    private void updateMMDDisplay() {
-        tv_mmd.setVisibility(View.VISIBLE);
-        tv_mmd.setText(mmd_day+" of every month");
-    }
+
 }

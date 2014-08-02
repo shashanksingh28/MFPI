@@ -15,9 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,22 +23,25 @@ import org.groupsavings.R;
 import org.groupsavings.ViewHelper;
 import org.groupsavings.domain.Group;
 import org.groupsavings.database.DatabaseHandler;
+import org.groupsavings.handlers.UserSessionManager;
+
 import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
-public class GroupDetailsFragment extends Fragment implements View.OnClickListener {
+public class GroupDetailsFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "GroupId";
 
     private String groupId;
     private Group group;
-    private int mmd_day;
-    private int mmd_month;
-    private int mmd_year;
-    private TextView tv_mmd;
+    private static int mmd_day;
+    private static int mmd_month;
+    private static int mmd_year;
+    private static TextView tv_mmd;
     Activity act;
     DatabaseHandler db_handler;
 
@@ -83,10 +84,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     public void onStart()
     {
         super.onStart();
-        Button saveGroupButton = (Button) getActivity().findViewById(R.id.button_save_group_details);
-        if(saveGroupButton != null){
-            saveGroupButton.setOnClickListener(this);
-        }
+
         act=getActivity();
         Spinner spinnerDay = (Spinner) act.findViewById(R.id.group_mmd_date);
 
@@ -98,11 +96,6 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDay.setAdapter(adapter);
         spinnerDay.setSelection(db_handler.getGroup(groupId).MonthlyMeetingDate);
-
-        /*ImageButton ib = (ImageButton) getActivity().findViewById(R.id.imgbtn_pick_mmd);
-        ib.setOnClickListener(this);
-        tv_mmd = (TextView) getActivity().findViewById(R.id.tv_group_mmd);*/
-
 
         ViewHelper.populateGroupDetailsToView(getActivity().findViewById(R.id.layout_group_details), group);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -119,10 +112,16 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
 
         switch(item.getItemId()){
             case R.id.button_save_group_details:
-                Group group = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
-                if(group != null)
+                Group updatedGroup = ViewHelper.fetchGroupDetailsFromView(getActivity().findViewById(R.id.layout_group_details));
+                if(updatedGroup != null)
                 {
-                    db_handler.addUpdateGroup(group);
+                    UserSessionManager session = new UserSessionManager(getActivity());
+                    HashMap<String, String> user = session.getUserDetails();
+                    updatedGroup.ModifiedBy = user.get(UserSessionManager.KEY_USERNAME);
+                    updatedGroup.FieldOfficerId = group.FieldOfficerId;
+                    updatedGroup.CreatedBy = group.CreatedBy;
+                    updatedGroup.CreatedDate = group.CreatedDate;
+                    db_handler.addUpdateGroup(updatedGroup);
                 }
                 HideKeypad();
                 Toast.makeText(getActivity(), "Group Saved", Toast.LENGTH_SHORT).show();
@@ -131,18 +130,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
-        /*switch(view.getId())
-        {
-            case R.id.imgbtn_pick_mmd:
-                DialogFragment dialogFragment = new StartDatePicker();
-                dialogFragment.show(getFragmentManager(), "Monthly Meeting Date");
-                break;
-        }*/
-    }
-
-    class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class StartDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener{
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // TODO Auto-generated method stub
@@ -160,7 +148,7 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void updateMMDDisplay() {
+    private static void updateMMDDisplay() {
         tv_mmd.setVisibility(View.VISIBLE);
         tv_mmd.setText(mmd_day+" of every month");
     }

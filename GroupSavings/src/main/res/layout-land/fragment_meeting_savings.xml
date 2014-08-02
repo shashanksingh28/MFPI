@@ -18,7 +18,7 @@
             android:layout_height="fill_parent"
             android:orientation="vertical"
             android:layout_weight="3"
-            android:id="@+id/layout_linear_meetingSectionsContainer">
+            android:id="@+id/layout_linear_meetingSavingsContainer">
 
             <LinearLayout
                 android:id="@+id/layout_meeting_header"

@@ -87,6 +87,8 @@ public class Columns {
     public static final String SAVINGACCOUNTS_Active = "Active";
     public static final String SAVINGACCOUNTS_CreatedDate = "CreatedDate";
     public static final String SAVINGACCOUNTS_CreatedBy = "CreatedBy";
+    public static final String SAVINGACCOUNTS_ModifiedDate = "ModifiedDate";
+    public static final String SAVINGACCOUNTS_ModifiedBy = "ModifiedBy";
 
     //------------------- SAVINGACCTRANSACTIONSs Table ----------------//
     public static final String SAVINGACCTRANSACTIONS_GroupId = "GroupId";
@@ -119,6 +121,8 @@ public class Columns {
     public static final String LOANACCOUNTS_Active = "Active";
     public static final String LOANACCOUNTS_CreatedDate = "CreatedDate";
     public static final String LOANACCOUNTS_CreatedBy = "CreatedBy";
+    public static final String LOANACCOUNTS_ModifiedDate = "ModifiedDate";
+    public static final String LOANACCOUNTS_ModifiedBy = "ModifiedBy";
 
     //------------------- LoanTransactions Table ----------------//
     public static final String LOANACCTRANSACTIONS_GroupId = "GroupId";
@@ -131,5 +135,6 @@ public class Columns {
     //-------------------- Field Officers Table ------------------//
     public static final String FIELDOFFICERS_Id = "Id";
     public static final String FIELDOFFICERS_Name = "Name";
+    public static final String FIELDOFFICERS_UserName = "UserName";
     public static final String FIELDOFFICERS_PasswordHash = "PasswordHash";
 }

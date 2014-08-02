@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.groupsavings.R;
@@ -25,8 +26,10 @@ import org.groupsavings.activities.AddMemberActivity;
 import org.groupsavings.constants.Intents;
 import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Member;
+import org.groupsavings.handlers.UserSessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MembersFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -133,13 +136,36 @@ public class MembersFragment extends Fragment implements AdapterView.OnItemClick
                 Refresh();
                 break;
             case R.id.button_save_member:
-                Member updatedMember = ViewHelper.fetchMemberDetailsFromView(detailsContainer);
+                // Get memberId of Member that is displayed
+                String memberId = null;
+                Member updatedMember = new Member();
+
+                TextView memberIdText = (TextView) getActivity().findViewById(R.id.layout_member_uid);
+                if (memberIdText != null && memberIdText.getText() != null)
+                {
+                    String uid_string = memberIdText.getText().toString();
+                    if (uid_string != null && !uid_string.isEmpty()){
+                        memberId = uid_string;
+                    }
+                }
+
+                // Get Member object first because not all fields will be editable and thus not all will
+                // be fetched via viewHelper.
+                if(!StringHelper.IsNullOrEmpty(memberId))
+                    updatedMember = dbHandler.getMember(memberId, null);
+
+                ViewHelper.fetchMemberDetailsFromView(detailsContainer, updatedMember);
+
                 updatedMember.GroupId = groupId;
                 if(StringHelper.IsNullOrEmpty(updatedMember.Id))
                 {
                     Toast.makeText(getActivity(),"Please choose a member to update",Toast.LENGTH_SHORT).show();
                     break;
                 }
+                UserSessionManager session = new UserSessionManager(getActivity());
+                HashMap<String, String> user = session.getUserDetails();
+                updatedMember.ModifiedBy = user.get(UserSessionManager.KEY_USERNAME);
+
                 dbHandler.addUpdateMember(updatedMember);
                 HideKeypad();
                 Toast.makeText(getActivity(),"Details saved",Toast.LENGTH_SHORT).show();
