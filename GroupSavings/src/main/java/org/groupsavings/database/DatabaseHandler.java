@@ -390,6 +390,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public ArrayList<Member> getAllMembers(String FieldOfficerId) {
+        ArrayList<Member> membersList = new ArrayList<Member>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
+                + " Where " + Columns.MEMBERS_GroupId + " IN ( SELECT " + Columns.GROUP_Id + " FROM " + Tables.GROUPS + ");";
+        //+ " WHERE " + Columns.GROUP_FieldOfficerId + " = '" + FieldOfficerId + "');";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Member member = fetchHelper.getMemberFromCursor(cursor);
+                member.CurrentSavings = getMemberSavings(member.Id, db);
+                member.CurrentOutstanding = getMembersOutstanding(member.Id, db);
+                membersList.add(member);
+            } while (cursor.moveToNext());
+        }
+
+        return membersList;
+    }
 
     public Member getMember(String Id, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
