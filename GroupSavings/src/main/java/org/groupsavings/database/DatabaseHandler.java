@@ -191,6 +191,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addSyncInGroup(Group group) {
+        if (group == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putGroupValues(group, values);
+
+        if (getGroup(group.Id) == null)
+        {
+            values.put(Columns.GROUP_Id,group.Id);
+            db.insertOrThrow(Tables.GROUPS, null, values);
+        }
+        else
+        {
+            db.update(Tables.GROUPS, values, Columns.GROUP_Id + " = '" + group.Id+"'", null);
+        }
+        db.close();
+    }
+
+
     public ArrayList<Group> getAllFOGroups(String foUserName) {
         ArrayList<Group> groupList = new ArrayList<Group>();
 
@@ -331,6 +352,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public void addSyncInMember(Member member) {
+        if (member == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putMemberValues(member,values);
+
+        if (!CheckMember(member.Id))
+        {
+            values.put(Columns.MEMBERS_Id, member.Id);
+            db.insertOrThrow(Tables.MEMBERS, null, values);
+            //createMemberSavingAccount(member,db);
+        }
+        else
+        {
+            db.update(Tables.MEMBERS, values, Columns.MEMBERS_Id + " ='" + member.Id+"'", null);
+        }
+
+        db.close();
+    }
+
+    public Boolean CheckMember(String MemberId)
+    {
+        String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
+                + " Where " + Columns.MEMBERS_Id + "='" + MemberId +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Member member = null;
+        if (cursor.moveToFirst())
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public Member getMember(String Id, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
