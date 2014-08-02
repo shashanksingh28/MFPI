@@ -171,6 +171,7 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
             //Toast.makeText(getApplicationContext(), requestString,Toast.LENGTH_LONG).show();
             String message = result == null || result == "" ? "Synchronized" : result;
             Toast.makeText(GroupsGridActivity.this, message, Toast.LENGTH_LONG).show();
+            onResume();
         }
     }
 }

@@ -61,6 +61,8 @@ public class Columns {
     public static final String MEMBERS_CreatedBy = "CreatedBy";
     public static final String MEMBERS_ModifiedDate = "ModifiedDate";
     public static final String MEMBERS_ModifiedBy = "ModifiedBy";
+    public static final String MEMBERS_CurrentSavings = "CurrentSavings";
+    public static final String MEMBERS_CurrentOutstanding = "CurrentOutstanding";
 
     //------------------ Group Meetings Table ---------------------//
     public static final String GROUPMEETING_Id = "Id";

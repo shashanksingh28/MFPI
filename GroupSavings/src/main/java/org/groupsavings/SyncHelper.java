@@ -107,20 +107,20 @@ public class SyncHelper {
             response = httpclient.execute(httppost);
             //String responseEn = EntityUtils.toString(response.getEntity());
             // final JSONArray jArray=new JSONArray(responseEn);
-            SyncOutGroups(EntityUtils.toString(response.getEntity()));
+            SyncInGroups(EntityUtils.toString(response.getEntity()));
 
 
-/*
-            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getGroupMembers());
+
+            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers(""));
             s = new StringEntity(allmembersJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
-            SyncOutMembers(EntityUtils.toString(response.getEntity()));
+            //SyncInMembers(EntityUtils.toString(response.getEntity()));
 
 
-            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler);
+/*            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler);
             s = new StringEntity(allsavingsJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SavingAccount.php");
@@ -177,7 +177,7 @@ public class SyncHelper {
         return returnMessage;
     }
 
-    public void SyncOutGroups(String responseEntity)
+    public void SyncInGroups(String responseEntity)
     {
         try
         {
@@ -188,11 +188,11 @@ public class SyncHelper {
                 Group g = new Group();
                 g.Id 						=	   j.getString("Id");
                 g.Name 					    =      j.getString("Name");
-                g.President.Id 				=      j.getString("President");
+                /*g.President.Id 				=      j.getString("President");
                 g.Secretary.Id 				=      j.getString("Secretary");
-                g.Treasurer.Id 				=      j.getString("Treasurer");
+                g.Treasurer.Id 				=      j.getString("Treasurer");*/
                 g.FieldOfficerId 			=      j.getString("FieldOfficerId");
-                g.Active 					=      j.getBoolean("Active");
+                g.Active 					=      j.getInt("Active") == 1 ? true :false ;
                 g.MonthlyMeetingDate 		=      j.getInt("MonthlyMeetingDate");
                 g.MonthlyCompulsoryAmount 	=      j.getLong("MonthlyCompulsoryAmount");
                 g.Bank 					    =      j.getString("Bank");
@@ -213,15 +213,15 @@ public class SyncHelper {
                 g.ModifiedBy 				=      j.getString("ModifiedBy");
                 g.NoOfActiveMembers		    =      j.getString("NoOfActiveMembers");
 
-                db_handler.addUpdateGroup(g);
+                db_handler.addSyncInGroup(g);
             }
         }
         catch (Exception e) {
             //Toast.makeText(, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-/*
-    public void SyncOutMembers(String responseEntity)
+
+    public void SyncInMembers(String responseEntity)
     {
         try
         {
@@ -259,9 +259,11 @@ public class SyncHelper {
                 m.ModifiedBy            =      j.getString("ModifiedBy");
                 m.Passbook              =      j.getString("Passbook");
                 m.EconomicCondition     =      j.getString("EconomicCondition");
+                m.CurrentSavings        =      j.getLong("CurrentSavings");
+                m.CurrentOutstanding    =      j.getLong("CurrentOutstanding");
 
 
-                db.insertOrThrow(Tables.MEMBERS, null, m);
+                db_handler.addSyncInMember(m);
             }
         }
         catch (Exception e) {
@@ -269,6 +271,7 @@ public class SyncHelper {
         }
     }
 
+/*
     public void SyncOutSavingAccounts(String responseEntity)
     {
         try
@@ -467,46 +470,49 @@ public class SyncHelper {
         return collectJSON;
     }
 
-    /*
+
     // Name Value pairs for All Members
     public JSONObject getJsonMember(Member member) {
         JSONObject collectJSON = new JSONObject();
         try {
-            collectJSON.put(Columns.MEMBER , member.Id);
-            collectJSON.put(Columns.MEMBER_GroupID , member.GroupId);
-            collectJSON.put(Columns.MEMBER_FirstName , member.FirstName);
-            collectJSON.put(Columns.MEMBER_LastName , member.LastName);
-            collectJSON.put(Columns.MEMBER_GuardianName , member.GuardianName);
-            collectJSON.put(Columns.MEMBER_Gender , member.Gender);
-            collectJSON.put(Columns.MEMBER_DOB , member.DOB);
-            collectJSON.put(Columns.MEMBER_EmailId , member.EmailId);
-            collectJSON.put(Columns.MEMBER_Active , member.Active);
-            collectJSON.put(Columns.MEMBER_ContactNumber , member.ContactNumber);
-            collectJSON.put(Columns.MEMBER_AddressLine1 , member.AddressLine1);
-            collectJSON.put(Columns.MEMBER_AddressLine2 , member.AddressLine2);
-            collectJSON.put(Columns.MEMBER_Occupation , member.Occupation);
-            collectJSON.put(Columns.MEMBER_AnnualIncome , member.AnnualIncome);
-            collectJSON.put(Columns.MEMBER_EconomicCondition , member.EconomicCondition);
-            collectJSON.put(Columns.MEMBER_Education , member.Education);
-            collectJSON.put(Columns.MEMBER_Disability , member.Disability);
-            collectJSON.put(Columns.MEMBER_NoOfFamilyMembers , member.NoOfFamilyMembers);
-            collectJSON.put(Columns.MEMBER_Nominee , member.Nominee);
-            collectJSON.put(Columns.MEMBER_Passbook , member.Passbook);
-            collectJSON.put(Columns.MEMBER_Insurance , member.Insurance);
-            collectJSON.put(Columns.MEMBER_ExitDate , member.ExitDate);
-            collectJSON.put(Columns.MEMBER_ExitReason , member.ExitReason);
-            collectJSON.put(Columns.MEMBER_CreatedDate , member.CreatedDate);
-            collectJSON.put(Columns.MEMBER_CreatedBy , member.CreatedBy);
-            collectJSON.put(Columns.MEMBER_ModifiedDate , member.ModifiedDate);
-            collectJSON.put(Columns.MEMBER_ModifiedBy , member.ModifiedBy);
-            collectJSON.put(Columns.MEMBER_EconomicCondition ,member.EconomicCondition);
+            collectJSON.put(Columns.MEMBERS_Id , member.Id);
+            collectJSON.put(Columns.MEMBERS_GroupId , member.GroupId);
+            collectJSON.put(Columns.MEMBERS_FirstName , member.FirstName);
+            collectJSON.put(Columns.MEMBERS_LastName , member.LastName);
+            collectJSON.put(Columns.MEMBERS_GuardianName , member.GuardianName);
+            collectJSON.put(Columns.MEMBERS_Gender , member.Gender);
+            collectJSON.put(Columns.MEMBERS_DOB , member.DOB);
+            collectJSON.put(Columns.MEMBERS_EmailId , member.EmailId);
+            collectJSON.put(Columns.MEMBERS_Active , member.Active);
+            collectJSON.put(Columns.MEMBERS_ContactNumber , member.ContactNumber);
+            collectJSON.put(Columns.MEMBERS_AddressLine1 , member.AddressLine1);
+            collectJSON.put(Columns.MEMBERS_AddressLine2 , member.AddressLine2);
+            collectJSON.put(Columns.MEMBERS_Occupation , member.Occupation);
+            collectJSON.put(Columns.MEMBERS_AnnualIncome , member.AnnualIncome);
+            collectJSON.put(Columns.MEMBERS_EconomicCondition , member.EconomicCondition);
+            collectJSON.put(Columns.MEMBERS_Education , member.Education);
+            collectJSON.put(Columns.MEMBERS_Disability , member.Disability);
+            collectJSON.put(Columns.MEMBERS_NoOfFamilyMembers , member.NoOfFamilyMembers);
+            collectJSON.put(Columns.MEMBERS_Nominee , member.Nominee);
+            collectJSON.put(Columns.MEMBERS_Passbook , member.Passbook);
+            collectJSON.put(Columns.MEMBERS_Insurance , member.Insurance);
+            collectJSON.put(Columns.MEMBERS_ExitDate , member.ExitDate);
+            collectJSON.put(Columns.MEMBERS_ExitReason , member.ExitReason);
+            collectJSON.put(Columns.MEMBERS_CreatedDate , member.CreatedDate);
+            collectJSON.put(Columns.MEMBERS_CreatedBy , member.CreatedBy);
+            collectJSON.put(Columns.MEMBERS_ModifiedDate , member.ModifiedDate);
+            collectJSON.put(Columns.MEMBERS_ModifiedBy , member.ModifiedBy);
+            collectJSON.put(Columns.MEMBERS_EconomicCondition ,member.EconomicCondition);
+            collectJSON.put(Columns.MEMBERS_CurrentSavings, member.CurrentSavings);
+            collectJSON.put(Columns.MEMBERS_CurrentOutstanding, member.CurrentOutstanding);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return collectJSON;
     }
-
+/*
     // Name Value pairs for Saving Accounts
     public JSONObject getJsonSavingAcc(SavingsAccount savingAccount) {
         JSONObject collectJSON = new JSONObject();
@@ -655,7 +661,7 @@ public class SyncHelper {
         }
         return jsonArray;
     }
-/*
+
     // All Members
     public JSONArray GetAllMembersJSON(ArrayList<Member> members) {
         JSONArray jsonArray = new JSONArray();
@@ -665,7 +671,7 @@ public class SyncHelper {
         return jsonArray;
     }
 
-    // All Saving Transactions
+/*    // All Saving Transactions
     public JSONArray GetAllSavingTransJSON(ArrayList<SavingTransaction> savingTransactions) {
         JSONArray jsonArray = new JSONArray();
         for (SavingTransaction savingTransaction : savingTransactions) {

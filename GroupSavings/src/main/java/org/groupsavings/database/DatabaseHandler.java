@@ -140,6 +140,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public void addSyncInGroup(Group group) {
+        if (group == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putGroupValues(group, values);
+
+        if (getGroup(group.Id) == null)
+        {
+            values.put(Columns.GROUP_Id,group.Id);
+            db.insertOrThrow(Tables.GROUPS, null, values);
+        }
+        else
+        {
+            db.update(Tables.GROUPS, values, Columns.GROUP_Id + " = '" + group.Id+"'", null);
+        }
+        db.close();
+    }
+
     public ArrayList<Group> getAllFOGroups(String fieldOfficerId) {
         ArrayList<Group> groupList = new ArrayList<Group>();
 
@@ -266,6 +287,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+    public void addSyncInMember(Member member) {
+        if (member == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putMemberValues(member,values);
+
+        if (!CheckMember(member.Id))
+        {
+            values.put(Columns.MEMBERS_Id, member.Id);
+            db.insertOrThrow(Tables.MEMBERS, null, values);
+            //createMemberSavingAccount(member,db);
+        }
+        else
+        {
+            db.update(Tables.MEMBERS, values, Columns.MEMBERS_Id + " ='" + member.Id+"'", null);
+        }
+
+        db.close();
+    }
+
+    public Boolean CheckMember(String MemberId)
+    {
+        String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
+                + " Where " + Columns.MEMBERS_Id + "='" + MemberId +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Member member = null;
+        if (cursor.moveToFirst())
+        {
+            return true;
+        }
+        return false;
+    }
 
     private float getMemberSavings(String memberId, SQLiteDatabase db) {
         if (db == null) db = this.getWritableDatabase();
@@ -303,6 +360,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
                 + " Where " + Columns.MEMBERS_GroupId + "='" + groupId + "';";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Member member = fetchHelper.getMemberFromCursor(cursor);
+                member.CurrentSavings = getMemberSavings(member.Id, db);
+                member.CurrentOutstanding = getMembersOutstanding(member.Id, db);
+                membersList.add(member);
+            } while (cursor.moveToNext());
+        }
+
+        return membersList;
+    }
+
+    public ArrayList<Member> getAllMembers(String FieldOfficerId) {
+        ArrayList<Member> membersList = new ArrayList<Member>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
+                + " Where " + Columns.MEMBERS_GroupId + " IN ( SELECT " + Columns.GROUP_Id + " FROM " + Tables.GROUPS + ");";
+                //+ " WHERE " + Columns.GROUP_FieldOfficerId + " = '" + FieldOfficerId + "');";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
