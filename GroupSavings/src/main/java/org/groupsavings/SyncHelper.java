@@ -117,7 +117,7 @@ public class SyncHelper {
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
-            //SyncInMembers(EntityUtils.toString(response.getEntity()));
+            SyncInMembers(EntityUtils.toString(response.getEntity()));
 
 
 /*            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler);
@@ -239,7 +239,7 @@ public class SyncHelper {
                 m.Gender                =      j.getString("Gender");
                 m.DOB                   =      j.getString("DOB");
                 m.EmailId               =      j.getString("EmailId");
-                m.Active                =      j.getBoolean("Active");
+                m.Active                =      j.getInt("Active") == 1 ? true : false ;
                 m.ContactNumber         =      j.getString("ContactNumber");
                 m.AddressLine1          =      j.getString("AddressLine1");
                 m.AddressLine2          =      j.getString("AddressLine2");
@@ -247,10 +247,10 @@ public class SyncHelper {
                 m.Occupation            =      j.getString("Occupation");
                 m.AnnualIncome          =      j.getLong("AnnualIncome");
                 m.Education             =      j.getString("Education");
-                m.Disability            =      j.getBoolean("Disability");
+                m.Disability            =      j.getInt("Disability") == 1 ? true : false;
                 m.NoOfFamilyMembers     =      j.getInt("NoOfFamilyMembers");
                 m.Nominee               =      j.getString("Nominee");
-                m.Insurance             =      j.getBoolean("Insurance");
+                m.Insurance             =      j.getInt("Insurance") == 1 ? true : false;
                 m.ExitDate              =      j.getString("ExitDate");
                 m.ExitReason            =      j.getString("ExitReason");
                 m.CreatedDate           =      j.getString("CreatedDate");
