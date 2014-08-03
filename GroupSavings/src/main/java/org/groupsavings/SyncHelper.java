@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -35,6 +37,7 @@ import org.apache.http.protocol.HTTP;
 
 import org.groupsavings.domain.*;
 
+import org.groupsavings.handlers.UserSessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,7 +97,8 @@ public class SyncHelper {
             String responseEntity;
 
             // Groups Data Sync
-            JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllFOGroups(""));
+
+            JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllFOGroups("admin"));
             s = new StringEntity(allGroupsJSON.toString());
             s.setContentEncoding(http_JSON_header);
             HttpPost httppost = new HttpPost(SERVER_URL+"/SaveGroups.php");
