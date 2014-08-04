@@ -98,7 +98,17 @@ public class SyncHelper {
 
             // Groups Data Sync
 
+//All JSON Arrays are created at first so as to determine if field officer logs in first time and so as to sync data from server.
             JSONArray allGroupsJSON = GetAllGroupsJSON(db_handler.getAllFOGroups("admin"));
+            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers("admin"));
+            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler.getAllSavingAccounts("admin"));
+
+            if(allGroupsJSON.length() == 0){
+                allGroupsJSON.put(DummyGroup("admin"));
+                allmembersJSON.put(DummyMember());
+                allsavingsJSON.put(DummSavingAccount());
+            }
+
             s = new StringEntity(allGroupsJSON.toString());
             s.setContentEncoding(http_JSON_header);
             HttpPost httppost = new HttpPost(SERVER_URL+"/SaveGroups.php");
@@ -110,7 +120,7 @@ public class SyncHelper {
 
 
 
-            JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers(""));
+            //JSONArray allmembersJSON = GetAllMembersJSON(db_handler.getAllMembers("admin"));
             s = new StringEntity(allmembersJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SaveMembers.php");
@@ -119,15 +129,15 @@ public class SyncHelper {
             SyncInMembers(EntityUtils.toString(response.getEntity()));
 
 
-/*            JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler);
+           //JSONArray allsavingsJSON = GetAllSavingAccJSON(db_handler.getAllSavingAccounts("admin"));
             s = new StringEntity(allsavingsJSON.toString());
             s.setContentEncoding(http_JSON_header);
-            httppost = new HttpPost(SERVER_URL+"/SavingAccount.php");
+            httppost = new HttpPost(SERVER_URL+"/SavingAccounts.php");
             httppost.setEntity(s);
             response = httpclient.execute(httppost);
-            SyncOutSavingAccounts(EntityUtils.toString(response.getEntity()));
+            SyncInSavingAccounts(EntityUtils.toString(response.getEntity()));
 
-            JSONArray allsavingTransJSON = GetAllSavingTransJSON(db_handler.getAllSavingTrans());
+/*            JSONArray allsavingTransJSON = GetAllSavingTransJSON(db_handler.getAllSavingTrans());
             s = new StringEntity(allsavingTransJSON.toString());
             s.setContentEncoding(http_JSON_header);
             httppost = new HttpPost(SERVER_URL+"/SavingTransaction.php");
@@ -174,6 +184,35 @@ public class SyncHelper {
         }
         //String test = new String(responseString);
         return returnMessage;
+    }
+
+    public JSONObject DummyGroup(String FieldOfficerId)
+    {
+        Group dummy = new Group();
+        dummy.Id = "1";
+        dummy.FieldOfficerId = FieldOfficerId;
+        dummy.MonthlyMeetingDate = 1;
+        dummy.Name = "Dummy";
+        dummy.Active = false;
+        JSONObject jsonObject = getJsonGroup(dummy);
+        return jsonObject;
+    }
+
+    public JSONObject DummyMember()
+    {
+        Member dummy = new Member();
+        dummy.Id = "1";
+        dummy.GroupId = "1";
+        dummy.FirstName = "Dummy";
+        JSONObject jsonObject = getJsonMember(dummy);
+        return jsonObject;
+    }
+
+    public JSONObject DummSavingAccount()
+    {
+        SavingsAccount dummy = new SavingsAccount();
+        JSONObject jsonObject = getJsonSavingAcc(dummy);
+        return jsonObject;
     }
 
     public void SyncInGroups(String responseEntity)
@@ -270,8 +309,8 @@ public class SyncHelper {
         }
     }
 
-/*
-    public void SyncOutSavingAccounts(String responseEntity)
+
+    public void SyncInSavingAccounts(String responseEntity)
     {
         try
         {
@@ -289,9 +328,9 @@ public class SyncHelper {
                 sa.TotalSavings = 				j.getLong("TotalSavings");
                 sa.CreatedDate = 				j.getString("CreatedDate");
                 sa.CreatedBy = 			    	j.getString("CreatedBy");
-                sa.Active = 					j.getBoolean("Active");
+                sa.Active = 					j.getInt("Active") == 1 ? true : false;
 
-
+                db_handler.addSyncInSavingAccounts(sa);
             }
         }
         catch (Exception e) {
@@ -299,6 +338,7 @@ public class SyncHelper {
         }
     }
 
+/*
     public void SyncOutSavingTransactions(String responseEntity)
     {
         try
@@ -511,7 +551,7 @@ public class SyncHelper {
 
         return collectJSON;
     }
-/*
+
     // Name Value pairs for Saving Accounts
     public JSONObject getJsonSavingAcc(SavingsAccount savingAccount) {
         JSONObject collectJSON = new JSONObject();
@@ -533,6 +573,7 @@ public class SyncHelper {
         return collectJSON;
     }
 
+/*
     // Name Value pairs for  Saving Transactions
     public JSONObject getJsonSavingTrans(SavingTransaction savingTransaction) {
         JSONObject collectJSON = new JSONObject();
@@ -674,15 +715,6 @@ public class SyncHelper {
         return jsonArray;
     }
 
-/*    // All Saving Transactions
-    public JSONArray GetAllSavingTransJSON(ArrayList<SavingTransaction> savingTransactions) {
-        JSONArray jsonArray = new JSONArray();
-        for (SavingTransaction savingTransaction : savingTransactions) {
-            jsonArray.put(getJsonSavingTrans(savingTransaction));
-        }
-        return jsonArray;
-    }
-
     // All Saving Account
     public JSONArray GetAllSavingAccJSON(ArrayList<SavingsAccount> savingAccounts) {
         JSONArray jsonArray = new JSONArray();
@@ -692,6 +724,16 @@ public class SyncHelper {
         return jsonArray;
     }
 
+
+/*
+    // All Saving Transactions
+    public JSONArray GetAllSavingTransJSON(ArrayList<SavingTransaction> savingTransactions) {
+        JSONArray jsonArray = new JSONArray();
+        for (SavingTransaction savingTransaction : savingTransactions) {
+            jsonArray.put(getJsonSavingTrans(savingTransaction));
+        }
+        return jsonArray;
+    }
 
     // All Loan Transaction
     public static JSONArray GetAllLoanTransJSON(ArrayList<LoanTransaction> loanTransactions)

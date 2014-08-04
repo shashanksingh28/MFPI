@@ -90,11 +90,16 @@ public class DatabasePutHelper {
 
     void putSavingAccountValues(SavingsAccount savingsAccount, ContentValues values)
     {
-        values.put(Columns.SAVINGACCOUNTS_CompulsorySavings, savingsAccount.GroupId);
+        values.put(Columns.SAVINGACCOUNTS_CompulsorySavings, savingsAccount.CompulsorySavings);
         values.put(Columns.SAVINGACCOUNTS_GroupId,savingsAccount.GroupId);
         values.put(Columns.SAVINGACCOUNTS_Id, savingsAccount.Id);
         values.put(Columns.SAVINGACCOUNTS_OptionalSavings, savingsAccount.OptionalSavings);
         values.put(Columns.SAVINGACCOUNTS_MemberId, savingsAccount.MemberId);
+        values.put(Columns.SAVINGACCOUNTS_InterestAccumulated,savingsAccount.InterestAccumulated);
+        values.put(Columns.SAVINGACCOUNTS_CurrentBalance, savingsAccount.TotalSavings);
+        values.put(Columns.SAVINGACCOUNTS_CreatedDate,savingsAccount.CreatedDate);
+        values.put(Columns.SAVINGACCOUNTS_CreatedBy, savingsAccount.CreatedBy);
+        values.put(Columns.SAVINGACCOUNTS_Active, savingsAccount.Active);
     }
 
     void putGroupMeetingValues(GroupMeeting groupMeeting, ContentValues values)

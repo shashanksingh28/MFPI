@@ -394,8 +394,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Member> membersList = new ArrayList<Member>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
-                + " Where " + Columns.MEMBERS_GroupId + " IN ( SELECT " + Columns.GROUP_Id + " FROM " + Tables.GROUPS + ");";
-        //+ " WHERE " + Columns.GROUP_FieldOfficerId + " = '" + FieldOfficerId + "');";
+                + " Where " + Columns.MEMBERS_GroupId + " IN ( SELECT " + Columns.GROUP_Id + " FROM " + Tables.GROUPS
+        + " WHERE " + Columns.GROUP_FieldOfficerId + " = '" + FieldOfficerId + "');";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -906,6 +906,68 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return la;
+    }
+
+// Sync In Related Functions
+
+
+    public ArrayList<SavingsAccount> getAllSavingAccounts(String FieldOfficerId) {
+        ArrayList<SavingsAccount> savingsAccountsList = new ArrayList<SavingsAccount>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Tables.SAVINGACCOUNTS
+                + " Where " + Columns.SAVINGACCOUNTS_GroupId + " IN ( SELECT " + Columns.GROUP_Id + " FROM " + Tables.GROUPS
+                + " WHERE " + Columns.GROUP_FieldOfficerId + " = '" + FieldOfficerId + "');";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                SavingsAccount savAccount = fetchHelper.getSavingAccountFromCursor(cursor);
+                savingsAccountsList.add(savAccount);
+            } while (cursor.moveToNext());
+        }
+
+        return savingsAccountsList;
+    }
+
+
+    public void addSyncInSavingAccounts(SavingsAccount savingsAccount) {
+        if (savingsAccount == null) return;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        putHelper.putSavingAccountValues(savingsAccount,values);
+
+        if (!CheckSavingAccount(savingsAccount.Id))
+        {
+            values.put(Columns.SAVINGACCOUNTS_Id, savingsAccount.Id);
+            db.insertOrThrow(Tables.SAVINGACCOUNTS, null, values);
+            //createMemberSavingAccount(member,db);
+        }
+        else
+        {
+            db.update(Tables.SAVINGACCOUNTS, values, Columns.SAVINGACCOUNTS_Id + " ='" + savingsAccount.Id+"'", null);
+        }
+
+        db.close();
+    }
+
+
+    public Boolean CheckSavingAccount(String SavingAccountId)
+    {
+        String selectQuery = "SELECT  * FROM " + Tables.SAVINGACCOUNTS
+                + " Where " + Columns.SAVINGACCOUNTS_Id + "='" + SavingAccountId +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Member member = null;
+        if (cursor.moveToFirst())
+        {
+            return true;
+        }
+        return false;
     }
 
 }
