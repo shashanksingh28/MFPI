@@ -131,5 +131,12 @@ public class DatabasePutHelper {
         values.put(Columns.LOANACCOUNTS_Active, la.Active);
     }
 
+    void putMeetingDetails(MeetingDetails details, ContentValues values)
+    {
+        values.put(Columns.MEETINGDETAILS_MemberId, details.MemberId);
+        values.put(Columns.MEETINGDETAILS_MeetingId, details.MemberId);
+        values.put(Columns.MEETINGDETAILS_Fine, details.Fine);
+        values.put(Columns.MEETINGDETAILS_IsAbsent, details.IsAbsent);
+    }
 
 }

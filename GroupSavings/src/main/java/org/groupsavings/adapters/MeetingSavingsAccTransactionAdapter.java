@@ -76,11 +76,14 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
                 {
                     @Override
                     public void onFocusChange(View view, boolean hasFocus) {
-                        if(!hasFocus)
-                        {
+                        if(!hasFocus) {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.CompulsorySavingTransaction.Amount;
-                            float curr = Float.valueOf(et_grpCompSavings.getText().toString());
+                            float curr = 0;
+                            try {
+                                curr = Float.valueOf(et_grpCompSavings.getText().toString());
+                            } catch (NumberFormatException ex) {}
+
                             if(prev != curr)
                             {
                                 transaction.CompulsorySavingTransaction.Amount = curr;
@@ -104,11 +107,16 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
             {
                 et_optionalSavings.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     public void onFocusChange(View v, boolean hasFocus) {
-                         if(!hasFocus)
+                        if(!hasFocus)
                         {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.OptionalSavingTransaction.Amount;
-                            float curr =  Float.valueOf(et_optionalSavings.getText().toString());
+                            float curr = 0;
+                            try{
+                                curr =  Float.valueOf(et_optionalSavings.getText().toString());
+                            }
+                            catch (NumberFormatException ex) {}
+
                             if(prev != curr) {
                                 transaction.OptionalSavingTransaction.Amount = curr;
                                 notifyDataSetChanged();
@@ -131,7 +139,13 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
                         {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.WithdrawOptionalSavingTransaction.Amount;
-                            float curr =  Float.valueOf(et_optionalWithdrawal.getText().toString());
+
+                            float curr =  0;
+
+                            try{
+                                curr = Float.valueOf(et_optionalWithdrawal.getText().toString());
+                            }catch (NumberFormatException ex) {}
+
                             if(prev != curr) {
                                 if(curr >= transaction.SavingsAccount.OptionalSavings)
                                 {
@@ -147,6 +161,7 @@ public class MeetingSavingsAccTransactionAdapter extends ArrayAdapter<MeetingSav
 
         } catch (Exception ex) {
             Log.d("ERROR", ex.getMessage());
+            Toast.makeText(context, "An error occured", Toast.LENGTH_SHORT);
         }
 
         return convert_view;

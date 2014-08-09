@@ -9,6 +9,7 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.LoanTransaction;
+import org.groupsavings.domain.MeetingDetails;
 import org.groupsavings.domain.Member;
 import org.groupsavings.domain.SavingsAccount;
 
@@ -169,5 +170,17 @@ public class DatabaseFetchHelper {
         lt.DateTime = cursor.getString(5);
 
         return lt;
+    }
+
+    MeetingDetails getMeetingDetailFromCursor(Cursor cursor)
+    {
+        MeetingDetails detail = new MeetingDetails();
+
+        detail.MeetingId = cursor.getString(0);
+        detail.MemberId = cursor.getString(1);
+        detail.IsAbsent = cursor.getInt(2) == 1;
+        detail.Fine = cursor.getInt(3);
+
+        return  detail;
     }
 }

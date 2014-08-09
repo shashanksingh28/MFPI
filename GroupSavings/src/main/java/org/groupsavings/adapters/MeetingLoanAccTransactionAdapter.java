@@ -87,7 +87,11 @@ public class MeetingLoanAccTransactionAdapter extends ArrayAdapter<MeetingLoanAc
                         {
                             // A kind of workaround since this is being called more than once weirdly
                             float prev = transaction.LoanAccTransaction.Repayment;
-                            float curr = Float.valueOf(et_loanRepayment.getText().toString());
+                            float curr = 0;
+                            try{
+                                curr = Float.valueOf(et_loanRepayment.getText().toString());
+                            } catch (NumberFormatException ex) {}
+
                             if(prev != curr)
                             {
                                 transaction.LoanAccTransaction.Repayment = curr;

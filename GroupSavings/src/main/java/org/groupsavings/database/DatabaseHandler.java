@@ -13,6 +13,7 @@ import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
 import org.groupsavings.domain.LoanTransaction;
+import org.groupsavings.domain.MeetingDetails;
 import org.groupsavings.domain.MeetingLoanAccTransaction;
 import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
@@ -593,7 +594,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         meeting.SavingTransactions = getMeetingSavingTransactions(group,meeting,db);
         meeting.LoanTransactions = getMeetingLoanTransactions(group,meeting,db);
         meeting.LoansCreated = getMeetingLoansCreated(meeting, db);
-
+        meeting.OtherDetails = getMeetingDetails(meeting,db);
         return meeting;
     }
 
@@ -722,6 +723,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return loanAccounts;
     }
 
+    private ArrayList<MeetingDetails> getMeetingDetails(GroupMeeting groupMeeting, SQLiteDatabase db)
+    {
+        if (db == null) { db = this.getWritableDatabase(); }
+
+        ArrayList<MeetingDetails> details = new ArrayList<MeetingDetails>();
+
+        String query = " SELECT * FROM " + Tables.MEETINGDETAILS
+                + " WHERE " + Columns.MEETINGDETAILS_MeetingId +"='" + groupMeeting.Id +"'";
+
+        Cursor detailsCursor = db.rawQuery(query, null);
+        if(detailsCursor.moveToFirst()){
+            do{
+                MeetingDetails detail = fetchHelper.getMeetingDetailFromCursor(detailsCursor);
+                detail.member = getMember(detail.MemberId,db);
+
+                details.add(detail);
+            }while (detailsCursor.moveToNext());
+        }
+
+        return  details;
+    }
+
     public void addUpdateGroupMeeting(GroupMeeting grpMeeting)
     {
         if (grpMeeting == null) return;
@@ -745,6 +768,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             addUpdateSavingTransactions(grpMeeting.SavingTransactions, grpMeeting, db);
             addUpdateLoanTransactions(grpMeeting.LoanTransactions, grpMeeting, db);
             addUpdateLoanAccounts(grpMeeting.LoansCreated,grpMeeting, db);
+            addUpdateMeetingDetails(grpMeeting.OtherDetails, grpMeeting, db);
 
         }
         db.close();
@@ -855,6 +879,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             // Todo insert or update logic here
             db.insertOrThrow(Tables.LOANACCOUNTS, null, loanValues);
         }
+    }
+
+    public void addUpdateMeetingDetails(ArrayList<MeetingDetails> otherDetails, GroupMeeting meeting, SQLiteDatabase db)
+    {
+        if(db == null) db = this.getWritableDatabase();
+
+        for(MeetingDetails detail : otherDetails)
+        {
+            detail.MeetingId = meeting.Id;
+
+            ContentValues detailValues = new ContentValues();
+
+            putHelper.putMeetingDetails(detail, detailValues);
+
+            db.insertOrThrow(Tables.MEETINGDETAILS, null, detailValues);
+        }
+
     }
 
     public ArrayList<Member> getAllMembersWithNoActiveLoan(String groupId, boolean isEmergency)

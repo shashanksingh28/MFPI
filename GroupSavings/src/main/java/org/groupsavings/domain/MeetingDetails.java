@@ -9,6 +9,8 @@ public class MeetingDetails implements Serializable{
 
     public String MeetingId;
     public String MemberId;
-    public String IsAbsent;
+    public boolean IsAbsent;
     public float Fine;
+
+    public Member member;
 }

@@ -16,7 +16,7 @@
 
     <string name="title_fragment_meeting_savings">Saving Transactions</string>
     <string name="title_fragment_meeting_loans">Loans</string>
-    <string name="title_fragment_meeting_details">Saving Transactions</string>
+    <string name="title_fragment_meeting_details">Attendees and fines</string>
 
     <string name="title_activity_login">Field Officer Login</string>
     <string name="hello_world">Hello world!</string>
