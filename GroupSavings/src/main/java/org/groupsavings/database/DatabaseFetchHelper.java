@@ -178,8 +178,9 @@ public class DatabaseFetchHelper {
 
         detail.MeetingId = cursor.getString(0);
         detail.MemberId = cursor.getString(1);
-        detail.IsAbsent = cursor.getInt(2) == 1;
-        detail.Fine = cursor.getInt(3);
+        detail.Attended = cursor.getInt(2) == 1;
+        detail.Fine = cursor.getFloat(3);
+        detail.FineReason = cursor.getString(4);
 
         return  detail;
     }

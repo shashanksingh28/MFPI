@@ -132,6 +132,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void recreateSchema()
     {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE "+Tables.FIELDOFFICERS);
         db.execSQL("DROP TABLE "+Tables.LOANACCTRANSACTIONS);
         db.execSQL("DROP TABLE "+Tables.LOANACCOUNTS);
         db.execSQL("DROP TABLE "+Tables.SAVINGACCTRANSACTIONS);
@@ -211,7 +212,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         db.close();
     }
-
 
     public ArrayList<Group> getAllFOGroups(String foUserName) {
         ArrayList<Group> groupList = new ArrayList<Group>();
@@ -293,21 +293,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return totalOutstanding;
     }
 
-    public int getActiveMembers(String groupId, SQLiteDatabase db) {
-        if(db == null) db = this.getWritableDatabase();
-        String selectQuery = "SELECT  COUNT("+Columns.MEMBERS_Active+") FROM "
-                + Tables.MEMBERS + " Where " + Columns.MEMBERS_GroupId +"='" + groupId +"' AND "
-                + Columns.MEMBERS_Active + "=1";
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        int totalMembers = 0;
-        if(cursor.moveToFirst())
-        {
-            totalMembers = cursor.getInt(0);
-        }
-        return totalMembers;
-    }
-
     //------------------------ Members related functions ----------------------------//
 
     private void createMemberSavingAccount(Member member, SQLiteDatabase db) {
@@ -376,8 +361,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Boolean CheckMember(String MemberId)
-    {
+    public Boolean CheckMember(String MemberId) {
         String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
                 + " Where " + Columns.MEMBERS_Id + "='" + MemberId +"'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -462,7 +446,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public ArrayList<Member> getGroupMembers(String groupId) {
         ArrayList<Member> membersList = new ArrayList<Member>();
-        // Select All Query
+
         String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
                 + " Where " + Columns.MEMBERS_GroupId + "='" + groupId + "';";
 
@@ -483,7 +467,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public ArrayList<Member> getActiveGroupMembers(String groupId) {
         ArrayList<Member> membersList = new ArrayList<Member>();
-        // Select All Query
+
         String selectQuery = "SELECT  * FROM " + Tables.MEMBERS
                 + " Where " + Columns.MEMBERS_GroupId + "='" + groupId + "' AND "
                 + Columns.MEMBERS_Active +"=1";
@@ -781,6 +765,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(db == null) db = this.getWritableDatabase();
         ContentValues transactionValues = new ContentValues();
 
+        float cummulativeGroupSavings = 0;
+
         for(MeetingSavingsAccTransaction msat : meetingSavingsAccTransactions)
         {
             SavingTransaction st = new SavingTransaction();
@@ -823,8 +809,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             accountValues.put(Columns.SAVINGACCOUNTS_CurrentBalance, sa.getTotalSavings());
 
             db.update(Tables.SAVINGACCOUNTS, accountValues, Columns.SAVINGACCOUNTS_Id + " ='" + sa.Id + "'", null);
+
+            cummulativeGroupSavings += sa.getTotalSavings();
         }
 
+        //Update group cummulative savings
+        String updateQuery = "UPDATE " + Tables.GROUPS
+                + " SET " + Columns.GROUP_CummulativeSavings + "="  + cummulativeGroupSavings
+                + " WHERE " + Columns.GROUP_Id + "='" + meeting.GroupId +"'";
+
+        db.execSQL(updateQuery);
     }
 
     private void addUpdateLoanTransactions(ArrayList<MeetingLoanAccTransaction> meetingLoanAccTransactions, GroupMeeting meeting, SQLiteDatabase db)
@@ -832,6 +826,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (meetingLoanAccTransactions == null) return;
 
         if(db == null) db = this.getWritableDatabase();
+
+        float outStandingGroupLoans = 0;
 
         for(MeetingLoanAccTransaction mlat : meetingLoanAccTransactions)
         {
@@ -861,8 +857,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             loanAccUpdate.put(Columns.LOANACCOUNTS_ModifiedDate, String.valueOf(new Date()));
             loanAccUpdate.put(Columns.LOANACCOUNTS_ModifiedBy, meeting.FieldOfficerId);
             db.update(Tables.LOANACCOUNTS, loanAccUpdate,Columns.LOANACCOUNTS_Id+"='"+lt.LoanAccountId+"'",null);
+
+            outStandingGroupLoans += lt.Outstanding;
         }
 
+        //Update group cummulative savings
+        String updateQuery = "UPDATE " + Tables.GROUPS
+                + " SET " + Columns.GROUP_OutstandingLoans + "=" + outStandingGroupLoans
+                + " WHERE " + Columns.GROUP_Id + "='" + meeting.GroupId +"'";
+
+        db.execSQL(updateQuery);
     }
 
     public void addUpdateLoanAccounts(ArrayList<LoanAccount> loanAccounts, GroupMeeting meeting, SQLiteDatabase db)
@@ -885,6 +889,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         if(db == null) db = this.getWritableDatabase();
 
+        float totalMeetingFines = 0;
+
         for(MeetingDetails detail : otherDetails)
         {
             detail.MeetingId = meeting.Id;
@@ -894,8 +900,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             putHelper.putMeetingDetails(detail, detailValues);
 
             db.insertOrThrow(Tables.MEETINGDETAILS, null, detailValues);
+            if(detail.Fine > 0) totalMeetingFines += detail.Fine;
         }
 
+        if(totalMeetingFines > 0)
+        {
+            String updateQuery = "UPDATE " + Tables.GROUPS
+                   + " SET " + Columns.GROUP_OtherIncome + "=" + Columns.GROUP_OtherIncome + " + " + totalMeetingFines
+                   + " WHERE " + Columns.GROUP_Id + "='" + meeting.GroupId +"'";
+
+            db.execSQL(updateQuery);
+        }
     }
 
     public ArrayList<Member> getAllMembersWithNoActiveLoan(String groupId, boolean isEmergency)

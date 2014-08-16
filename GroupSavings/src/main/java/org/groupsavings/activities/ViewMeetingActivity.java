@@ -32,7 +32,6 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
     String meetingId;
     Group group;
     DatabaseHandler dbHandler;
-    ArrayList<Member> groupMembers;
     // Main object to be populated and reused in fragments
     GroupMeeting groupMeeting;
 
@@ -84,10 +83,7 @@ public class ViewMeetingActivity extends Activity implements ActionBar.TabListen
 
             savingsFragment = new MeetingSavingsFragment(groupMeeting.SavingTransactions, true);
             loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions, groupMeeting.LoansCreated, true);
-
-            // TODO meeting details part
-            // groupMeeting.OtherDetails =
-            meetingDetailsFragment = new MeetingDetailsFragment();
+            meetingDetailsFragment = new MeetingDetailsFragment(groupMeeting.OtherDetails, true);
 
             final ActionBar actionBar = getActionBar();
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

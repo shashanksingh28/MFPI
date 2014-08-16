@@ -26,6 +26,7 @@ import org.groupsavings.database.DatabaseHandler;
 import org.groupsavings.domain.Group;
 import org.groupsavings.domain.GroupMeeting;
 import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.MeetingDetails;
 import org.groupsavings.domain.MeetingLoanAccTransaction;
 import org.groupsavings.domain.MeetingSavingsAccTransaction;
 import org.groupsavings.domain.Member;
@@ -104,7 +105,8 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
             groupMeeting.LoanTransactions = populateLoanTransactions();
             loansFragment = new MeetingLoansFragment(groupMeeting.LoanTransactions,groupMeeting.LoansCreated, false);
 
-            meetingDetailsFragment = new MeetingDetailsFragment();
+            groupMeeting.OtherDetails = populateMeetingDetails();
+            meetingDetailsFragment = new MeetingDetailsFragment(groupMeeting.OtherDetails,false);
 
             final ActionBar actionBar = getActionBar();
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -213,6 +215,24 @@ public class AddMeetingActivity extends Activity implements ActionBar.TabListene
 
         }
         return transactions;
+    }
+
+    private ArrayList<MeetingDetails> populateMeetingDetails()
+    {
+        ArrayList<MeetingDetails> details = new ArrayList<MeetingDetails>();
+
+        for(Member member : groupMembers)
+        {
+            MeetingDetails detail = new MeetingDetails();
+            detail.member = member;
+            detail.MemberId = member.Id;
+            detail.Fine = 0;
+            detail.Attended = true;
+            detail.FineReason = "";
+            details.add(detail);
+        }
+
+        return  details;
     }
 
     @Override

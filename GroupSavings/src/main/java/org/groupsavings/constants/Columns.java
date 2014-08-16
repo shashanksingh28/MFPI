@@ -73,8 +73,9 @@ public class Columns {
     //------------------ MeetingDetails Table ---------------------//
     public static final String MEETINGDETAILS_MeetingId = "MeetingId";
     public static final String MEETINGDETAILS_MemberId = "MemberId";
-    public static final String MEETINGDETAILS_IsAbsent = "IsAbsent";
+    public static final String MEETINGDETAILS_Attended = "Attended";
     public static final String MEETINGDETAILS_Fine = "Fine";
+    public static final String MEETINGDETAILS_FineReason = "FineReason";
 
     //------------------ SavingAccounts Table ---------------------//
     public static final String SAVINGACCOUNTS_Id = "Id";

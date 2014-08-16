@@ -1,7 +1,6 @@
 package org.groupsavings.database;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 
 import org.groupsavings.constants.Columns;
 import org.groupsavings.domain.*;
@@ -134,9 +133,10 @@ public class DatabasePutHelper {
     void putMeetingDetails(MeetingDetails details, ContentValues values)
     {
         values.put(Columns.MEETINGDETAILS_MemberId, details.MemberId);
-        values.put(Columns.MEETINGDETAILS_MeetingId, details.MemberId);
+        values.put(Columns.MEETINGDETAILS_MeetingId, details.MeetingId);
         values.put(Columns.MEETINGDETAILS_Fine, details.Fine);
-        values.put(Columns.MEETINGDETAILS_IsAbsent, details.IsAbsent);
+        values.put(Columns.MEETINGDETAILS_Attended, details.Attended);
+        values.put(Columns.MEETINGDETAILS_FineReason, details.FineReason);
     }
 
 }

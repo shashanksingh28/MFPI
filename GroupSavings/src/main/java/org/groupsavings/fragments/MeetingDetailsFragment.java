@@ -5,8 +5,18 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import org.groupsavings.R;
+import org.groupsavings.adapters.MeetingDetailsAdapter;
+import org.groupsavings.adapters.MeetingLoanAdapter;
+import org.groupsavings.domain.GroupMeeting;
+import org.groupsavings.domain.LoanAccount;
+import org.groupsavings.domain.MeetingDetails;
+import org.groupsavings.domain.MeetingLoanAccTransaction;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -15,30 +25,17 @@ import org.groupsavings.R;
  *
  */
 public class MeetingDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    boolean readOnly;
+    ArrayList<MeetingDetails> meetingDetails;
+    public MeetingDetailsAdapter meetingDetailsAdapter;
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MeetingDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MeetingDetailsFragment newInstance(String param1, String param2) {
+    public static MeetingDetailsFragment newInstance(GroupMeeting groupMeeting) {
         MeetingDetailsFragment fragment = new MeetingDetailsFragment();
+
+        if(groupMeeting == null) return null;
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable("meeting", groupMeeting);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,21 +43,38 @@ public class MeetingDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public MeetingDetailsFragment(ArrayList<MeetingDetails> details, boolean readOnly)
+    {
+        this.readOnly = readOnly;
+        this.meetingDetails = details;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meeting_details, container, false);
+        View returnView = inflater.inflate(R.layout.fragment_meeting_details, container, false);
+
+        try
+        {
+            ListView lv_meetingDetails = (ListView) returnView.findViewById(R.id.lv_meeting_details);
+            meetingDetailsAdapter = new MeetingDetailsAdapter(getActivity(),android.R.layout.simple_list_item_1, meetingDetails, readOnly);
+            lv_meetingDetails.setAdapter(meetingDetailsAdapter);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(getActivity(),ex.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
+        return returnView;
     }
 
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("readOnly", readOnly);
+        super.onSaveInstanceState(outState);
+    }
 
 }

@@ -58,8 +58,9 @@ public class Tables {
     public static final String CREATE_TABLE_MEETINGDETAILS = "CREATE TABLE "+ MEETINGDETAILS
             + " (" + Columns.MEETINGDETAILS_MeetingId + " TEXT,"
             + Columns.MEETINGDETAILS_MemberId + " TEXT,"
-            + Columns.MEETINGDETAILS_IsAbsent + " BOOLEAN,"
-            + Columns.MEETINGDETAILS_Fine + " INTEGER"
+            + Columns.MEETINGDETAILS_Attended + " BOOLEAN,"
+            + Columns.MEETINGDETAILS_Fine + " INTEGER,"
+            + Columns.MEETINGDETAILS_FineReason + " TEXT"
             + ");";
 
     public static final String MEMBERS = "Members";

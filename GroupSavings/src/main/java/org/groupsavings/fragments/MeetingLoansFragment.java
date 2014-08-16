@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class MeetingLoansFragment extends Fragment {
 
-    GroupMeeting meeting;
     boolean readOnly;
     ArrayList<MeetingLoanAccTransaction> LoanTransactions;
     ArrayList<LoanAccount> NewLoans;
@@ -84,12 +83,6 @@ public class MeetingLoansFragment extends Fragment {
         }
 
         return returnView;
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
     }
 
     public void onSaveInstanceState(Bundle outState) {

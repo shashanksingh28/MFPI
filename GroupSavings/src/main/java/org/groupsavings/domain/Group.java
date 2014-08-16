@@ -37,8 +37,8 @@ public class Group implements Serializable{
     @Override
     public String toString()
     {
-        return Name + "    Area : " + AddressLine2 + "    Savings : " + CummulativeSavings + "    Outstanding Loans : " + OutstandingLoans;
-             //   + "    Members : "+NoOfMembers;
+        return Name + "    Area : " + AddressLine2 + "    Savings : " + CummulativeSavings + "    Outstanding Loans : " + OutstandingLoans
+                + "    Other Income : " + OtherIncome ;
     }
 
 }

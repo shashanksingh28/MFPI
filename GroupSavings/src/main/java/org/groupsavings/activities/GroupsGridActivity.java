@@ -56,10 +56,6 @@ public class GroupsGridActivity extends Activity implements AdapterView.OnItemCl
                 startActivity(i);
             }
 
-            HashMap<String, String> user = session.getUserDetails();
-            String name = user.get(UserSessionManager.KEY_USERNAME);
-
-            //Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn() + " Name: " + name, Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

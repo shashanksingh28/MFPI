@@ -118,6 +118,7 @@ public class LoginActivity extends Activity {
                 String encrypted = null;
                 encrypted = MCrypt.bytesToHex((new MCrypt()).encrypt(password));
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+
                 try {
                     if (username != null && password!=null) {
                         String sql = "Select * from FieldOfficers Where UserName='" + username + "' and PasswordHash='" + encrypted + "'";
