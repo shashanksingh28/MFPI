@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +67,16 @@ public class MeetingDetailsAdapter extends ArrayAdapter<MeetingDetails> {
             if(readonly)
             {
                 ck_attended.setEnabled(false);
+            }
+            else
+            {
+                ck_attended.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        if(detail.Attended != isChecked)
+                            detail.Attended = isChecked;
+                    }
+                });
             }
 
             final EditText et_fineReason = (EditText) convert_view.findViewById(R.id.et_meeting_detail_fine_reason);
